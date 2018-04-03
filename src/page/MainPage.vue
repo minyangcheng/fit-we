@@ -1,13 +1,22 @@
 <template>
   <div>
-    <text class="message">main page</text>
+    <text class="message11">main page11</text>
     <text class="button" @click="go">go to setting page</text>
+    <image style="width:500px;height:500px;" src="fit://assets/img/logo.png"></image>
   </div>
 </template>
 <script>
+  import logoImage from '../assets/img/logo.png'
+
+  let tool = weex.requireModule('tool');
+  tool.printLog(logoImage);
   export default {
     data() {
-      return {}
+      return {
+        // logoImage:logoImage,
+        aa: 1,
+        bb: 11
+      }
     },
     created() {
     },
