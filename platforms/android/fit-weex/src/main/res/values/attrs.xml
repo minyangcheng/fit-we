@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="WebViewProgressBar">
+        <attr name="progress" format="integer"/>
+        <attr name="max" format="integer"/>
+        <attr name="progress_height" format="dimension"/>
+        <attr name="progress_color" format="color"/>
+    </declare-styleable>
+
+</resources>

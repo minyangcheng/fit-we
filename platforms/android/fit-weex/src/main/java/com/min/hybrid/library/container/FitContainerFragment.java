@@ -1,8 +1,6 @@
 package com.min.hybrid.library.container;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,16 +9,20 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.min.fit.weex.R;
 import com.min.hybrid.library.FitConstants;
 import com.min.hybrid.library.FitLog;
+import com.min.hybrid.library.FitWe;
+import com.min.hybrid.library.bean.RouteInfo;
+import com.min.hybrid.library.util.FileUtil;
+import com.min.hybrid.library.util.SharePreferenceUtil;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.WXRenderStrategy;
+import com.taobao.weex.utils.WXFileUtils;
 
+import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 
 public class FitContainerFragment extends Fragment implements IWXRenderListener {
 
@@ -28,20 +30,14 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     private FrameLayout mContainer;
     private WXSDKInstance mWXSDKInstance;
-    private String mUrl;
-    private JSONObject mRouteInfo;
+    private RouteInfo mRouteInfo;
 
-    public static FitContainerFragment newInstance(String bundleUrl) {
+    public static FitContainerFragment newInstance(RouteInfo routeInfo) {
         FitContainerFragment fragment = new FitContainerFragment();
         Bundle args = new Bundle();
-        args.putString(WXSDKInstance.BUNDLE_URL, bundleUrl);
+        args.putSerializable(FitConstants.KEY_ROUTE_INFO, routeInfo);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
     }
 
     @Override
@@ -53,26 +49,44 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         mContainer = (FrameLayout) view.findViewById(R.id.fragment_container);
         mWXSDKInstance = new WXSDKInstance(getActivity());
         mWXSDKInstance.registerRenderListener(this);
+        render();
+    }
 
+    private void render() {
+        String pagePath = mRouteInfo.pagePath.replace("fit://", "");
+        String uri = FitWe.getInstance().getConfiguration().getHostServer() + "/" + pagePath + ".js";
+        if (SharePreferenceUtil.getInterceptorActive(getActivity())) {
+            File bundleDir = FileUtil.getBundleDir(getActivity());
+            File pageFile = new File(bundleDir.getAbsolutePath() + "/" + pagePath + ".js");
+            if (pageFile.exists()) {
+                uri = pageFile.getAbsolutePath();
+            }
+        }
+        mRouteInfo.uri = uri;
         HashMap<String, Object> options = new HashMap<>();
-        options.put(WXSDKInstance.BUNDLE_URL, mUrl);
+        options.put(WXSDKInstance.BUNDLE_URL, uri);
         options.put(FitConstants.KEY_ROUTE_INFO, mRouteInfo);
-        mWXSDKInstance.renderByUrl(mUrl, mUrl, options, null, WXRenderStrategy.APPEND_ASYNC);
+        if (uri.startsWith("http")) {
+            mWXSDKInstance.renderByUrl(uri, uri, options, null, WXRenderStrategy.APPEND_ASYNC);
+        } else {
+            mWXSDKInstance.render(uri, WXFileUtils.loadFileOrAsset(uri, getActivity()), options, null, WXRenderStrategy.APPEND_ASYNC);
+        }
+        FitLog.d(FitConstants.LOG_TAG, "load page route=%s", JSON.toJSONString(mRouteInfo));
+    }
+
+    public void refresh() {
+        if (mWXSDKInstance != null && !mWXSDKInstance.isDestroy()) {
+            mWXSDKInstance.destroy();
+        }
+        render();
     }
 
     private void getDataFromArguments() {
         Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(WXSDKInstance.BUNDLE_URL)) {
-            String bundleUrl = bundle.getString(WXSDKInstance.BUNDLE_URL);
-            Uri uri = Uri.parse(bundleUrl);
-            mUrl = bundleUrl.replace("?" + uri.getQuery(), "");
-            String routeStr = uri.getQueryParameter("routeInfo");
-            if (TextUtils.isEmpty(mUrl) || TextUtils.isEmpty(routeStr)) {
-                getActivity().finish();
-            } else {
-                mRouteInfo = JSON.parseObject(routeStr);
-            }
-        } else {
+        if (bundle != null && bundle.containsKey(FitConstants.KEY_ROUTE_INFO)) {
+            mRouteInfo = (RouteInfo) bundle.getSerializable(FitConstants.KEY_ROUTE_INFO);
+        }
+        if (mRouteInfo == null || TextUtils.isEmpty(mRouteInfo.pagePath)) {
             getActivity().finish();
         }
     }
@@ -137,25 +151,17 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     @Override
     public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
-        FitLog.d(TAG, "url=%s,routeInfo=%s onRenderSuccess", mUrl, mRouteInfo.toJSONString());
-        mContainer.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Map<String, Object> params = new HashMap<>();
-                params.put("key", "value");
-                mWXSDKInstance.fireGlobalEventCallback("geolocation", params);
-            }
-        }, 2000);
+        FitLog.d(TAG, "routeInfo=%s onRenderSuccess", JSON.toJSONString(mRouteInfo));
     }
 
     @Override
     public void onRefreshSuccess(WXSDKInstance instance, int width, int height) {
-        FitLog.d(TAG, "url=%s,routeInfo=%s onRefreshSuccess", mUrl, mRouteInfo.toJSONString());
+        FitLog.d(TAG, "routeInfo=%s onRefreshSuccess", JSON.toJSONString(mRouteInfo));
     }
 
     @Override
     public void onException(WXSDKInstance instance, String errCode, String msg) {
-        FitLog.e(TAG, "url=%s,routeInfo=%s onException msg=%s", mUrl, mRouteInfo.toJSONString(), msg);
+        FitLog.e(TAG, "routeInfo=%s onException msg=%s", JSON.toJSONString(mRouteInfo), msg);
     }
 
 }

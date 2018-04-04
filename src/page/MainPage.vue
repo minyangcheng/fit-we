@@ -7,7 +7,7 @@
 </template>
 <script>
   import logoImage from '../assets/img/logo.png'
-
+  var a="@assets/img/logo.png";
   let tool = weex.requireModule('tool');
   tool.printLog(logoImage);
   export default {

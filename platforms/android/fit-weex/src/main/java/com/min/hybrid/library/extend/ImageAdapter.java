@@ -1,4 +1,4 @@
-package com.min.hybrid.library.module;
+package com.min.hybrid.library.extend;
 
 import android.text.TextUtils;
 import android.widget.ImageView;

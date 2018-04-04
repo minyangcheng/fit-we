@@ -5,7 +5,7 @@ import android.app.Application;
 import com.min.hybrid.library.extend.compontent.RichText;
 import com.min.hybrid.library.extend.module.PhoneInfoModule;
 import com.min.hybrid.library.extend.module.ToolModule;
-import com.min.hybrid.library.module.ImageAdapter;
+import com.min.hybrid.library.extend.ImageAdapter;
 import com.min.hybrid.library.util.ImageLoaderWrap;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXSDKEngine;

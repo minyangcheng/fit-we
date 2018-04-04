@@ -16,13 +16,13 @@ process.on('uncaughtException', function (err) {
   console.error(err)
 });
 process.on('exit', function (code) {
-  if(fs.existsSync(distPath)){
+  if (fs.existsSync(distPath)) {
     deleteAll(distPath);
     console.log('delete %s finished', distPath);
   }
 });
 
-if(!fs.existsSync(distPath)||fs.readdirSync(distPath).length<2){
+if (!fs.existsSync(distPath) || fs.readdirSync(distPath).length < 2) {
   throw new Error('请先生成vue dist包');
 }
 
@@ -127,7 +127,7 @@ function findNeedSignatureFiles(dir, resultFiles) {
       if (fs.statSync(curPath).isDirectory()) { // recurse
         findNeedSignatureFiles(curPath, resultFiles);
       } else {
-        if (/.+\.js$/ig.test(curPath) || /.+\.css$/ig.test(curPath) || /.+\.html$/ig.test(curPath)) {
+        if (/.+\.js$/ig.test(curPath)) {
           resultFiles.push(curPath);
         }
       }

@@ -1,0 +1,83 @@
+<resources>
+    <!--百度开放平台申请Geocoding API服务的ak-->
+    <string name="baiduMap_ak">05L3eucgqqN58GceZsQOKluUFO01M1fT</string>
+
+    <string name="loading">正在加载…</string>
+    <string name="prompt">提示</string>
+    <string name="confirm">确定</string>
+    <string name="save">保存</string>
+    <string name="submit">提交</string>
+    <string name="cancel">取消</string>
+    <string name="clear">清空</string>
+    <string name="close">关闭</string>
+    <string name="delete">删除</string>
+    <string name="finish">完成</string>
+    <string name="send">发送</string>
+    <string name="copy">复制</string>
+    <string name="search">搜索</string>
+    <string name="attribute">属性</string>
+    <string name="album">相册</string>
+    <string name="take_photo">拍照</string>
+    <string name="pick_time">选择时间</string>
+    <string name="pick_date">选择日期</string>
+    <string name="date_format">yyyy年MM月dd日 HH:mm</string>
+
+    <!--提示-->
+    <string name="toast_save_success">保存成功</string>
+    <string name="toast_save_fail">保存失败</string>
+    <string name="toast_operation_fail">操作失败</string>
+    <string name="toast_out_of_memory">内存不足</string>
+    <string name="toast_gps_not_open">GPS未开启</string>
+    <string name="toast_location_fail">获取位置失败</string>
+    <string name="toast_no_permission">权限未开启</string>
+    <string name="toast_submit_error">提交失败</string>
+    <string name="toast_data_parse_error">数据解析失败</string>
+    <string name="toast_serverdata_format_error">服务器响应数据格式错误</string>
+    <string name="toast_mobile_format_error">请输入正确的手机号码</string>
+    <string name="toast_email_format_error">请输入正确的邮箱地址</string>
+
+    <!--错误状态页-->
+    <string name="status_show_error">查看原因</string>
+    <string name="status_hide_error">隐藏原因</string>
+    <string name="status_server_error">网络请求失败</string>
+    <string name="status_server_timeout">网络请求超时</string>
+    <string name="status_page_error">页面加载失败</string>
+    <string name="status_return_error">返回参数不合法</string>
+    <string name="status_sever_error">服务器异常</string>
+    <string name="status_data_error">数据异常</string>
+    <string name="status_network_error">网络异常</string>
+    <string name="status_request_error">请求参数错误</string>
+    <string name="status_page_refresh">重新获取数据</string>
+    <string name="status_page_reload">点击重新加载</string>
+
+    <!--二维码扫描-->
+    <string name="scan_title">扫一扫</string>
+    <string name="scan_history_title">扫码历史</string>
+    <string name="scan_history">查看扫描历史</string>
+
+
+
+    <!--文件操作-->
+    <string name="file_name">文件</string>
+    <string name="file_not_found">文件未找到</string>
+    <string name="file_no_app_open">没有适合的程序打开此文件</string>
+    <string name="file_unknow_type">未知文件类型</string>
+    <string name="file_cannot_open">文件不能打开</string>
+    <string name="file_exist">文件已存在</string>
+    <string name="file_create_fail">文件无法创建</string>
+    <string name="file_sdcard">sd卡</string>
+    <string name="file_too_large">请选择小于50M的文件</string>
+    <string name="file_folder_create_fail">文件夹创建失败</string>
+    <string name="file_local">本地文件</string>
+    <string name="file_no_sdcard">sd卡路径获取失败</string>
+
+
+
+
+    <!--关于页面-->
+    <string name="about_title">关于</string>
+
+    <string name="about_web">官网</string>
+    <string name="about_provision">服务条款</string>
+    <string name="about_copyright">Copyright © 2017&#8211;2017 QuickHybrid.All Rights Reserved</string>
+</resources>

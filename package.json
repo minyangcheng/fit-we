@@ -13,7 +13,8 @@
     "dev": "webpack --env.NODE_ENV=common --progress --watch",
     "serve": "webpack-dev-server --env.NODE_ENV=development --progress",
     "dev_": "node bin/webpackDev.js",
-    "build_": "webpack --progress --config bin/weexWebpack.js"
+    "build_": "webpack --progress --config bin/weexWebpack.js",
+    "postbuild_":"node bin/pack.js"
   },
   "keywords": [
     "weex"

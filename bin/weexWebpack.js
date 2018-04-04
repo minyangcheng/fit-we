@@ -11,7 +11,7 @@ var exclude = resolve('node_modules');
 
 module.exports = {
   entry: {
-    'page/bundle': resolve('src/page/MainPage.vue?entry=true'),
+    'page/MainPage': resolve('src/page/MainPage.vue?entry=true'),
   },
   output: {
     path: resolve('dist'),
@@ -66,7 +66,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin('dist', {root: resolve('')}),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': "'" + process.env.NODE_ENV + "'",
+      'process.env.NODE_ENV': "'" + process.env.NODE_ENV + "'"
     }),
   ]
 }

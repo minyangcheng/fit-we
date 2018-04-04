@@ -2,6 +2,7 @@ package com.min.hybrid.library.extend.module;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.min.hybrid.library.FitConstants;
 import com.min.hybrid.library.FitLog;
 import com.taobao.weex.annotation.JSMethod;
@@ -24,15 +25,16 @@ public class ToolModule extends WXModule {
         if (TextUtils.isEmpty(str)) {
             return;
         }
-        FitLog.d(FitConstants.PRINT_LOG, str);
+        FitLog.d(FitConstants.LOG_TAG, str);
     }
 
     @JSMethod(uiThread = true)
     public void getLocation(Map<String, String> map, JSCallback callback, JSCallback callback_) {
-        FitLog.d(FitConstants.PRINT_LOG, "map=%s , callback=%s", map == null, callback == null);
+        FitLog.d(FitConstants.LOG_TAG, "map=%s , callback=%s", map == null, callback == null);
         Map<String, String> data = new HashMap<>();
         data.put("x", map.get("x"));
         data.put("y", map.get("y"));
+        JSONObject jsonObject = new JSONObject();
 //        callback.invoke(data);
 //        callback.invoke(data);
         callback.invokeAndKeepAlive(data);
