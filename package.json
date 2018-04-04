@@ -5,16 +5,10 @@
   "author": "",
   "private": true,
   "scripts": {
-    "start": "npm run serve",
-    "build": "webpack --env.NODE_ENV=common",
-    "build:prod": "webpack --env.NODE_ENV=production",
-    "build:release": "webpack --env.NODE_ENV=release",
-    "build:plugin": "webpack --env.NODE_ENV=plugin",
-    "dev": "webpack --env.NODE_ENV=common --progress --watch",
-    "serve": "webpack-dev-server --env.NODE_ENV=development --progress",
-    "dev_": "node bin/webpackDev.js",
-    "build_": "webpack --progress --config bin/weexWebpack.js",
-    "postbuild_":"node bin/pack.js"
+    "weex": "webpack --env.NODE_ENV=common",
+    "dev": "node bin/weexDev.js",
+    "build": "webpack --progress --config bin/weexBuild.js",
+    "postbuild": "node bin/pack.js"
   },
   "keywords": [
     "weex"

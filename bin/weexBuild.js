@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+var CleanWebpackPlugin = require('clean-webpack-plugin');
+var entryMap = require('./scanPage');
 
 function resolve(dir) {
   return path.join(__dirname, '../' + dir)
@@ -9,10 +10,10 @@ function resolve(dir) {
 var include = resolve('src');
 var exclude = resolve('node_modules');
 
+console.log()
+
 module.exports = {
-  entry: {
-    'page/MainPage': resolve('src/page/MainPage.vue?entry=true'),
-  },
+  entry: entryMap,
   output: {
     path: resolve('dist'),
     publicPath: '',
