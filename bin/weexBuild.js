@@ -4,13 +4,11 @@ var CleanWebpackPlugin = require('clean-webpack-plugin');
 var entryMap = require('./scanPage');
 
 function resolve(dir) {
-  return path.join(__dirname, '../' + dir)
+  return path.join(__dirname, '../' + dir);
 }
 
 var include = resolve('src');
 var exclude = resolve('node_modules');
-
-console.log()
 
 module.exports = {
   entry: entryMap,

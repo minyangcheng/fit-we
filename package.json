@@ -8,7 +8,8 @@
     "weex": "webpack --env.NODE_ENV=common",
     "dev": "node bin/weexDev.js",
     "build": "webpack --progress --config bin/weexBuild.js",
-    "postbuild": "node bin/pack.js"
+    "postbuild": "node bin/pack.js",
+    "test": "webpack --config fit-library/testDev.js"
   },
   "keywords": [
     "weex"

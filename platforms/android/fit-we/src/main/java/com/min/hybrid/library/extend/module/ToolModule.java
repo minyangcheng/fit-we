@@ -12,10 +12,6 @@ import com.taobao.weex.common.WXModule;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by lixinke on 2017/3/3.
- */
-
 public class ToolModule extends WXModule {
 
     public static final Map<String, JSCallback> longCallBack = new HashMap<>();
