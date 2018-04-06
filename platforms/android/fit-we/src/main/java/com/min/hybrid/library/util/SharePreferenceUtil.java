@@ -65,7 +65,7 @@ public class SharePreferenceUtil {
     public static boolean getInterceptorActive(Context context) {
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(FitConstants.SP.NATIVE_NAME, Context.MODE_PRIVATE);
-            return sharedPreferences.getBoolean(FitConstants.SP.INTERCEPTOR_ACTIVE, true);
+            return sharedPreferences.getBoolean(FitConstants.SP.INTERCEPTOR_ACTIVE, false);
         }
         return false;
     }

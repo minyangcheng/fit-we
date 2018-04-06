@@ -1,4 +1,4 @@
-package com.min.hybrid.library.activity;
+package com.min.hybrid.library.container;
 
 import android.content.Context;
 import android.content.Intent;

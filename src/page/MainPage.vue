@@ -6,19 +6,19 @@
   </div>
 </template>
 <script>
-  import logoImage from '../assets/img/logo.png'
-  var a="@assets/img/logo.png";
-  let tool = weex.requireModule('tool');
-  tool.printLog(logoImage);
+  // let tool = weex.requireModule('tool');
+  // tool.printLog(logoImage);
+  import config from '../../fit-library/index'
+
   export default {
     data() {
-      return {
-        // logoImage:logoImage,
-        aa: 1,
-        bb: 11
-      }
+      return {}
     },
     created() {
+      Object.keys(this.$tool).forEach(value => {
+        console.log(value)
+      })
+      this.$tool.printLog({message:'fuck'});
     },
     methods: {
       go() {

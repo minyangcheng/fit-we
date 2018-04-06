@@ -35,7 +35,7 @@ public class App extends Application {
 
     private void initFitWe() {
         FitConfiguration configuration = new FitConfiguration(this)
-            .setHostServer("http://10.10.12.151:8888")
+            .setHostServer("http://192.168.0.103:8888")
             .setCheckApiHandler(new CheckApiHandler() {
                 @Override
                 public void checkRequest(ResourceCheck resourceCheck) {

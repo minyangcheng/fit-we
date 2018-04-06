@@ -1,5 +1,6 @@
-var vue = {};
-var weex = {};
+var bindObject = {};
+var callInner = function () {
+};
 
 var proxyApis = {};
 
@@ -7,12 +8,12 @@ function extendModule(moduleName, apiArray) {
   if (!apiArray || !Array.isArray(apiArray) || apiArray.length == 0) {
     return;
   }
-  if (!vue[moduleName]) {
-    vue[moduleName] = {};
+  if (!bindObject[moduleName]) {
+    bindObject[moduleName] = {};
   }
-  vue[moduleName].name = moduleName;
+  bindObject[moduleName].name = moduleName;
   apiArray.forEach((api, index) => {
-    extendApi(vue[moduleName], api);
+    extendApi(bindObject[moduleName], api);
   })
 }
 
@@ -76,31 +77,6 @@ Proxy.prototype.walk = function walk() {
   };
 };
 
-function callInner(options, resolve, reject) {
-  var data = Object.assign({}, options);
-  data.success = undefined;
-  data.error = undefined;
-  var success = options.success;
-  if (!success) {
-    success = function () {
-    };
-  }
-  var error = options.error;
-  if (!error) {
-    error = function () {
-    };
-  }
-  // var weexModule=weex[(this.api.moduleName)];
-  // if(!weexModule){
-  //   weexModule[this.api.namespace](data,options.success,options.error);
-  // }else{
-  //   console.error('weex native can not find '+this.api.moduleName);
-  // }
-  //todo
-  success && success({data: 'success callback'});
-  resolve && resolve({data: 'success resolve'});
-}
-
 function compatibleStringParamsToObject(args, ...rest) {
   const newArgs = args;
   if (!(newArgs[0] instanceof Object)) {
@@ -133,35 +109,13 @@ function compatibleStringParamsToObject(args, ...rest) {
   return newArgs;
 }
 
-extendModule('ui', [
-  {
-    namespace: 'toast',
-    defaultParams: {
-      message: '',
-    },
-    runCode(...rest) {
-      const args = compatibleStringParamsToObject.call(
-        this,
-        rest,
-        'message');
-      callInner.apply(this, args);
-    },
-  }
-]);
-
-vue.ui.toast({
-  datetime: '2018-03-01',
-  success(result) {
-    console.log(result)
+module.exports = {
+  init(bindObj, callInnerFun) {
+    bindObject = bindObj;
+    callInner = callInnerFun;
   },
-  error(err) {
-    console.log(err)
-  }
-});
+  extendModule,
+  compatibleStringParamsToObject
+};
 
-vue.ui.toast({
-  datetime: '2018-03-01'
-}).then(value => console.log(value))
-  .catch(err => console.log(err));
 
-vue.ui.toast('nihaoma');

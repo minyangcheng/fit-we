@@ -3,16 +3,13 @@ package com.min.hybrid.library;
 import android.content.Context;
 
 import com.min.hybrid.library.extend.ImageAdapter;
-import com.min.hybrid.library.extend.compontent.RichText;
-import com.min.hybrid.library.extend.module.PhoneInfoModule;
-import com.min.hybrid.library.extend.module.ToolModule;
 import com.min.hybrid.library.resource.ResourceCheck;
 import com.min.hybrid.library.resource.ResourceParse;
 import com.min.hybrid.library.util.ImageLoaderWrap;
+import com.min.hybrid.library.util.ModuleLoader;
 import com.min.hybrid.library.util.SharePreferenceUtil;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXSDKEngine;
-import com.taobao.weex.common.WXException;
 
 /**
  * Created by minyangcheng on 2018/3/17.
@@ -69,10 +66,11 @@ public class FitWe {
         InitConfig initConfig = new InitConfig.Builder().setImgAdapter(new ImageAdapter()).build();
         WXSDKEngine.initialize(configuration.getApplication(), initConfig);
         try {
-            WXSDKEngine.registerModule("poneInfo", PhoneInfoModule.class);
-            WXSDKEngine.registerModule("tool", ToolModule.class);
-            WXSDKEngine.registerComponent("rich", RichText.class, false);
-        } catch (WXException e) {
+//            WXSDKEngine.registerModule("poneInfo", PhoneInfoModule.class);
+//            WXSDKEngine.registerModule("tool", ToolModule.class);
+//            WXSDKEngine.registerComponent("rich", RichText.class, false);
+            ModuleLoader.loadModuleFromAsset(getContext());
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
