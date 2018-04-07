@@ -8,11 +8,11 @@ public class FitConstants {
 
     public static final String LOG_TAG = "FIT_WE";
 
-    public static final String FIT_SCHEME = "fit";
-
     public static final String MODULE_FILE_SUFFIX="_fit.json";
 
     public static final String KEY_ROUTE_INFO = "routeInfo";
+
+    public static final String FRAGMENT_TAG="weexTag";
 
     public static final String REQUEST_CODE = "requestCode";
     public static final String RESULT_DATA = "resultData";

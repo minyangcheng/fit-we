@@ -10,6 +10,8 @@ import com.min.hybrid.library.bean.RouteInfo;
 
 public class FitContainerActivity extends AppCompatActivity {
 
+    FitContainerFragment mFitContainerFragment;
+
     public static void startActivity(Context context, RouteInfo routeInfo) {
         Intent intent = new Intent(context, FitContainerActivity.class);
         intent.putExtra(FitConstants.KEY_ROUTE_INFO, routeInfo);
@@ -28,10 +30,29 @@ public class FitContainerActivity extends AppCompatActivity {
         if (getIntent().hasExtra(FitConstants.KEY_ROUTE_INFO)) {
             routeInfo = (RouteInfo) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE_INFO);
         }
-        FitContainerFragment fitContainerFragment = FitContainerFragment.newInstance(routeInfo);
-        getFragmentManager().beginTransaction()
-            .replace(android.R.id.content, fitContainerFragment)
+        mFitContainerFragment = FitContainerFragment.newInstance(routeInfo);
+        getSupportFragmentManager().beginTransaction()
+            .replace(android.R.id.content, mFitContainerFragment)
             .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (mFitContainerFragment != null) {
+            mFitContainerFragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFitContainerFragment != null) {
+            mFitContainerFragment.onBackPressed();
+        }
+    }
+
+    public FitContainerFragment getContainerFragment() {
+        return mFitContainerFragment;
     }
 
 }

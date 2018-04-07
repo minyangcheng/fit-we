@@ -268,19 +268,20 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
 
     public void setRightBtn(int which, String imageUrl, String text) {
         if (!TextUtils.isEmpty(imageUrl)) {
-            nbRightTvs[which].setVisibility(View.INVISIBLE);
-            nbRightIvs[which].setVisibility(View.VISIBLE);
-            ImageLoaderWrap.displayHttpImage(imageUrl, nbRightIvs[which]);
+            if (which < nbRightTvs.length) nbRightTvs[which].setVisibility(View.INVISIBLE);
+            if (which < nbRightIvs.length) nbRightIvs[which].setVisibility(View.VISIBLE);
+            if (which < nbRightIvs.length)
+                ImageLoaderWrap.displayHttpImage(imageUrl, nbRightIvs[which]);
         } else {
-            nbRightIvs[which].setVisibility(View.INVISIBLE);
-            nbRightTvs[which].setVisibility(View.VISIBLE);
-            nbRightTvs[which].setText(text);
+            if (which < nbRightIvs.length) nbRightIvs[which].setVisibility(View.INVISIBLE);
+            if (which < nbRightTvs.length) nbRightTvs[which].setVisibility(View.VISIBLE);
+            if (which < nbRightTvs.length) nbRightTvs[which].setText(text);
         }
     }
 
     public void hideRightBtn(int which) {
-        nbRightTvs[which].setVisibility(View.INVISIBLE);
-        nbRightIvs[which].setVisibility(View.INVISIBLE);
+        if (which < nbRightTvs.length) nbRightTvs[which].setVisibility(View.INVISIBLE);
+        if (which < nbRightIvs.length) nbRightIvs[which].setVisibility(View.INVISIBLE);
     }
 
     public void onClick(View v) {

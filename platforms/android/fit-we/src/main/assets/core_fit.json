@@ -1,3 +1,6 @@
 {
-    "poneInfo": "com.min.hybrid.library.extend.module.ToolModule"
+    "$navigator": "com.min.hybrid.library.extend.module.NavigatorModule",
+    "$page": "com.min.hybrid.library.extend.module.PageModule",
+    "$tool": "com.min.hybrid.library.extend.module.ToolModule",
+    "$ui": "com.min.hybrid.library.extend.module.UiModule"
 }

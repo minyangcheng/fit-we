@@ -2,6 +2,8 @@ package com.min.hybrid.library.bean;
 
 import android.content.pm.ActivityInfo;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.Serializable;
 
 public class RouteInfo implements Serializable {
@@ -13,11 +15,13 @@ public class RouteInfo implements Serializable {
 
     public String pagePath;
 
-    public String uri;
-
     public String title;
 
     public boolean showBackBtn = true;
+
+    public JSONObject data;
+
+    public String uri;
 
     public String containerHashValue;
 

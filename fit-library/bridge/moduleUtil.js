@@ -56,7 +56,7 @@ Proxy.prototype.walk = function walk() {
   return (...rest) => {
     let args = rest;
     args[0] = args[0] || {};
-    if (this.api.defaultParams && (args[0] instanceof Object)) {
+    if (this.api.defaultParams && (Object.prototype.toString.call(args[0] )) == '[object Object]') {
       Object.keys(this.api.defaultParams).forEach((item) => {
         if (args[0][item] === undefined) {
           args[0][item] = this.api.defaultParams[item];
@@ -79,7 +79,7 @@ Proxy.prototype.walk = function walk() {
 
 function compatibleStringParamsToObject(args, ...rest) {
   const newArgs = args;
-  if (!(newArgs[0] instanceof Object)) {
+  if ((Object.prototype.toString.call(newArgs[0] )) != '[object Object]') {
     const options = {};
     const isPromise = !!Promise;
     const len = newArgs.length;
@@ -99,7 +99,7 @@ function compatibleStringParamsToObject(args, ...rest) {
     }
   }
   // 默认参数的处理，因为刚兼容字符串后是没有默认参数的
-  if (this.api && this.api.defaultParams && (newArgs[0] instanceof Object)) {
+  if (this.api && this.api.defaultParams && (Object.prototype.toString.call(newArgs[0] )) == '[object Object]') {
     Object.keys(this.api.defaultParams).forEach((item) => {
       if (newArgs[0][item] === undefined) {
         newArgs[0][item] = this.api.defaultParams[item];

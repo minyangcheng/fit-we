@@ -35,9 +35,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void toHome() {
-        RouteInfo bean = new RouteInfo(FitWe.getInstance().getConfiguration().getHostServer());
+//        RouteInfo bean = new RouteInfo(FitWe.getInstance().getConfiguration().getHostServer());
+        RouteInfo bean = new RouteInfo("fit://page/SamplePage");
         bean.showBackBtn = false;
-        FitContainerActivity.startActivity(this, "fit://page/MainPage");
+        FitContainerActivity.startActivity(this, bean);
         finish();
     }
 

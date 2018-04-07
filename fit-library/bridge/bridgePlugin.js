@@ -14,4 +14,4 @@ BridgePlugin.install = (Vue, options) => {
   moduleUtil.extendModule(page.name, page.apis);
 };
 
-Vue.use(BridgePlugin);
+module.exports = BridgePlugin;

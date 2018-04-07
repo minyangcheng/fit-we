@@ -17,7 +17,7 @@ import com.min.fit.weex.R;
 import com.min.hybrid.library.util.FileUtil;
 import com.min.hybrid.library.util.FitUtil;
 import com.min.hybrid.library.util.SharePreferenceUtil;
-import com.min.hybrid.library.util.ToastUtil;
+import com.min.hybrid.library.util.UiUtil;
 import com.min.hybrid.library.widget.NavigationBar;
 
 import java.io.File;
@@ -99,12 +99,12 @@ public class HybridDebugActivity extends AppCompatActivity {
     private void sure() {
         String url = mUrlEt.getText().toString();
         if (!TextUtils.isEmpty(url) && !url.startsWith("http")) {
-            ToastUtil.toastShort(this, "拦截页面地址不是有效的url地址，请重新输入");
+            UiUtil.toastShort(this, "拦截页面地址不是有效的url地址，请重新输入");
             return;
         }
         SharePreferenceUtil.setPageDevHostUrl(this, url);
         SharePreferenceUtil.setInterceptorActive(this, mInterceptorCb.isChecked());
-        ToastUtil.toastShort(this, "设置成功，重启后生效");
+        UiUtil.toastShort(this, "设置成功，重启后生效");
         exit();
     }
 

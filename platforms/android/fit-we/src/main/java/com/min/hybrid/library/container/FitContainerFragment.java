@@ -1,7 +1,9 @@
 package com.min.hybrid.library.container;
 
-import android.app.Fragment;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,13 @@ import com.min.fit.weex.R;
 import com.min.hybrid.library.FitConstants;
 import com.min.hybrid.library.FitLog;
 import com.min.hybrid.library.FitWe;
+import com.min.hybrid.library.bean.FitEvent;
 import com.min.hybrid.library.bean.RouteInfo;
+import com.min.hybrid.library.util.EventUtil;
 import com.min.hybrid.library.util.FileUtil;
 import com.min.hybrid.library.util.SharePreferenceUtil;
+import com.min.hybrid.library.widget.HudDialog;
+import com.min.hybrid.library.widget.NavigationBar;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.WXRenderStrategy;
@@ -23,14 +29,26 @@ import com.taobao.weex.utils.WXFileUtils;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
+
+import de.greenrobot.event.Subscribe;
 
 public class FitContainerFragment extends Fragment implements IWXRenderListener {
 
     private static final String TAG = FitContainerFragment.class.getSimpleName();
 
-    private FrameLayout mContainer;
+    public NavigationBar mNavigationBar;
+    public FrameLayout mWeexContainer;
+
     private WXSDKInstance mWXSDKInstance;
     private RouteInfo mRouteInfo;
+
+    private NavigationBarEventHandler mNbEventHandler;
+
+    private long mCounter;
+    private long mStartTime;
+
+    private HudDialog mHudDialog;
 
     public static FitContainerFragment newInstance(RouteInfo routeInfo) {
         FitContainerFragment fragment = new FitContainerFragment();
@@ -44,12 +62,122 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getDataFromArguments();
+    }
 
-        View view = View.inflate(getActivity(), R.layout.fragment_container, null);
-        mContainer = (FrameLayout) view.findViewById(R.id.fragment_container);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_container, container, false);
+        findView(view);
+        init();
+        EventUtil.register(this);
+        return view;
+    }
+
+    private void init() {
+        mNbEventHandler = new NavigationBarEventHandler();
+        initView();
+        setDataToView();
+    }
+
+    private void findView(View view) {
+        mNavigationBar = (NavigationBar) view.findViewById(R.id.view_nb);
+        mWeexContainer = (FrameLayout) view.findViewById(R.id.weex_container);
+    }
+
+    public NavigationBar getNavigationBar() {
+        return mNavigationBar;
+    }
+
+    public FrameLayout getWeexContainer() {
+        return mWeexContainer;
+    }
+
+    public NavigationBarEventHandler getNavigationBarEventHandler() {
+        return mNbEventHandler;
+    }
+
+    private void initView() {
+        mNavigationBar.setOnNavigationBarListener(new NavigationBar.INbOnClick() {
+            @Override
+            public void onNbBack() {
+                backPress(NavigationBarEventHandler.OnClickNbBack);
+            }
+
+            @Override
+            public void onNbLeft(View view) {
+                if (view.getTag() != null && "close".equals(view.getTag().toString())) {
+                    onNbBack();
+                } else {
+                    mNbEventHandler.onClickNbLeft();
+                }
+            }
+
+            @Override
+            public void onNbRight(View view, int which) {
+                mNbEventHandler.onClickNbRight(which);
+            }
+
+            @Override
+            public void onNbTitle(View view) {
+                mNbEventHandler.onClickNbTitle(0);
+            }
+        });
+        if (!mRouteInfo.showBackBtn) {
+            mNavigationBar.hideNbBack();
+        }
         mWXSDKInstance = new WXSDKInstance(getActivity());
         mWXSDKInstance.registerRenderListener(this);
+        mWXSDKInstance.onActivityCreate();
         render();
+        setDebugMode();
+    }
+
+    public void onBackPressed() {
+        backPress(NavigationBarEventHandler.OnClickSysBack);
+    }
+
+    public void backPress(String eventType) {
+        if (mNbEventHandler.hasJSCallback(eventType)) {
+            if (eventType == mNbEventHandler.OnClickNbBack) {
+                mNbEventHandler.onClickNbBack();
+            } else {
+                mNbEventHandler.onSysClickBack();
+            }
+        } else {
+            getActivity().finish();
+        }
+    }
+
+    private void setDebugMode() {
+        mNavigationBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCounter == 0) {
+                    mStartTime = System.currentTimeMillis();
+                }
+                mCounter++;
+                if (mCounter % 6 == 0) {
+                    if (System.currentTimeMillis() - mStartTime < 2000) {
+                        HybridDebugActivity.startActivity(getActivity());
+                    }
+                    mCounter = 0;
+                }
+            }
+        });
+    }
+
+    private void setDataToView() {
+        if (mRouteInfo != null) {
+            if (mRouteInfo.orientation >= ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED && mRouteInfo.orientation <= ActivityInfo.SCREEN_ORIENTATION_LOCKED) {
+                getActivity().setRequestedOrientation(mRouteInfo.orientation);
+            }
+            if (!TextUtils.isEmpty(mRouteInfo.title)) {
+                mNavigationBar.setNbTitle(mRouteInfo.title);
+            }
+            if (mRouteInfo.pageStyle == -1) {
+                mNavigationBar.hide();
+            }
+        }
     }
 
     private void render() {
@@ -86,17 +214,9 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         if (bundle != null && bundle.containsKey(FitConstants.KEY_ROUTE_INFO)) {
             mRouteInfo = (RouteInfo) bundle.getSerializable(FitConstants.KEY_ROUTE_INFO);
         }
-        if (mRouteInfo == null || TextUtils.isEmpty(mRouteInfo.pagePath)) {
+        if (mRouteInfo == null || TextUtils.isEmpty(mRouteInfo.pagePath) || !mRouteInfo.pagePath.startsWith("fit://")) {
             getActivity().finish();
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (mContainer.getParent() != null) {
-            ((ViewGroup) mContainer.getParent()).removeView(mContainer);
-        }
-        return mContainer;
     }
 
     @Override
@@ -137,21 +257,36 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityDestroy();
         }
+        EventUtil.unregister(this);
+    }
+
+    @Subscribe
+    public void onEvent(FitEvent event) {
+        if (mWXSDKInstance != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("type", event.type);
+            map.put("data", event.data);
+            mWXSDKInstance.fireGlobalEventCallback("eventbus", map);
+        }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (mWXSDKInstance != null) {
+            mWXSDKInstance.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
     public void onViewCreated(WXSDKInstance instance, View view) {
-        mContainer.addView(view);
+        mWeexContainer.addView(view);
     }
 
     @Override
     public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
         FitLog.d(TAG, "routeInfo=%s onRenderSuccess", JSON.toJSONString(mRouteInfo));
+        FitLog.d(TAG, "onRenderSuccess instanceId=%s , bundleUrl=%s", mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
     }
 
     @Override
@@ -162,6 +297,23 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     @Override
     public void onException(WXSDKInstance instance, String errCode, String msg) {
         FitLog.e(TAG, "routeInfo=%s onException msg=%s", JSON.toJSONString(mRouteInfo), msg);
+    }
+
+    public void showHudDialog(String message, boolean cancelable) {
+        if (mHudDialog == null) {
+            mHudDialog = HudDialog.createProgressHud(getContext());
+        }
+        mHudDialog.setCancelable(cancelable);
+        mHudDialog.setMessage(message);
+        if (!mHudDialog.isShowing()) {
+            mHudDialog.show();
+        }
+    }
+
+    public void hideHudDialog() {
+        if (mHudDialog != null && mHudDialog.isShowing()) {
+            mHudDialog.dismiss();
+        }
     }
 
 }

@@ -65,7 +65,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin('dist', {root: resolve('')}),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': "'" + process.env.NODE_ENV + "'"
+      'process.env': require('../config/dev.env')
     }),
   ]
 }
