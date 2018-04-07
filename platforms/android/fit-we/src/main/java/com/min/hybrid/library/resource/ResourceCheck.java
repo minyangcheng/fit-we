@@ -4,11 +4,11 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.min.hybrid.library.FitConstants;
+import com.min.hybrid.library.util.FitLog;
 import com.min.hybrid.library.net.DownloadManager;
 import com.min.hybrid.library.net.FileCallBack;
 import com.min.hybrid.library.util.FileUtil;
 import com.min.hybrid.library.util.FitUtil;
-import com.min.hybrid.library.util.L;
 import com.min.hybrid.library.util.Md5Util;
 import com.min.hybrid.library.util.SharePreferenceUtil;
 
@@ -42,14 +42,14 @@ public class ResourceCheck {
     }
 
     public void setCheckApiFailResp(Exception e) {
-        L.e(FitConstants.LOG_TAG, e);
+        FitLog.e(FitConstants.LOG_TAG, e);
         mCurrentStatus = FitConstants.Version.SLEEP;
     }
 
     public void setCheckApiSuccessResp(String remoteVersion, String md5, String dist) {
         try {
             String localVersion = SharePreferenceUtil.getVersion(mContext);
-            L.d(FitConstants.LOG_TAG, "localVersion=%s,remoteVersion=%s,md5=%s,dist=%s", localVersion, remoteVersion, md5, dist);
+            FitLog.d(FitConstants.LOG_TAG, "localVersion=%s,remoteVersion=%s,md5=%s,dist=%s", localVersion, remoteVersion, md5, dist);
             if (FitUtil.compareVersion(remoteVersion, localVersion) > 0) {
                 download(remoteVersion, md5, dist);
             } else {
@@ -64,41 +64,41 @@ public class ResourceCheck {
     private void download(final String remoteVersion, final String md5, String dist) {
         try {
             if (hasDownloadVersion(remoteVersion)) {
-                L.d(FitConstants.LOG_TAG, "this version=%s has been download", remoteVersion);
+                FitLog.d(FitConstants.LOG_TAG, "this version=%s has been download", remoteVersion);
                 mCurrentStatus = FitConstants.Version.SLEEP;
                 return;
             }
             File destination = new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME);
             DownloadManager.getInstance()
-                    .downloadFile(dist, new FileCallBack(destination) {
-                        @Override
-                        public void onStart(String url) {
-                            L.d(FitConstants.LOG_TAG, "startDownload url=%s", url);
-                        }
+                .downloadFile(dist, new FileCallBack(destination) {
+                    @Override
+                    public void onStart(String url) {
+                        FitLog.d(FitConstants.LOG_TAG, "startDownload url=%s", url);
+                    }
 
-                        @Override
-                        public void onProgress(String url, long progress, long total) {
-                        }
+                    @Override
+                    public void onProgress(String url, long progress, long total) {
+                    }
 
-                        @Override
-                        public void onSuccess(String url, File file) {
-                            L.d(FitConstants.LOG_TAG, "complete download url=%s", url);
-                            if (validateZip(file, md5)) {
-                                RenameDeleteFile();
-                                SharePreferenceUtil.setDownLoadVersion(mContext, remoteVersion);
-                                L.d(FitConstants.LOG_TAG, "set download version=%s", remoteVersion);
-                            } else {
-                                FileUtil.deleteFile(new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME));
-                            }
-                            mCurrentStatus = FitConstants.Version.SLEEP;
+                    @Override
+                    public void onSuccess(String url, File file) {
+                        FitLog.d(FitConstants.LOG_TAG, "complete download url=%s", url);
+                        if (validateZip(file, md5)) {
+                            RenameDeleteFile();
+                            SharePreferenceUtil.setDownLoadVersion(mContext, remoteVersion);
+                            FitLog.d(FitConstants.LOG_TAG, "set download version=%s", remoteVersion);
+                        } else {
+                            FileUtil.deleteFile(new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME));
                         }
+                        mCurrentStatus = FitConstants.Version.SLEEP;
+                    }
 
-                        @Override
-                        public void onFail(String url, Throwable t) {
-                            L.e(FitConstants.LOG_TAG, t);
-                            mCurrentStatus = FitConstants.Version.SLEEP;
-                        }
-                    });
+                    @Override
+                    public void onFail(String url, Throwable t) {
+                        FitLog.e(FitConstants.LOG_TAG, t);
+                        mCurrentStatus = FitConstants.Version.SLEEP;
+                    }
+                });
         } catch (Exception e) {
             mCurrentStatus = FitConstants.Version.SLEEP;
             e.printStackTrace();

@@ -25,7 +25,7 @@ public class ZipUtil {
         mkdirs(outPath);
         while ((entry = zipInputStream.getNextEntry()) != null) {
             entryName = entry.getName();
-            L.d(FitConstants.LOG_TAG, "unZip file=%s", entryName);
+            FitLog.d(FitConstants.LOG_TAG, "unZip file=%s", entryName);
             if (entry.isDirectory()) {
                 File folder = new File(outPath + File.separator + entryName);
                 mkdirs(folder.getAbsolutePath());

@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.min.fit.weex.R;
-import com.min.hybrid.library.util.ImageLoaderWrap;
+import com.min.hybrid.library.util.UriHandler;
 
 
 /**
@@ -185,7 +185,7 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
             if (bg instanceof Integer) {
                 nbBackIv1.setImageResource((int) bg);
             } else if (bg instanceof String) {
-                ImageLoaderWrap.displayHttpImage((String) bg, nbLeftIv2);
+                UriHandler.displayImage(nbLeftIv2, (String) bg);
             }
         }
     }
@@ -253,7 +253,7 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
         if (!TextUtils.isEmpty(imageUrl)) {
             nbLeftTv2.setVisibility(View.GONE);
             nbLeftIv2.setVisibility(View.VISIBLE);
-            ImageLoaderWrap.displayHttpImage(imageUrl, nbLeftIv2);
+            UriHandler.displayImage(nbLeftIv2, imageUrl);
         } else {
             nbLeftIv2.setVisibility(View.GONE);
             nbLeftTv2.setVisibility(View.VISIBLE);
@@ -271,7 +271,7 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
             if (which < nbRightTvs.length) nbRightTvs[which].setVisibility(View.INVISIBLE);
             if (which < nbRightIvs.length) nbRightIvs[which].setVisibility(View.VISIBLE);
             if (which < nbRightIvs.length)
-                ImageLoaderWrap.displayHttpImage(imageUrl, nbRightIvs[which]);
+                UriHandler.displayImage(nbRightIvs[which], imageUrl);
         } else {
             if (which < nbRightIvs.length) nbRightIvs[which].setVisibility(View.INVISIBLE);
             if (which < nbRightTvs.length) nbRightTvs[which].setVisibility(View.VISIBLE);

@@ -13,13 +13,11 @@ import android.widget.FrameLayout;
 import com.alibaba.fastjson.JSON;
 import com.min.fit.weex.R;
 import com.min.hybrid.library.FitConstants;
-import com.min.hybrid.library.FitLog;
-import com.min.hybrid.library.FitWe;
 import com.min.hybrid.library.bean.FitEvent;
 import com.min.hybrid.library.bean.RouteInfo;
 import com.min.hybrid.library.util.EventUtil;
-import com.min.hybrid.library.util.FileUtil;
-import com.min.hybrid.library.util.SharePreferenceUtil;
+import com.min.hybrid.library.util.FitLog;
+import com.min.hybrid.library.util.UriHandler;
 import com.min.hybrid.library.widget.HudDialog;
 import com.min.hybrid.library.widget.NavigationBar;
 import com.taobao.weex.IWXRenderListener;
@@ -27,7 +25,6 @@ import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.WXRenderStrategy;
 import com.taobao.weex.utils.WXFileUtils;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -181,15 +178,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     }
 
     private void render() {
-        String pagePath = mRouteInfo.pagePath.replace("fit://", "");
-        String uri = FitWe.getInstance().getConfiguration().getHostServer() + "/" + pagePath + ".js";
-        if (SharePreferenceUtil.getInterceptorActive(getActivity())) {
-            File bundleDir = FileUtil.getBundleDir(getActivity());
-            File pageFile = new File(bundleDir.getAbsolutePath() + "/" + pagePath + ".js");
-            if (pageFile.exists()) {
-                uri = pageFile.getAbsolutePath();
-            }
-        }
+        String uri = UriHandler.handlePageUri(getActivity(), mRouteInfo.pagePath);
         mRouteInfo.uri = uri;
         HashMap<String, Object> options = new HashMap<>();
         options.put(WXSDKInstance.BUNDLE_URL, uri);

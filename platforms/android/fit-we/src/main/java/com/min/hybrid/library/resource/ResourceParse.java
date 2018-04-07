@@ -4,10 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.min.hybrid.library.FitConstants;
+import com.min.hybrid.library.util.FitLog;
 import com.min.hybrid.library.util.AssetsUtil;
 import com.min.hybrid.library.util.FileUtil;
 import com.min.hybrid.library.util.FitUtil;
-import com.min.hybrid.library.util.L;
 import com.min.hybrid.library.util.SharePreferenceUtil;
 import com.min.hybrid.library.util.SignatureUtil;
 
@@ -27,17 +27,17 @@ public class ResourceParse {
                 FileUtil.unZip(zip, FileUtil.getBundleDir(context));
                 updateVersion(context, downloadVersion);
                 SharePreferenceUtil.setDownLoadVersion(context, null);
-                L.d(FitConstants.LOG_TAG, "prepare js bundle from download , version=%s", downloadVersion);
+                FitLog.d(FitConstants.LOG_TAG, "prepare js bundle from download , version=%s", downloadVersion);
             } else {
                 String localVersion = SharePreferenceUtil.getVersion(context);
                 if (TextUtils.isEmpty(localVersion) || FitUtil.compareVersion(assetsVersion, localVersion) > 0) {
                     transferInsideBundle(context);
-                    L.d(FitConstants.LOG_TAG, "prepare js bundle from assert , version=%s",assetsVersion);
+                    FitLog.d(FitConstants.LOG_TAG, "prepare js bundle from assert , version=%s",assetsVersion);
                 }
             }
         }
         long time = new Date().getTime() - startTime;
-        L.d(FitConstants.LOG_TAG, "prepare js bundle waste time=%s", time);
+        FitLog.d(FitConstants.LOG_TAG, "prepare js bundle waste time=%s", time);
         return time;
     }
 
@@ -53,10 +53,10 @@ public class ResourceParse {
             return;
         }
         if (validateSignature(context)) {
-            L.d(FitConstants.LOG_TAG, "signature 验证成功!!!!");
+            FitLog.d(FitConstants.LOG_TAG, "signature 验证成功!!!!");
             SharePreferenceUtil.setVersion(context, version);
         } else {
-            L.e(FitConstants.LOG_TAG, "signature 验证失败!!!!");
+            FitLog.e(FitConstants.LOG_TAG, "signature 验证失败!!!!");
             FileUtil.deleteFile(FileUtil.getBundleDir(context));
         }
     }

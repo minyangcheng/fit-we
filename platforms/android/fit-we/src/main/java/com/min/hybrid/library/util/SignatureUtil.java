@@ -29,7 +29,7 @@ public class SignatureUtil {
         for (File file : dataList) {
             allMd5 += Md5Util.getFileMD5(file);
         }
-        L.d(FitConstants.LOG_TAG, "allMd5=%s", allMd5);
+        FitLog.d(FitConstants.LOG_TAG, "allMd5=%s", allMd5);
         return Md5Util.getMd5code(allMd5);
     }
 

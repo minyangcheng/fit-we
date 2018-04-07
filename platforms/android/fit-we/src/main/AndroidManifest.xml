@@ -44,7 +44,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="com.min.hybrid.library.HandleResultActivity"></activity>
     </application>
 
 </manifest>

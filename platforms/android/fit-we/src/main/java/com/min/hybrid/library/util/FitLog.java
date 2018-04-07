@@ -1,4 +1,4 @@
-package com.min.hybrid.library;
+package com.min.hybrid.library.util;
 
 import android.text.TextUtils;
 import android.util.Log;

@@ -2,7 +2,7 @@ package com.min.hybrid.library.extend.module;
 
 import com.alibaba.fastjson.JSONObject;
 import com.min.hybrid.library.FitConstants;
-import com.min.hybrid.library.FitLog;
+import com.min.hybrid.library.util.FitLog;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
