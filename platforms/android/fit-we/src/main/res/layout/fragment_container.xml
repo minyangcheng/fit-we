@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.min.hybrid.library.widget.NavigationBar
+    <com.fit.we.library.widget.NavigationBar
         android:id="@+id/view_nb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

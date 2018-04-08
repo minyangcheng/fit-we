@@ -8,12 +8,12 @@
 
 <script>
 
-  import index from './../../fit-library/index'
+  var Zeus = require('Zeus');
 
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用扩展的功能)'],
+        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用11112扩展的功能)'],
       }
     },
     created() {

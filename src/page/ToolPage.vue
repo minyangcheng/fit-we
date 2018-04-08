@@ -7,11 +7,10 @@
 </template>
 
 <script>
-  import index from './../../fit-library/index'
   export default {
     data() {
       return {
-        items: ['printLog'],
+        items: ['printLog111161'],
       }
     },
     methods: {

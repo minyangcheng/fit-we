@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var entryMap = require('./scanPage');
+var listeneReCompilePlugin = require('./listeneReCompilePlugin');
 
 function resolve(dir) {
   return path.join(__dirname, '../' + dir);
@@ -21,19 +22,27 @@ module.exports = {
     rules: [
       {
         test: /\.vue$/,
-        loader: 'weex-loader',
+        use: [
+          {
+            loader: 'weex-loader',
+            options: {
+              stylus: 'vue-style-loader!css-loader!stylus-loader',
+              styl: 'vue-style-loader!css-loader!stylus-loader'
+            }
+          }
+        ],
         include,
         exclude,
-        options: {
-          stylus: 'vue-style-loader!css-loader!stylus-loader',
-          styl: 'vue-style-loader!css-loader!stylus-loader'
-        }
       },
       {
         test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader'
+          }
+        ],
         include,
         exclude,
-        loader: 'babel-loader',
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -53,7 +62,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': resolve('src'),
+      'Zeus': resolve('fit-library')
     }
   },
   devtool: '#eval-source-map',
@@ -64,6 +74,7 @@ module.exports = {
       raw: true
     }),
     new CleanWebpackPlugin('dist', {root: resolve('')}),
+    listeneReCompilePlugin,
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),

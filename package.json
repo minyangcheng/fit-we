@@ -7,6 +7,7 @@
   "scripts": {
     "weex": "webpack --env.NODE_ENV=common",
     "dev": "node bin/weexDev.js",
+    "build_": "webpack --progress --config bin/weexBuild.js",
     "build": "webpack --progress --config bin/weexBuild.js",
     "postbuild": "node bin/pack.js",
     "test": "webpack --config fit-library/testDev.js"
@@ -16,6 +17,8 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "inject-loader": "^1.0.6",
+    "loader-utils": "^1.1.0",
     "phantom-limb": "0.0.1",
     "vue": "^2.5.11",
     "vue-router": "^3.0.1",
@@ -47,6 +50,7 @@
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.2",
     "script-ext-html-webpack-plugin": "^1.8.5",
+    "socket.io": "^2.1.0",
     "vue-loader": "^12.2.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.11",
@@ -56,7 +60,8 @@
     "webpack-merge": "^4.1.0",
     "webpack-uglify-parallel": "^0.1.4",
     "weex-loader": "^0.7.2",
-    "weex-vue-precompiler": "^0.1.17"
+    "weex-vue-precompiler": "^0.1.17",
+    "ws": "^5.1.1"
   },
   "optionalDependencies": {
     "ios-deploy": "^1.9.0"

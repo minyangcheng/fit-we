@@ -7,7 +7,6 @@
 </template>
 
 <script>
-  import index from './../../fit-library/index'
   export default {
     data() {
       return {

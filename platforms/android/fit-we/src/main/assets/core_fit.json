@@ -1,6 +1,6 @@
 {
-    "$navigator": "com.min.hybrid.library.extend.module.NavigatorModule",
-    "$page": "com.min.hybrid.library.extend.module.PageModule",
-    "$tool": "com.min.hybrid.library.extend.module.ToolModule",
-    "$ui": "com.min.hybrid.library.extend.module.UiModule"
+    "$navigator": "com.fit.we.library.extend.module.NavigatorModule",
+    "$page": "com.fit.we.library.extend.module.PageModule",
+    "$tool": "com.fit.we.library.extend.module.ToolModule",
+    "$ui": "com.fit.we.library.extend.module.UiModule"
 }

@@ -4,7 +4,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.weex.sample"
+        applicationId "com.fit.we.sample"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1

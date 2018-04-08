@@ -23,6 +23,6 @@ module.exports = function callInner(options, resolve, reject) {
       reject && reject(error);
     });
   } else {
-    console.error('weex native can not find ' + moduleName);
+    console.error(`weex can not find ${moduleName}.${this.api.namespace}`);
   }
 };

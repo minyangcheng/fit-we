@@ -7,7 +7,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <com.min.hybrid.library.widget.NavigationBar
+    <com.fit.we.library.widget.NavigationBar
         android:id="@+id/view_nb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

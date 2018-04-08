@@ -6,20 +6,20 @@
     android:layout_height="@dimen/frm_nb_bg_height"
     android:background="@color/nbbar_bg">
 
-    <com.min.hybrid.library.widget.DrawableText
+    <com.fit.we.library.widget.DrawableText
         android:id="@+id/nbLeftTv1"
         style="@style/FrmNbBarTextBg"
         android:layout_marginLeft="10dp"
         android:visibility="gone" />
 
-    <com.min.hybrid.library.widget.AlphaImageView
+    <com.fit.we.library.widget.AlphaImageView
         android:id="@+id/nbLeftIv1"
         style="@style/FrmNbBarImageBg"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
         android:src="@mipmap/img_back_nav_btn" />
 
-    <com.min.hybrid.library.widget.AlphaImageView
+    <com.fit.we.library.widget.AlphaImageView
         android:id="@+id/nbLeftIv2"
         style="@style/FrmNbBarImageBg"
         android:layout_marginLeft="10dp"
@@ -27,14 +27,14 @@
         android:src="@mipmap/img_exit_nav_btn"
         android:visibility="gone"/>
 
-    <com.min.hybrid.library.widget.AlphaTextView
+    <com.fit.we.library.widget.AlphaTextView
         android:id="@+id/nbLeftTv2"
         style="@style/FrmNbBarTextBg"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/nbLeftIv1"
         android:visibility="gone" />
 
-    <com.min.hybrid.library.widget.AlphaImageView
+    <com.fit.we.library.widget.AlphaImageView
         android:id="@+id/nbRightIv1"
         style="@style/FrmNbBarImageBg"
         android:layout_alignParentRight="true"
@@ -42,28 +42,28 @@
         android:layout_marginRight="10dp"
         android:visibility="invisible" />
 
-    <com.min.hybrid.library.widget.AlphaImageView
+    <com.fit.we.library.widget.AlphaImageView
         android:id="@+id/nbRightIv2"
         style="@style/FrmNbBarImageBg"
         android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/nbRightIv1"
         android:visibility="invisible" />
 
-    <com.min.hybrid.library.widget.AlphaImageView
+    <com.fit.we.library.widget.AlphaImageView
         android:id="@+id/nbRightIv3"
         style="@style/FrmNbBarImageBg"
         android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/nbRightIv2"
         android:visibility="invisible" />
 
-    <com.min.hybrid.library.widget.AlphaImageView
+    <com.fit.we.library.widget.AlphaImageView
         android:id="@+id/nbRightIv4"
         style="@style/FrmNbBarImageBg"
         android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/nbRightIv3"
         android:visibility="invisible" />
 
-    <com.min.hybrid.library.widget.AlphaTextView
+    <com.fit.we.library.widget.AlphaTextView
         android:id="@+id/nbRightTv1"
         style="@style/FrmNbBarTextBg"
         android:layout_alignParentRight="true"
@@ -71,7 +71,7 @@
         android:layout_marginRight="10dp"
         android:visibility="invisible" />
 
-    <com.min.hybrid.library.widget.AlphaTextView
+    <com.fit.we.library.widget.AlphaTextView
         android:id="@+id/nbRightTv2"
         style="@style/FrmNbBarTextBg"
         android:layout_toLeftOf="@+id/nbRightTv1"

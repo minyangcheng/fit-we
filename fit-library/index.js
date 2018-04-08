@@ -3,3 +3,7 @@ import eventBusPlugin from './eventBusPlugin'
 
 Vue.use(bridgePlugin);
 Vue.use(eventBusPlugin);
+
+export default {
+
+}
