@@ -13,7 +13,7 @@
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用11112扩展的功能)'],
+        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用扩展的功能)'],
       }
     },
     created() {
@@ -22,7 +22,7 @@
         title: 'main',
         subTitle: 'v' + version
       });
-      console.log(weex)
+      console.log(weex.config)
     },
     mounted() {
       this.$event.on('testType', (data) => {

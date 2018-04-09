@@ -36,7 +36,7 @@ public class UriHandler {
         return uri;
     }
 
-    public static String handleUriUri(Context context, String imagePath) {
+    public static String handleImageUri(Context context, String imagePath) {
         if (TextUtils.isEmpty(imagePath)) {
             return null;
         }
@@ -56,7 +56,7 @@ public class UriHandler {
     }
 
     public static void displayImage(ImageView view, String url) {
-        String uri = UriHandler.handlePageUri(view.getContext(), url);
+        String uri = UriHandler.handleImageUri(view.getContext(), url);
         if (uri.startsWith("http")) {
             ImageLoaderWrap.displayHttpImage(uri, view);
         } else {

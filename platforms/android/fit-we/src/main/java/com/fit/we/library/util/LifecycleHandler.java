@@ -1,22 +1,21 @@
-package com.fit.we.sample.util;
+package com.fit.we.library.util;
 
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-public class LifecycleCallBack implements Application.ActivityLifecycleCallbacks {
+public class LifecycleHandler implements Application.ActivityLifecycleCallbacks {
+
     private int mCount = 0;
     private OnTaskSwitchListener mOnTaskSwitchListener;
 
-    public LifecycleCallBack register(Application application) {
-        application.registerActivityLifecycleCallbacks(this);
-        return this;
+    public LifecycleHandler(OnTaskSwitchListener onTaskSwitchListener) {
+        this.mOnTaskSwitchListener = onTaskSwitchListener;
     }
-
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
+        mOnTaskSwitchListener.onActivityCreated(activity);
     }
 
     @Override
@@ -50,17 +49,18 @@ public class LifecycleCallBack implements Application.ActivityLifecycleCallbacks
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-
+        mOnTaskSwitchListener.onActivityDestroyed(activity);
     }
 
     public interface OnTaskSwitchListener {
+
+        void onActivityCreated(Activity activity);
+
+        void onActivityDestroyed(Activity activity);
 
         void onTaskSwitchToForeground();
 
         void onTaskSwitchToBackground();
     }
 
-    public void setOnTaskSwitchListenner(OnTaskSwitchListener listenner) {
-        this.mOnTaskSwitchListener = listenner;
-    }
 }

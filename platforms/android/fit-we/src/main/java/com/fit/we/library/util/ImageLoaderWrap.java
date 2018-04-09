@@ -19,35 +19,25 @@ import java.io.File;
  */
 public class ImageLoaderWrap {
 
-    private static int resId;
-
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPoolSize(3)
-                .threadPriority(Thread.NORM_PRIORITY - 1)
-                .diskCacheSize(60 * 1024 * 1024)
-                .tasksProcessingOrder(QueueProcessingType.LIFO)
-                .writeDebugLogs()
-                .build();
+            .threadPoolSize(3)
+            .threadPriority(Thread.NORM_PRIORITY - 1)
+            .diskCacheSize(60 * 1024 * 1024)
+            .tasksProcessingOrder(QueueProcessingType.LIFO)
+            .writeDebugLogs()
+            .build();
         ImageLoader.getInstance().init(config);
     }
 
-
     public static DisplayImageOptions getDisplayImageOptions() {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-//                .showImageOnLoading(resId == 0 ? R.drawable.img_replace_big : resId)
-//                .showImageForEmptyUri(resId == 0 ? R.drawable.img_replace_big : resId)
-//                .showImageOnFail(resId == 0 ? R.drawable.img_replace_big : resId)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .considerExifParams(true)
-                .build();
+            .cacheInMemory(true)
+            .cacheOnDisk(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .considerExifParams(true)
+            .build();
         return options;
-    }
-
-    public static void setReplaceImageOptions(int resId) {
-        ImageLoaderWrap.resId = resId;
     }
 
     public static void displayHttpImage(String url, ImageView imageView) {

@@ -1,22 +1,22 @@
 package com.fit.we.library;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.os.Bundle;
 
 import com.fit.we.library.extend.ImageAdapter;
 import com.fit.we.library.resource.ResourceCheck;
 import com.fit.we.library.resource.ResourceParse;
 import com.fit.we.library.util.ActivityHandler;
+import com.fit.we.library.util.FitUtil;
 import com.fit.we.library.util.ImageLoaderWrap;
+import com.fit.we.library.util.LifecycleHandler;
 import com.fit.we.library.util.ModuleLoader;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.taobao.weex.InitConfig;
 import com.taobao.weex.WXSDKEngine;
 
 /**
- * Created by minyangcheng on 2018/3/17.
+ * Created by minyangcheng on 2018/4/1.
  */
 
 public class FitWe {
@@ -42,95 +42,71 @@ public class FitWe {
     }
 
     public void init(FitConfiguration configuration) {
-        this.configuration = configuration;
-        check();
-        init();
+        if (configuration.getContext() != null && FitUtil.shouldInit(configuration.getContext())) {
+            this.configuration = configuration;
+            check();
+            init();
+        }
     }
 
     private void check() {
-        if (configuration == null) {
-            throw new RuntimeException("config can not be null");
-        }
-        if (configuration.getApplication() == null) {
-            throw new RuntimeException("config context can not be null");
-        }
         if (configuration.getHostServer() == null) {
-            throw new RuntimeException("config pageHostUrl can not be null");
+            throw new RuntimeException("config hostServer can not be null");
+        }
+        if (configuration.getCheckApiHandler() == null) {
+            throw new RuntimeException("config checkApiHandler can not be null");
         }
     }
 
     private void init() {
-        setupModule();
-        setActivityStack();
-        resourceCheck = new ResourceCheck(configuration.getContext(), configuration.getCheckApiHandler());
-        resourceParse = new ResourceParse();
-        ImageLoaderWrap.initImageLoader(configuration.getContext());
-    }
-
-    private void setActivityStack() {
-        configuration.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        LifecycleHandler lifecycleHandler = new LifecycleHandler(new LifecycleHandler.OnTaskSwitchListener() {
             @Override
-            public void onActivityCreated(Activity activity, Bundle bundle) {
+            public void onActivityCreated(Activity activity) {
                 ActivityHandler.push(activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-
             }
 
             @Override
             public void onActivityDestroyed(Activity activity) {
                 ActivityHandler.pop(activity);
             }
+
+            @Override
+            public void onTaskSwitchToForeground() {
+                FitWe.getInstance().checkVersion();
+            }
+
+            @Override
+            public void onTaskSwitchToBackground() {
+
+            }
         });
+        configuration.getApplication().registerActivityLifecycleCallbacks(lifecycleHandler);
+        ImageLoaderWrap.initImageLoader(configuration.getContext());
+        initWeexConfig();
+        resourceCheck = new ResourceCheck(configuration.getContext(), configuration.getCheckApiHandler());
+        resourceParse = new ResourceParse();
     }
 
-    private void setupModule() {
-        InitConfig initConfig = new InitConfig.Builder().setImgAdapter(new ImageAdapter()).build();
-        WXSDKEngine.initialize(configuration.getApplication(), initConfig);
-        try {
-//            WXSDKEngine.registerModule("poneInfo", PhoneInfoModule.class);
-//            WXSDKEngine.registerModule("tool", ToolModule.class);
-//            WXSDKEngine.registerComponent("rich", RichText.class, false);
-            ModuleLoader.loadModuleFromAsset(getContext());
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void initWeexConfig() {
+        InitConfig.Builder builder = new InitConfig.Builder();
+        if (configuration.getImageAdapter() != null) {
+            builder.setImgAdapter(configuration.getImageAdapter());
+        } else {
+            builder.setImgAdapter(new ImageAdapter());
         }
+        WXSDKEngine.initialize(configuration.getApplication(), builder.build());
+        ModuleLoader.loadModuleFromAsset(getContext());
     }
 
     public ResourceParse getResourceParse() {
-        check();
         return resourceParse;
     }
 
     public ResourceCheck getResourceCheck() {
-        check();
         return resourceCheck;
     }
 
     public FitConfiguration getConfiguration() {
-        check();
         return configuration;
     }
 

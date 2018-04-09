@@ -9,8 +9,6 @@ import com.fit.we.library.FitWe;
 import com.fit.we.library.net.HttpManager;
 import com.fit.we.library.resource.CheckApiHandler;
 import com.fit.we.library.resource.ResourceCheck;
-import com.fit.we.library.util.FitUtil;
-import com.fit.we.sample.util.LifecycleCallBack;
 
 import java.io.IOException;
 
@@ -21,27 +19,21 @@ import okhttp3.Response;
 
 public class App extends Application {
 
-    private static App mInstance;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        if (FitUtil.shouldInit(this)) {
-            mInstance = this;
-            initFitWe();
-            registerLifecycle();
-        }
+        initFitWe();
     }
 
     private void initFitWe() {
         FitConfiguration configuration = new FitConfiguration(this)
-            .setHostServer("http://10.10.12.151:8888")
+            .setHostServer(BuildConfig.fitWeHostServer)
             .setCheckApiHandler(new CheckApiHandler() {
                 @Override
                 public void checkRequest(ResourceCheck resourceCheck) {
                     checkApiRequest(resourceCheck);
                 }
-            });
+            }).addNativeParam("name", "minych");
         FitWe.getInstance().init(configuration);
     }
 
@@ -71,26 +63,6 @@ public class App extends Application {
                 }
             }
         });
-    }
-
-    private void registerLifecycle() {
-        LifecycleCallBack lifecycleManager = new LifecycleCallBack();
-        lifecycleManager.register(this).setOnTaskSwitchListenner(new LifecycleCallBack
-            .OnTaskSwitchListener() {
-
-            @Override
-            public void onTaskSwitchToForeground() {
-                FitWe.getInstance().checkVersion();
-            }
-
-            @Override
-            public void onTaskSwitchToBackground() {
-            }
-        });
-    }
-
-    public static App getApplication() {
-        return mInstance;
     }
 
 }

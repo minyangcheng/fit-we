@@ -14,6 +14,7 @@ import com.fit.we.library.container.FitContainerActivity;
 import com.fit.we.library.container.FitContainerFragment;
 import com.fit.we.library.util.ActivityHandler;
 import com.fit.we.library.util.FitLog;
+import com.fit.we.library.util.FitUtil;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -80,7 +81,12 @@ public class HotRefreshService extends Service {
                     if (args != null && args[0] != null) {
                         FitLog.d(TAG, args[0].toString());
                         if (TextUtils.equals(args[0].toString(), "refresh")) {
-                            refresh();
+                            FitUtil.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refresh();
+                                }
+                            });
                         }
                     }
                 }

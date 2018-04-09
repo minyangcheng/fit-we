@@ -8,18 +8,14 @@ public class FitConstants {
 
     public static final String LOG_TAG = "FIT_WE";
 
-    public static final String MODULE_FILE_SUFFIX="_fit.json";
+    public static final String MODULE_FILE_SUFFIX = "_fit.json";
 
     public static final String KEY_ROUTE_INFO = "routeInfo";
 
-    public static final String FRAGMENT_TAG="weexTag";
-
-    public static final String REQUEST_CODE = "requestCode";
-    public static final String RESULT_DATA = "resultData";
-
+    public static final String KEY_NATIVE_PARAMS = "nativeParams";
 
     public static class Resource {
-        public static final String BASE_DIR = "WebApp";
+        public static final String BASE_DIR = "FitApp";
         public static final String BUNDLE_NAME = "bundle.zip";
         public static final String TEMP_BUNDLE_NAME = "temp_bundle.zip";
         public static final String JS_BUNDLE = "/.bundle";

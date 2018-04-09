@@ -9,19 +9,29 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        /**
-         * 必须加，否则64位手机无法加载so文件
-         */
+        //必须加，否则64位手机无法加载so文件
         ndk {
             abiFilters "x86"
             abiFilters "armeabi"
         }
+        buildConfigField 'String', 'GIT_VERSION', "\"${getGitVersion()}\""
+        buildConfigField 'String', 'fitWeHostServer', '"https://dist.cheguo.com"'
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
+        dev {
+            buildConfigField 'String', 'fitWeHostServer', "\"${getIpAddress()}\""
+        }
+        beta {
+            buildConfigField 'String', 'fitWeHostServer', '"http://dist.cheguo-cdn.com"'
+        }
+        preview {}
+        product {}
     }
 }
 
@@ -34,4 +44,38 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile project(':fit-we')
+}
+
+def getIpAddress() {
+    InetAddress inetAddress=getLocalHostLANAddress();
+    return 'http://'+inetAddress.getHostAddress()+":8888";
+}
+
+def getLocalHostLANAddress() {
+    try {
+        InetAddress candidateAddress = null;
+        for (Enumeration ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements();) {
+            NetworkInterface iface = (NetworkInterface) ifaces.nextElement();
+            for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements();) {
+                InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
+                if (!inetAddr.isLoopbackAddress()) {
+                    if (inetAddr.isSiteLocalAddress()) {
+                        return inetAddr;
+                    } else if (candidateAddress == null) {
+                        candidateAddress = inetAddr;
+                    }
+                }
+            }
+        }
+        if (candidateAddress != null) {
+            return candidateAddress;
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return InetAddress.getLocalHost();
+}
+
+def getGitVersion() {
+    return 'git rev-parse HEAD'.execute().text.trim()
 }

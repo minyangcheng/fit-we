@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.fit.we.library.FitConstants;
+import com.fit.we.library.FitWe;
 import com.fit.we.library.R;
 import com.fit.we.library.bean.FitEvent;
 import com.fit.we.library.bean.RouteInfo;
@@ -174,12 +175,12 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     private void render() {
         mWXSDKInstance = new WXSDKInstance(getActivity());
         mWXSDKInstance.registerRenderListener(this);
-        mWXSDKInstance.onActivityCreate();
         String uri = UriHandler.handlePageUri(getActivity(), mRouteInfo.pagePath);
         mRouteInfo.uri = uri;
         HashMap<String, Object> options = new HashMap<>();
         options.put(WXSDKInstance.BUNDLE_URL, uri);
         options.put(FitConstants.KEY_ROUTE_INFO, mRouteInfo);
+        options.put(FitConstants.KEY_NATIVE_PARAMS, FitWe.getInstance().getConfiguration().getNativeParams());
         if (uri.startsWith("http")) {
             mWXSDKInstance.renderByUrl(uri, uri, options, null, WXRenderStrategy.APPEND_ASYNC);
         } else {
@@ -189,11 +190,10 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     }
 
     public void refresh() {
-//        if (mWXSDKInstance != null && !mWXSDKInstance.isDestroy()) {
-//            mWXSDKInstance.destroy();
-//        }
+        if (mWXSDKInstance != null && !mWXSDKInstance.isDestroy()) {
+            mWXSDKInstance.destroy();
+        }
         render();
-
     }
 
     private void getDataFromArguments() {
@@ -272,7 +272,6 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     @Override
     public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
-        FitLog.d(TAG, "routeInfo=%s onRenderSuccess", JSON.toJSONString(mRouteInfo));
         FitLog.d(TAG, "onRenderSuccess instanceId=%s , bundleUrl=%s", mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
     }
 

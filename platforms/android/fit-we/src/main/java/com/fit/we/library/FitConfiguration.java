@@ -6,9 +6,13 @@ import android.text.TextUtils;
 
 import com.fit.we.library.resource.CheckApiHandler;
 import com.fit.we.library.util.SharePreferenceUtil;
+import com.taobao.weex.adapter.IWXImgLoaderAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by minyangcheng on 2018/1/17.
+ * Created by minyangcheng on 2018/4/1.
  */
 
 public class FitConfiguration {
@@ -16,9 +20,22 @@ public class FitConfiguration {
     private Application application;
     private String hostServer;
     private CheckApiHandler checkApiHandler;
+    private IWXImgLoaderAdapter imageAdapter;
+    private Map<String, String> nativeParams = new HashMap<>();
 
     public FitConfiguration(Application application) {
+        if (application == null) {
+            throw new RuntimeException("fit-we application can not be null");
+        }
         this.application = application;
+    }
+
+    public Context getContext() {
+        return application.getApplicationContext();
+    }
+
+    public Application getApplication() {
+        return application;
     }
 
     public String getHostServer() {
@@ -35,14 +52,6 @@ public class FitConfiguration {
         return this;
     }
 
-    public Context getContext() {
-        return application.getApplicationContext();
-    }
-
-    public Application getApplication() {
-        return application;
-    }
-
     public CheckApiHandler getCheckApiHandler() {
         return checkApiHandler;
     }
@@ -50,6 +59,26 @@ public class FitConfiguration {
     public FitConfiguration setCheckApiHandler(CheckApiHandler checkApiHandler) {
         this.checkApiHandler = checkApiHandler;
         return this;
+    }
+
+    public FitConfiguration addNativeParam(String key, String value) {
+        if (TextUtils.isEmpty(key) || TextUtils.isEmpty(value)) {
+            return this;
+        }
+        nativeParams.put(key, value);
+        return this;
+    }
+
+    public Map<String, String> getNativeParams() {
+        return nativeParams;
+    }
+
+    public IWXImgLoaderAdapter getImageAdapter() {
+        return imageAdapter;
+    }
+
+    public void setImageAdapter(IWXImgLoaderAdapter imageAdapter) {
+        this.imageAdapter = imageAdapter;
     }
 
 }
