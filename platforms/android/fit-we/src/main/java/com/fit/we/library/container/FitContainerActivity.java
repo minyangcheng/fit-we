@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.fit.we.library.FitConstants;
 import com.fit.we.library.bean.RouteInfo;
 
+/**
+ * Created by minyangcheng on 2018/4/1.
+ */
 public class FitContainerActivity extends AppCompatActivity {
 
     FitContainerFragment mFitContainerFragment;

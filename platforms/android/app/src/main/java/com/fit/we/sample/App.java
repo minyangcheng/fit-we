@@ -17,6 +17,9 @@ import okhttp3.Callback;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * Created by minyangcheng on 2018/4/1.
+ */
 public class App extends Application {
 
     @Override
@@ -27,6 +30,7 @@ public class App extends Application {
 
     private void initFitWe() {
         FitConfiguration configuration = new FitConfiguration(this)
+            .setDebug(BuildConfig.DEBUG)
             .setHostServer(BuildConfig.fitWeHostServer)
             .setCheckApiHandler(new CheckApiHandler() {
                 @Override

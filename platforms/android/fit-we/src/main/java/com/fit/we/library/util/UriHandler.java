@@ -56,6 +56,9 @@ public class UriHandler {
     }
 
     public static void displayImage(ImageView view, String url) {
+        if(view==null||TextUtils.isEmpty(url)){
+            return;
+        }
         String uri = UriHandler.handleImageUri(view.getContext(), url);
         if (uri.startsWith("http")) {
             ImageLoaderWrap.displayHttpImage(uri, view);

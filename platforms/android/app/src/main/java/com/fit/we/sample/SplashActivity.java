@@ -9,6 +9,9 @@ import com.fit.we.library.bean.RouteInfo;
 import com.fit.we.library.container.FitContainerActivity;
 import com.fit.we.library.service.HotRefreshService;
 
+/**
+ * Created by minyangcheng on 2018/4/1.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private Handler mHandler = new Handler();
@@ -37,7 +40,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void toHome() {
-//        RouteInfo bean = new RouteInfo(FitWe.getInstance().getConfiguration().getHostServer());
         RouteInfo bean = new RouteInfo("fit://page/SamplePage");
         bean.showBackBtn = false;
         FitContainerActivity.startActivity(this, bean);

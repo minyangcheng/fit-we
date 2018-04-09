@@ -7,6 +7,9 @@ import android.view.View;
 
 import com.fit.we.library.container.FitContainerActivity;
 
+/**
+ * Created by minyangcheng on 2018/4/1.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

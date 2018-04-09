@@ -32,8 +32,10 @@ public class HotRefreshService extends Service {
     private Socket mSocket;
 
     public static void startService(Context context) {
-        Intent intent = new Intent(context, HotRefreshService.class);
-        context.startService(intent);
+        if (FitWe.getInstance().getConfiguration().isDebug()) {
+            Intent intent = new Intent(context, HotRefreshService.class);
+            context.startService(intent);
+        }
     }
 
     @Nullable

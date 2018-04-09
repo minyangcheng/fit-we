@@ -3,24 +3,23 @@
     <div v-for="(item,index) in items" :key="index" @click="onItemClick(item,index)">
       <text class="item">{{item}}</text>
     </div>
+    <image style="width:500px;height:500px" src="fit://assets/img/logo.png"></image>
   </div>
 </template>
 
 <script>
 
-  var Zeus = require('Zeus');
-
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用扩展的功能)'],
+        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用扩展1的功能)'],
       }
     },
     created() {
       let version = process.env.VERSION;
       this.$navigator.setTitle({
         title: 'main',
-        subTitle: 'v' + version
+        subTitle: 'v' + version + '  ' + process.env.NODE_ENV
       });
       console.log(weex.config)
     },
@@ -53,9 +52,11 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" type="text/scss" scoped>
+  /*@import "../assets/scss/values.scss";*/
+
   .item {
-    height: 90px;
+    height: 100px;
     line-height: 90px;
     background-color: #ffffff;
     color: #666666;

@@ -6,6 +6,9 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.io.Serializable;
 
+/**
+ * Created by minyangcheng on 2018/4/1.
+ */
 public class RouteInfo implements Serializable {
 
     // 0:不加载导航栏 1：默认类型
@@ -22,8 +25,6 @@ public class RouteInfo implements Serializable {
     public JSONObject data;
 
     public String uri;
-
-    public String containerHashValue;
 
     public RouteInfo() {
     }

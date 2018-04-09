@@ -7,6 +7,7 @@ var moment = require('moment');
 var crypto = require('crypto');
 
 var distPath = path.resolve(__dirname, '../dist');
+var tempPath = path.resolve(__dirname, '../dist/temp');
 var buildConfigPath = path.resolve(__dirname, '../dist/buildConfig.json')
 var packagesPath = path.resolve(__dirname, '../output');
 var npmConfigPath = path.resolve(__dirname, '../package.json');
@@ -32,6 +33,7 @@ var zipPath = packagesPath + '/bundle-' + npmConfig.version + '-' + nowTime + '.
 
 var buildConfigData = {version: npmConfig.version, signature: signature(distPath)};
 
+deleteAll(tempPath);
 writeVersionInfo(buildConfigPath, buildConfigData);
 zipDir(distPath, zipPath);
 

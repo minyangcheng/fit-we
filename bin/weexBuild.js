@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
-var entryMap = require('./scanPage');
+var entryMap = require('./scanResource');
 var listeneReCompilePlugin = require('./listeneReCompilePlugin');
 
 function resolve(dir) {
@@ -26,8 +26,8 @@ module.exports = {
           {
             loader: 'weex-loader',
             options: {
-              stylus: 'vue-style-loader!css-loader!stylus-loader',
-              styl: 'vue-style-loader!css-loader!stylus-loader'
+              stylus: 'vue-style-loader!css-loader!stylus-loader!sass-loader',
+              styl: 'vue-style-loader!css-loader!stylus-loader!sass-loader'
             }
           }
         ],
@@ -45,14 +45,14 @@ module.exports = {
         exclude,
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|jpeg)$/,
         use: [
           {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'assets',
-              publicPath: '../',
+              outputPath: 'assets/img',
+              publicPath: '../assets/img',
             }
           }
         ]
@@ -74,9 +74,21 @@ module.exports = {
       raw: true
     }),
     new CleanWebpackPlugin('dist', {root: resolve('')}),
+  ]
+}
+
+if (process.env.NODE_ENV === 'dev') {
+  module.exports.plugins = (module.exports.plugins || []).concat([
     listeneReCompilePlugin,
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
+    })
+  ])
+} else if (process.env.NODE_ENV === 'prod') {
+  // module.exports.devtool = '#source-map'
+  module.exports.plugins = (module.exports.plugins || []).concat([
+    new webpack.DefinePlugin({
+      'process.env': require('../config/prod.env')
     }),
-  ]
+  ])
 }

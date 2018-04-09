@@ -32,8 +32,9 @@ import java.util.Map;
 
 import de.greenrobot.event.Subscribe;
 
-;
-
+/**
+ * Created by minyangcheng on 2018/4/1.
+ */
 public class FitContainerFragment extends Fragment implements IWXRenderListener {
 
     private static final String TAG = FitContainerFragment.class.getSimpleName();

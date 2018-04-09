@@ -22,6 +22,7 @@ public class FitConfiguration {
     private CheckApiHandler checkApiHandler;
     private IWXImgLoaderAdapter imageAdapter;
     private Map<String, String> nativeParams = new HashMap<>();
+    private boolean debug;
 
     public FitConfiguration(Application application) {
         if (application == null) {
@@ -81,4 +82,12 @@ public class FitConfiguration {
         this.imageAdapter = imageAdapter;
     }
 
+    public boolean isDebug() {
+        return debug;
+    }
+
+    public FitConfiguration setDebug(boolean debug) {
+        this.debug = debug;
+        return this;
+    }
 }

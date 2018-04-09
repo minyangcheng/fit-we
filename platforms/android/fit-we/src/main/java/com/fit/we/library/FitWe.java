@@ -7,6 +7,7 @@ import com.fit.we.library.extend.ImageAdapter;
 import com.fit.we.library.resource.ResourceCheck;
 import com.fit.we.library.resource.ResourceParse;
 import com.fit.we.library.util.ActivityHandler;
+import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.FitUtil;
 import com.fit.we.library.util.ImageLoaderWrap;
 import com.fit.we.library.util.LifecycleHandler;
@@ -85,6 +86,7 @@ public class FitWe {
         initWeexConfig();
         resourceCheck = new ResourceCheck(configuration.getContext(), configuration.getCheckApiHandler());
         resourceParse = new ResourceParse();
+        FitLog.writeLogs(configuration.isDebug());
     }
 
     private void initWeexConfig() {

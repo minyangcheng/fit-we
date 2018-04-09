@@ -6,11 +6,10 @@
   "private": true,
   "scripts": {
     "weex": "webpack --env.NODE_ENV=common",
-    "dev": "node bin/weexDev.js",
-    "build_": "webpack --progress --config bin/weexBuild.js",
-    "build": "webpack --progress --config bin/weexBuild.js",
-    "postbuild": "node bin/pack.js",
-    "test": "webpack --config fit-library/testDev.js"
+    "dev": "cross-env NODE_ENV=dev node bin/weexDev.js",
+    "build_": "cross-env NODE_ENV=prod webpack --progress --config bin/weexBuild.js",
+    "build": "cross-env NODE_ENV=prod webpack --progress --config bin/weexBuild.js",
+    "postbuild": "node bin/pack.js"
   },
   "keywords": [
     "weex"
@@ -33,7 +32,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
     "clean-webpack-plugin": "^0.1.19",
-    "css-loader": "^0.28.8",
+    "cross-env": "^5.1.4",
+    "css-loader": "^0.28.11",
     "express": "^4.16.3",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
@@ -49,12 +49,14 @@
     "postcss-plugin-weex": "^0.1.6",
     "raw-loader": "^0.5.1",
     "rimraf": "^2.6.2",
+    "sass-loader": "^6.0.7",
     "script-ext-html-webpack-plugin": "^1.8.5",
     "socket.io": "^2.1.0",
+    "style-loader": "^0.20.3",
     "vue-loader": "^12.2.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.11",
-    "webpack": "^3.10.0",
+    "webpack": "^3.11.0",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-dev-server": "^2.9.7",
     "webpack-merge": "^4.1.0",
