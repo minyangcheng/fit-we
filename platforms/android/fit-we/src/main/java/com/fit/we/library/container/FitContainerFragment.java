@@ -163,9 +163,9 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
                     mStartTime = System.currentTimeMillis();
                 }
                 mCounter++;
-                if (mCounter % 6 == 0) {
-                    if (System.currentTimeMillis() - mStartTime < 2000) {
-                        HybridDebugActivity.startActivity(getActivity());
+                if (mCounter % 4 == 0) {
+                    if (System.currentTimeMillis() - mStartTime < 4000) {
+                        FitWeDebugActivity.startActivity(getActivity());
                     }
                     mCounter = 0;
                 }

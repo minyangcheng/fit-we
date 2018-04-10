@@ -43,7 +43,7 @@ public class SignatureUtil {
                     resultList.addAll(getNeedSignatureFiles(file));
                 } else {
                     filePath = file.getAbsolutePath();
-                    if (filePath.endsWith(".js") || filePath.endsWith(".css") || filePath.endsWith(".html")) {
+                    if (filePath.endsWith(".js")) {
                         resultList.add(file);
                     }
                 }

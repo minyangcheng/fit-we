@@ -16,7 +16,7 @@ module.exports = {
   output: {
     path: resolve('dist'),
     publicPath: '',
-    filename: '[name].js',
+    filename: '[name]',
   },
   module: {
     rules: [
@@ -26,10 +26,14 @@ module.exports = {
           {
             loader: 'weex-loader',
             options: {
-              stylus: 'vue-style-loader!css-loader!stylus-loader!sass-loader',
-              styl: 'vue-style-loader!css-loader!stylus-loader!sass-loader'
+              loaders: {
+                sass: [{loader: 'sass-loader', options: {indentedSyntax: true, sourceMap: false}}],
+                scss: [{loader: 'sass-loader', options: {sourceMap: false}}],
+                stylus: [{loader: 'stylus-loader', options: {sourceMap: false}}],
+                styl: [{loader: 'stylus-loader', options: {sourceMap: false}}]
+              }
             }
-          }
+          },
         ],
         include,
         exclude,
@@ -85,10 +89,9 @@ if (process.env.NODE_ENV === 'dev') {
     })
   ])
 } else if (process.env.NODE_ENV === 'prod') {
-  // module.exports.devtool = '#source-map'
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': require('../config/prod.env')
-    }),
+    })
   ])
 }

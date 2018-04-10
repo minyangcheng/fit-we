@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <service android:name=".service.HotRefreshService"/>
-        <activity android:name=".container.HybridDebugActivity"/>
+        <activity android:name=".container.FitWeDebugActivity"/>
     </application>
 
 </manifest>

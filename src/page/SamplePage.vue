@@ -52,11 +52,11 @@
   }
 </script>
 
-<style lang="scss" type="text/scss" scoped>
-  /*@import "../assets/scss/values.scss";*/
+<style lang="scss" scoped>
+  @import "../assets/scss/values.scss";
 
   .item {
-    height: 100px;
+    height: $testValue;
     line-height: 90px;
     background-color: #ffffff;
     color: #666666;

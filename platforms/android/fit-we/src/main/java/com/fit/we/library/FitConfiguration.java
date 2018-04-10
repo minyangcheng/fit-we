@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.fit.we.library.resource.CheckApiHandler;
-import com.fit.we.library.util.SharePreferenceUtil;
 import com.taobao.weex.adapter.IWXImgLoaderAdapter;
 
 import java.util.HashMap;
@@ -40,12 +39,7 @@ public class FitConfiguration {
     }
 
     public String getHostServer() {
-        String devPageUrl = SharePreferenceUtil.getPageDevHostUrl(getContext());
-        if (TextUtils.isEmpty(devPageUrl)) {
-            return hostServer;
-        } else {
-            return devPageUrl;
-        }
+        return hostServer;
     }
 
     public FitConfiguration setHostServer(String hostServer) {

@@ -9,10 +9,10 @@ function scanPage() {
   var pageDir = path.resolve(__dirname, '../src/page');
   var pageFiles = [];
   util.findFile(pageDir, new RegExp("Page\\.vue$"), pageFiles);
-  pageFiles.forEach((value, i) => {
-    var name = getPageShortPath(value);
+  pageFiles.forEach((filePath, i) => {
+    var name = getPageShortPath(filePath)+'.js';
     if (!entryMap[name]) {
-      entryMap[name] = [path.resolve(__dirname,'../fit-library/index.js?entry=true'),value + '?entry=true'];
+      entryMap[name] = [path.resolve(__dirname,'../fit-library/index.js?entry=true'),filePath + '?entry=true'];
     }
   });
 }
@@ -21,10 +21,10 @@ function scanImg() {
   var pageDir = path.resolve(__dirname, '../src/assets/img');
   var pageFiles = [];
   util.findFile(pageDir,new RegExp("\\.(png|jpg|gif|jpeg)$"), pageFiles);
-  pageFiles.forEach((value, i) => {
-    var name = getImgShortPath(value);
+  pageFiles.forEach((filePath, i) => {
+    var name = getImgShortPath(filePath);
     if (!entryMap[name]) {
-      entryMap[name] = value + '?entry=true';
+      entryMap[name] = filePath + '?entry=true';
     }
   });
 }

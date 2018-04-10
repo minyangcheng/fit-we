@@ -4,41 +4,42 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fit.we.library.R;;
+import com.fit.we.library.FitWe;
+import com.fit.we.library.R;
 import com.fit.we.library.util.FileUtil;
-import com.fit.we.library.util.FitUtil;
+import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.fit.we.library.util.UiUtil;
 import com.fit.we.library.widget.NavigationBar;
 
 import java.io.File;
 
-public class HybridDebugActivity extends AppCompatActivity {
+public class FitWeDebugActivity extends AppCompatActivity {
 
     private NavigationBar mNavigationBar;
-    private TextView mInfoTv;
     private CheckBox mInterceptorCb;
-    private EditText mUrlEt;
-    private Button mSureBtn;
+    private TextView mUrlTv;
+    private TextView mBuildConfigTv;
+    private TextView mNativeParamsTv;
 
     public static void startActivity(Context context) {
-        Intent intent = new Intent(context, HybridDebugActivity.class);
-        context.startActivity(intent);
+        if (FitWe.getInstance().getConfiguration().isDebug()) {
+            Intent intent = new Intent(context, FitWeDebugActivity.class);
+            context.startActivity(intent);
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hybrid_debug);
+        setContentView(R.layout.activity_fit_we_debug);
         findViews();
         initData();
     }
@@ -66,15 +67,18 @@ public class HybridDebugActivity extends AppCompatActivity {
 
             }
         });
-        mInfoTv.setText(getLocalBuildConfigContent());
+        mUrlTv.setText(FitWe.getInstance().getConfiguration().getHostServer());
         mInterceptorCb.setChecked(SharePreferenceUtil.getInterceptorActive(this));
-        mUrlEt.setText(SharePreferenceUtil.getPageDevHostUrl(this));
-        mSureBtn.setOnClickListener(new View.OnClickListener() {
+        mInterceptorCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                sure();
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                FitLog.d("mytest",b+"");
+                SharePreferenceUtil.setInterceptorActive(FitWeDebugActivity.this, b);
+                UiUtil.toastShort(FitWeDebugActivity.this, "设置成功，请重启后生效");
             }
         });
+        mBuildConfigTv.setText(getLocalBuildConfigContent());
+        mNativeParamsTv.setText(JSON.toJSONString(FitWe.getInstance().getConfiguration().getNativeParams()));
     }
 
     private String getLocalBuildConfigContent() {
@@ -90,33 +94,10 @@ public class HybridDebugActivity extends AppCompatActivity {
 
     private void findViews() {
         mNavigationBar = (NavigationBar) findViewById(R.id.view_nb);
-        mInfoTv = (TextView) findViewById(R.id.tv_info);
+        mUrlTv = (TextView) findViewById(R.id.tv_url);
         mInterceptorCb = (CheckBox) findViewById(R.id.cb_interceptor);
-        mUrlEt = (EditText) findViewById(R.id.et_url);
-        mSureBtn = (Button) findViewById(R.id.btn_sure);
-    }
-
-    private void sure() {
-        String url = mUrlEt.getText().toString();
-        if (!TextUtils.isEmpty(url) && !url.startsWith("http")) {
-            UiUtil.toastShort(this, "拦截页面地址不是有效的url地址，请重新输入");
-            return;
-        }
-        SharePreferenceUtil.setPageDevHostUrl(this, url);
-        SharePreferenceUtil.setInterceptorActive(this, mInterceptorCb.isChecked());
-        UiUtil.toastShort(this, "设置成功，重启后生效");
-        exit();
-    }
-
-    private void exit() {
-        FitUtil.handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!isFinishing()) {
-                    finish();
-                }
-            }
-        }, 1000);
+        mBuildConfigTv = (TextView) findViewById(R.id.tv_build_config);
+        mNativeParamsTv = (TextView) findViewById(R.id.tv_native_params);
     }
 
 }
