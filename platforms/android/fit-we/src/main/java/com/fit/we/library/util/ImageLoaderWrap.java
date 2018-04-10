@@ -55,6 +55,18 @@ public class ImageLoaderWrap {
         displayImage(url, imageView, null);
     }
 
+    public static void displayFileImageWithNoCache(File file, ImageView imageView) {
+        String filePath = (file == null) ? "" : file.getAbsolutePath();
+        String url = "file://" + filePath;
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .cacheInMemory(false)
+            .cacheOnDisk(false)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .considerExifParams(true)
+            .build();
+        displayImage(url, imageView, options);
+    }
+
     private static void displayImage(String url, ImageView imageView, DisplayImageOptions displayImageOptions) {
         ImageLoader.getInstance().displayImage(url, imageView, displayImageOptions == null ? getDisplayImageOptions() : displayImageOptions);
     }

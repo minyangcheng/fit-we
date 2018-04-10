@@ -63,7 +63,7 @@ public class UriHandler {
         if (uri.startsWith("http")) {
             ImageLoaderWrap.displayHttpImage(uri, view);
         } else {
-            ImageLoaderWrap.displayFileImage(new File(uri), view);
+            ImageLoaderWrap.displayFileImageWithNoCache(new File(uri), view);
         }
     }
 

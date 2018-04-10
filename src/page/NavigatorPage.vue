@@ -15,7 +15,6 @@
       }
     },
     created(){
-      this.$event.post('testType', {name:'min',age:1});
     },
     methods: {
       onItemClick(item, index) {

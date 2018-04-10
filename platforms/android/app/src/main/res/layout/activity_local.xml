@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <Button
+    <TextView
+        android:id="@+id/tv_info"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:onClick="clickGo"
-        android:text="go" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

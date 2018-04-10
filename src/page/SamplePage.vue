@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div style="align-items: center;">
     <div v-for="(item,index) in items" :key="index" @click="onItemClick(item,index)">
       <text class="item">{{item}}</text>
     </div>
-    <image style="width:500px;height:500px" src="fit://assets/img/logo.png"></image>
+    <image style="margin:100px 0px;width:100px;height:100px" src="fit://assets/img/logo.png"></image>
   </div>
 </template>
 
@@ -12,7 +12,7 @@
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用外部扩展的功能)'],
+        items: ['navigator', 'page', 'ui', 'tool', 'zeus(调用外部扩展的功能)','post(事件通知)','InfoPage(各个参数信息)'],
       }
     },
     created() {
@@ -21,7 +21,6 @@
         title: 'main',
         subTitle: 'v' + version + '  ' + process.env.NODE_ENV
       });
-      console.log(weex.config)
     },
     mounted() {
       this.$event.on('testType', (data) => {
@@ -29,6 +28,7 @@
       });
     },
     beforeDestroy() {
+      this.$event.off('testType');
     },
     methods: {
       onItemClick(item, index) {
@@ -46,8 +46,14 @@
           case 'ui':
             this.$page.open('fit://page/UiPage');
             break;
-          case 'callApi(调用外部扩展的功能)':
+          case 'zeus(调用外部扩展的功能)':
             this.$page.open('fit://page/ZeusPage');
+            break;
+          case 'post(事件通知)':
+            this.$event.post('testType', {name: 'minych'});
+            break;
+          case 'InfoPage(各个参数信息)':
+            this.$page.open('fit://page/InfoPage');
             break;
         }
       }
@@ -59,6 +65,7 @@
   @import "../assets/scss/values.scss";
 
   .item {
+    width: 750px;
     height: $testValue;
     line-height: 90px;
     background-color: #ffffff;
