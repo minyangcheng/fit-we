@@ -1,38 +1,9 @@
-## Commands
+## Fit-We
 
-### npm start
+### 调试
+1. 在主目录下运行 `npm run dev`
+2. 将build variant切换为dev,安装应用后,在导航栏连续点击4下,即可进入调试设置界面,将拦截开关关闭
+3. 重启应用
 
-Starts the development server for you to preview your weex page on browser.
-You can also scan the QR code using weex playground to preview weex page on native.
-
-### npm run dev
-
-Open the code compilation task in watch mode.
-
-### npm run ios
-
-(Mac only, requires Xcode)
-Starts the development server and loads your app in an iOS simulator.
-
-### npm run android
-
-(Requires Android build tools)
-Starts the development server and loads your app on a connected Android device or emulator.
-
-### npm run pack:ios
-
-(Mac only, requires Xcode)
-Packaging ios project into ipa package.
-
-### npm run pack:android
-
-(Requires Android build tools)
-Packaging android project into apk package.
-
-### npm run pack:web
-
-Packaging html5 project into `web/build` folder.
-
-### npm run test
-
-Starts the test runner.
+### 发布
+* 运行npm run build,将output生成的包发在服务器上或者放入native端的assets目录,即可自动升级
