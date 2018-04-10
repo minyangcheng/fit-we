@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item,index) in items" :key="index" @click="onItemClick(item,index)">
-      <text class="item" :title="item" is-link></text>
+      <text class="item">{{item}}</text>
     </div>
   </div>
 </template>
@@ -63,7 +63,7 @@
 
 <style scoped>
 
-  .item{
+  .item {
     height: 90px;
     line-height: 90px;
     background-color: #ffffff;

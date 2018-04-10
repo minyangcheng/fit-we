@@ -10,15 +10,22 @@
   export default {
     data() {
       return {
-        items: ['printLog'],
+        items: ['callApi'],
       }
     },
     methods: {
       onItemClick(item, index) {
         switch (item) {
-          case 'printLog':
-            this.$tool.printLog('this is printLogTest');
-            this.$tool.printLog({name:'minych'});
+          case 'callApi':
+            this.$zeus.callApi({
+              module: '$pay',
+              name: 'payMoney',
+              money: '100',
+            }).then((value) => {
+              this.$ui.toast(JSON.stringify(value))
+            }).catch(err => {
+              this.$ui.toast(JSON.stringify(err))
+            });
             break;
         }
       }
@@ -27,7 +34,7 @@
 </script>
 
 <style scoped>
-  .item{
+  .item {
     height: 90px;
     line-height: 90px;
     background-color: #ffffff;

@@ -12,7 +12,7 @@
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用扩展1的功能)'],
+        items: ['navigator', 'page', 'ui', 'tool', 'callApi(调用外部扩展的功能)'],
       }
     },
     created() {
@@ -45,6 +45,9 @@
             break;
           case 'ui':
             this.$page.open('fit://page/UiPage');
+            break;
+          case 'callApi(调用外部扩展的功能)':
+            this.$page.open('fit://page/ZeusPage');
             break;
         }
       }

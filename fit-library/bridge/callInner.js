@@ -13,16 +13,18 @@ module.exports = function callInner(options, resolve, reject) {
     };
   }
   var moduleName = this.api.moduleName;
+  var namespace = this.api.namespace;
   var weexModule = weex.requireModule(moduleName);
-  if (weexModule) {
-    weexModule[this.api.namespace](data, function (value) {
+  if (weexModule && weexModule[namespace]) {
+    weexModule[namespace](data, function (value) {
       success && success(value);
       resolve && resolve(value);
-    }, function (error) {
-      error && error(error);
-      reject && reject(error);
+    }, function (err) {
+      error && error(err);
+      reject && reject(err);
     });
   } else {
-    console.error(`weex can not find ${moduleName}.${this.api.namespace}`);
+    var log = `weex can not find ${moduleName}.${namespace}`;
+    console.error(log);
   }
 };
