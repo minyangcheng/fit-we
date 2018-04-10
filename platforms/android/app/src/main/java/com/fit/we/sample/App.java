@@ -43,7 +43,7 @@ public class App extends Application {
 
     private void checkApiRequest(final ResourceCheck resourceCheck) {
         Request request = new Request.Builder()
-            .url("http://10.10.12.151:8888/static/updateJson?version=" + FitWe.getInstance().getVersion())
+            .url("http://10.10.12.151:8889/checkWeexUpdate?version=" + FitWe.getInstance().getVersion())
             .get()
             .build();
         Call call = HttpManager.getHttpClient().newCall(request);
@@ -57,14 +57,17 @@ public class App extends Application {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     JSONObject jsonObject = JSON.parseObject(response.body().string());
-                    if (jsonObject != null) {
+                    int code = jsonObject.getIntValue("code");
+                    if (code == 1000) {
                         resourceCheck.setCheckApiSuccessResp(jsonObject.getString("version"),
                             jsonObject.getString("md5"),
                             jsonObject.getString("dist"));
+                        return;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                resourceCheck.setCheckApiFailResp(new Exception("weex bundle check fail"));
             }
         });
     }

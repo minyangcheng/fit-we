@@ -5,6 +5,7 @@ var path = require('path');
 var archiver = require('archiver');
 var moment = require('moment');
 var crypto = require('crypto');
+var shell = require('shelljs');
 
 var distPath = path.resolve(__dirname, '../dist');
 var tempPath = path.resolve(__dirname, '../dist/temp');
@@ -31,7 +32,11 @@ var npmConfig = JSON.parse(fs.readFileSync(npmConfigPath, 'utf-8'));
 var nowTime = moment().format('YYYY-MM-DD-HHmmss');
 var zipPath = packagesPath + '/bundle-' + npmConfig.version + '-' + nowTime + '.zip';
 
-var buildConfigData = {version: npmConfig.version, signature: signature(distPath)};
+var buildConfigData = {
+  version: npmConfig.version,
+  signature: signature(distPath),
+  weexReversion: getGitReversionNumber()
+};
 
 deleteAll(tempPath);
 writeVersionInfo(buildConfigPath, buildConfigData);
@@ -136,4 +141,9 @@ function findNeedSignatureFiles(dir, resultFiles) {
     })
   }
 
+}
+
+function getGitReversionNumber() {
+  var reversion = shell.exec('git rev-parse --short HEAD');
+  return reversion.toString().trim();
 }

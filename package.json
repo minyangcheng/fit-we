@@ -1,20 +1,18 @@
 {
-  "name": "hello-weex",
-  "version": "1.0.0",
-  "description": "A weex project",
-  "author": "",
+  "name": "fit-we",
+  "version": "1.0.2",
+  "description": "fit weex project",
+  "author": "minych",
   "private": true,
   "scripts": {
-    "weex": "webpack --env.NODE_ENV=common",
     "dev": "cross-env NODE_ENV=dev node bin/weexDev.js",
     "build_": "cross-env NODE_ENV=prod webpack --progress --config bin/weexBuild.js",
     "build": "cross-env NODE_ENV=prod webpack --progress --config bin/weexBuild.js",
     "postbuild": "node bin/pack.js"
   },
   "keywords": [
-    "weex"
+    "fit-we"
   ],
-  "license": "MIT",
   "dependencies": {
     "phantom-limb": "0.0.1",
     "vue": "^2.5.11",
@@ -51,6 +49,7 @@
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.7",
     "script-ext-html-webpack-plugin": "^1.8.5",
+    "shelljs": "^0.8.1",
     "socket.io": "^2.1.0",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "vue-loader": "^12.2.0",
