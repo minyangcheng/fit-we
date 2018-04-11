@@ -23,7 +23,7 @@
           case 'alert':
             this.$ui.alert({
               title: '提示',
-              message: '要么进化，要么去死',
+              message: '要么进化，皮卡丘',
               buttonLabels: ['取消', '去进化'],
               cancelable: 1,
               success(result) {
@@ -33,6 +33,16 @@
                 Vue.prototype.$ui.toast(JSON.stringify(err));
               }
             });
+            // this.$ui.alert({
+            //   title: '提示',
+            //   message: '要么进化，皮卡丘',
+            //   buttonLabels: ['取消', '去进化'],
+            //   cancelable: 1
+            // }).then(value => {
+            //   this.$ui.toast(JSON.stringify(result));
+            // }).catch(err => {
+            //   this.$ui.toast(JSON.stringify(err));
+            // });
             break;
           case 'pickDate':
             this.$ui.pickDate({

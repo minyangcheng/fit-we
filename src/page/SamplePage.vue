@@ -19,7 +19,7 @@
       let version = process.env.VERSION;
       this.$navigator.setTitle({
         title: 'main',
-        subTitle: 'v' + version + '  ' + process.env.NODE_ENV
+        subTitle: 'v' + version + '  '
       });
     },
     mounted() {
@@ -41,7 +41,6 @@
             break;
           case 'tool':
             this.$page.open('fit://page/ToolPage');
-            this.$event.off('testType');
             break;
           case 'ui':
             this.$page.open('fit://page/UiPage');
