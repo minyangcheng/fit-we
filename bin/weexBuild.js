@@ -66,8 +66,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src'),
-      'Zeus': resolve('fit-library')
+      '@': resolve('src')
     }
   },
   devtool: '#eval-source-map',

@@ -1,6 +1,6 @@
 # 如何使用模块
 
-## 模块功能实现思路
+## 功能实现思路
 
 ### weex端
 1. 从api定义文件中获取到定义的模块名那（page.name）和方法名（page.apis[0].namespace），并且模块名和方法名都是和原生端定义的扩展模块文件一一对应
@@ -45,6 +45,84 @@ module.exports = function callInner(options, resolve, reject) {
 1. 在app启动的时候，扫描所有以`_fit.json`结尾的文件
 2. 循环取出每个模块，如果该模块继承自`WXComponent`表示则该模块属于UI模块，直接注入weex中;如果继承自`WXModule`，则每个用`@JSMethod`注解的方法参数必须要为`JSONObject params, JSCallback successCallback, JSCallback errorCallback`，如果模块中出现一个不合法的方法，则会忽视该模块，否则注册。
 3. 原生端和weex端传输数据采用JSONObject，并且一定还要定义一个成功回调函数和一个失败回调函数
+
+```
+public class ModuleLoader {
+
+    public static void loadModuleFromAsset(Context context) {
+        try {
+            String[] fileArr = context.getAssets().list("");
+            String fileName = null;
+            for (int i = 0; i < fileArr.length; i++) {
+                fileName = fileArr[i];
+                if (fileName.endsWith(FitConstants.MODULE_FILE_SUFFIX)) {
+                    String moduleJsonStr = AssetsUtil.getFromAssets(context, fileName);
+                    if (!TextUtils.isEmpty(moduleJsonStr)) {
+                        JSONObject jsonObject = JSON.parseObject(moduleJsonStr);
+                        setupModule(context, jsonObject);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void setupModule(Context context, JSONObject jsonObject) {
+        if (context == null || jsonObject == null || jsonObject.size() == 0) {
+            return;
+        }
+        String moduleName = null;
+        String className = null;
+        Class clazz = null;
+        for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+            moduleName = entry.getKey();
+            className = entry.getValue().toString();
+            parseModule(moduleName, className);
+        }
+    }
+
+    private static void parseModule(String moduleName, String className) {
+        try {
+            Class clazz = Class.forName(className);
+            if (WXComponent.class.isAssignableFrom(clazz)) {
+                FitLog.d(FitConstants.LOG_TAG, "registerComponent-->%s", className);
+                WXSDKEngine.registerComponent(moduleName, clazz, false);
+            } else if (WXModule.class.isAssignableFrom(clazz)) {
+                checkModule(clazz);
+                FitLog.d(FitConstants.LOG_TAG, "registerModule-->%s", className);
+                WXSDKEngine.registerModule(moduleName, clazz);
+            }
+        } catch (Exception e) {
+            FitLog.e(FitConstants.LOG_TAG, e);
+        }
+    }
+
+    private static void checkModule(Class clazz) {
+        Method[] methodArr = clazz.getDeclaredMethods();
+        Method method = null;
+        for (int i = 0; i < methodArr.length; i++) {
+            method = methodArr[i];
+            if (method.getAnnotation(JSMethod.class) != null) {
+                checkMethod(clazz, method);
+            }
+        }
+    }
+
+    private static void checkMethod(Class clazz, Method method) {
+        if (Modifier.isPublic(method.getModifiers()) && !Modifier.isStatic(method.getModifiers()) && method.getReturnType().toString().equals("void")) {
+            Class[] paramClassArr = method.getParameterTypes();
+            if (paramClassArr != null && paramClassArr.length == 3) {
+                if (paramClassArr[0] == JSONObject.class && paramClassArr[1] == JSCallback.class && paramClassArr[2] == JSCallback.class) {
+                    return;
+                }
+            }
+        }
+        throw new RuntimeException("module " + clazz.getCanonicalName() + " has JSMethod define error , the method is " + method.toString());
+    }
+
+}
+```
 
 ## 调用模块
 
