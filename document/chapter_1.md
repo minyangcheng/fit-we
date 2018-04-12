@@ -1,5 +1,51 @@
 # 如何使用模块
 
+## 模块功能实现思路
+
+### weex端
+1. 从api定义文件中获取到定义的模块名那（page.name）和方法名（page.apis[0].namespace），并且模块名和方法名都是和原生端定义的扩展模块文件一一对应
+2. 采用js的Object.defineProperty方法将以模块名命名的对象挂载在Vue原型对象上去
+3. 在每个模块内部定义方法，并以方法名称为api定义文件中的方法名
+4. 每个模块中的方法最终会调用到统一函数
+
+```javascript
+module.exports = function callInner(options, resolve, reject) {
+  var data = Object.assign({}, options);
+  data.success = undefined;
+  data.error = undefined;
+  var success = options.success;
+  if (!success) {
+    success = function () {
+    };
+  }
+  var error = options.error;
+  if (!error) {
+    error = function () {
+    };
+  }
+  var moduleName = this.api.moduleName;
+  var namespace = this.api.namespace;
+  var weexModule = weex.requireModule(moduleName);
+  if (weexModule && weexModule[namespace]) {
+    weexModule[namespace](data, function (value) {
+      success && success(value);
+      resolve && resolve(value);
+    }, function (err) {
+      error && error(err);
+      reject && reject(err);
+    });
+  } else {
+    var log = `weex can not find ${moduleName}.${namespace}`;
+    console.error(log);
+  }
+};
+```
+
+### 原生端
+1. 在app启动的时候，扫描所有以`_fit.json`结尾的文件
+2. 循环取出每个模块，如果该模块继承自`WXComponent`表示则该模块属于UI模块，直接注入weex中;如果继承自`WXModule`，则每个用`@JSMethod`注解的方法参数必须要为`JSONObject params, JSCallback successCallback, JSCallback errorCallback`，如果模块中出现一个不合法的方法，则会忽视该模块，否则注册。
+3. 原生端和weex端传输数据采用JSONObject，并且一定还要定义一个成功回调函数和一个失败回调函数
+
 ## 调用模块
 
 有两种调用方式：
@@ -154,7 +200,7 @@ public class UiModule extends WXModule {
 }
 ```
 
-### 调用外部扩展的模块
+## 调用外部扩展的模块
 
 调用$pay模块上的payMoney
 
@@ -168,8 +214,4 @@ this.$zeus.callApi({
             }).catch(err => {
               this.$ui.toast(JSON.stringify(err))
             });
-            break;
 ```
-
-
-
