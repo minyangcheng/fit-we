@@ -74,7 +74,10 @@ ios库正在开发中.......
 
 ## 打包（以android端为例）
 
-运行`npm run build`，将生成的zip包放入assets文件夹，命名为bundle.zip
+运行`npm run build`
+
+1. 将生成的zip包放入assets文件夹，命名为bundle.zip
+2. 将生成的zip包放入服务器，通过`FitConfiguration.setCheckApiHandler`实现自动更新
 
 ## 调试 （以android端为例）
 
