@@ -37,7 +37,7 @@ public class App extends Application {
                 public void checkRequest(ResourceCheck resourceCheck) {
                     checkApiRequest(resourceCheck);
                 }
-            }).addNativeParam("name", "minych");
+            }).addNativeParam("apiServer", "http://www.fitwe.com");
         FitWe.getInstance().init(configuration);
     }
 

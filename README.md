@@ -4,11 +4,12 @@ fit-we是一套weex开发工程化框架，无侵入且扩展性强，可以让�
 
 ## 目录
 
-1. [如何使用模块](./document/chapter_1.md)
-2. [如何使用事件通知](./document/chapter_2.md)
-3. [如何将weex页面打包](./document/chapter_3.md)
-3. [打包的zip文件原生端怎样使用](./document/chapter_4.md)
-3. [android端接入方法](./document/chapter_5.md)
+1. [如何接入](./document/chapter_5.md)
+2. [如何使用模块](./document/chapter_1.md)
+3. [如何使用事件通知](./document/chapter_2.md)
+4. [如何将weex页面打包](./document/chapter_3.md)
+5. [打包的zip文件原生端怎样使用](./document/chapter_4.md)
+
 
 
 
