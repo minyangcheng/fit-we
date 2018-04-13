@@ -123,8 +123,9 @@ public class ModuleLoader {
 
 }
 ```
+## 使用
 
-## 调用模块
+### 调用模块
 
 有两种调用方式：
 * 回调方式
@@ -156,7 +157,7 @@ this.$ui.alert({
             });
 ```
 
-## 前端定义api文件
+### 前端定义api文件
 
 api对象上的模块名和定义方法名、需要传递的参数、兼容调用处理。之后会根据这些信息在Vue的原型对象上，通过js Object.defineProperty
 生成一个以模块名命名的对象，该对象中的方法就是此处定义的方法。
@@ -189,7 +190,7 @@ module.exports = {
 }
 ```
 
-## 原生端定义module
+### 原生端定义module
 
 * 定义原生模块
 原生模块中的每个用`@JSMethod`注解的方法参数必须要为`JSONObject params, JSCallback successCallback, JSCallback errorCallback`，如果模块中出现一个不合法的方法，则会忽视该模块。
@@ -278,7 +279,7 @@ public class UiModule extends WXModule {
 }
 ```
 
-## 调用外部扩展的模块
+### 调用外部扩展的模块
 
 调用$pay模块上的payMoney
 
