@@ -8,8 +8,8 @@ function resolve(dir) {
   return path.join(__dirname, '../' + dir);
 }
 
-var include = resolve('src');
-var exclude = resolve('node_modules');
+var include = [resolve('src'),resolve('node_modules')];
+// var exclude = resolve('node_modules');
 
 module.exports = {
   entry: entryMap,
@@ -36,7 +36,7 @@ module.exports = {
           },
         ],
         include,
-        exclude,
+        // exclude,
       },
       {
         test: /\.js$/,
@@ -46,7 +46,7 @@ module.exports = {
           }
         ],
         include,
-        exclude,
+        // exclude,
       },
       {
         test: /\.(png|jpg|gif|jpeg)$/,

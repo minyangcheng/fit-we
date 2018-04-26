@@ -12,7 +12,7 @@
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'zeus(调用外部扩展的功能)','post(事件通知)','InfoPage(各个参数信息)'],
+        items: ['navigator', 'page', 'ui', 'tool', 'zeus(调用外部扩展的功能)','post(事件通知)','InfoPage(各个参数信息)','WeexUiPage'],
       }
     },
     created() {
@@ -53,6 +53,9 @@
             break;
           case 'InfoPage(各个参数信息)':
             this.$page.open('fit://page/InfoPage');
+            break;
+          case 'WeexUiPage':
+            this.$page.open('fit://page/WeexUiPage');
             break;
         }
       }
