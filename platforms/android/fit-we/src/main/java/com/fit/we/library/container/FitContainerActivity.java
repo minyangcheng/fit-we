@@ -2,11 +2,13 @@ package com.fit.we.library.container;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.fit.we.library.FitConstants;
 import com.fit.we.library.bean.RouteInfo;
+import com.fit.we.library.util.StatusBarUtil;
 
 /**
  * Created by minyangcheng on 2018/4/1.
@@ -28,6 +30,7 @@ public class FitContainerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        initStatusBar();
         super.onCreate(savedInstanceState);
         RouteInfo routeInfo = null;
         if (getIntent().hasExtra(FitConstants.KEY_ROUTE_INFO)) {
@@ -37,6 +40,13 @@ public class FitContainerActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
             .replace(android.R.id.content, mFitContainerFragment)
             .commit();
+    }
+
+    private void initStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarUtil.transparencyBar(this);
+            StatusBarUtil.statusBarLightMode(this);
+        }
     }
 
     @Override
