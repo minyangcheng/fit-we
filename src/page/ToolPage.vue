@@ -18,7 +18,7 @@
         switch (item) {
           case 'printLog':
             this.$tool.printLog('this is printLogTest');
-            this.$tool.printLog({name:'minych'});
+            this.$tool.printLog({name:'minych',a:1,b:2,c:null});
             break;
         }
       }

@@ -1,10 +1,10 @@
 <template>
-  <div style="align-items: center;">
+  <scroller>
     <div v-for="(item,index) in items" :key="index" @click="onItemClick(item,index)">
       <text class="item">{{item}}</text>
     </div>
-    <image style="margin:100px 0px;width:100px;height:100px" src="fit://assets/img/logo.png"></image>
-  </div>
+    <image style="margin:100px 0px;width:100px;height:100px;align-self: center" src="fit://assets/img/logo.png"></image>
+  </scroller>
 </template>
 
 <script>
@@ -38,7 +38,7 @@
             this.$router.open('fit://page/NavigatorPage','11');
             break;
           case 'page':
-            this.$router.open('fit://page/ActivityPage');
+            this.$router.open('fit://page/RouterPage');
             break;
           case 'tool':
             this.$router.open('fit://page/ToolPage');

@@ -1,5 +1,6 @@
 package com.fit.we.library.extend.module;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fit.we.library.FitConstants;
 import com.fit.we.library.util.FitLog;
@@ -11,7 +12,7 @@ public class ToolModule extends WXModule {
 
     @JSMethod(uiThread = true)
     public void printLog(JSONObject jsonObject, JSCallback successCallback, JSCallback errorCallback) {
-        FitLog.d(FitConstants.LOG_TAG, jsonObject.toJSONString());
+        FitLog.d(FitConstants.LOG_TAG, JSON.toJSONString(jsonObject, true));
     }
 
 }
