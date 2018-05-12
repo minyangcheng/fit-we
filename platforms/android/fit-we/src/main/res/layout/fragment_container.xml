@@ -7,7 +7,8 @@
     <com.fit.we.library.widget.NavigationBar
         android:id="@+id/view_nb"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"/>
 
     <FrameLayout
         android:id="@+id/weex_container"

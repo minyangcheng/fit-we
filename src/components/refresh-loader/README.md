@@ -1,112 +1,130 @@
-# mds-cell 
+## RefreshLoader
 
-> Weex 单元格组件，可用作展示列表信息、链接或者表单等  
+> 下拉刷新、上拉加载组件，可用于列表信息展示
 
 ### 规则
-  - 一般由主要信息、操作动作组成，信息在左、操作在右
-  - 可以对 `label, title, value` 进行 `slot` 覆盖
-  
+
+- 简化上拉刷新、下拉加载页面书写
+- 可以定制数据为空、数据加载异常页面显示数据和控制按钮功能
+- 将请求数据操作外置到外部页面，方便控制数据操作
+
 ## 使用方法
 
-```vue
+```javascript
 <template>
-  <div class="container">
-    <div class="demo">
-      <text class="demo-title">列表list展示</text>
-
-      <mds-cell label="标题"
-                title="Weex Ui"
-                :has-arrow="true"
-                @mdsCellClicked="mdsCellClicked"
-                :has-margin="true"></mds-cell>
-
-      <mds-cell label="标题"
-                title="带链接"
-                :has-arrow="true"
-                link="https://h5.m.taobao.com/trip/home/index.html"
-                @mdsCellClicked="mdsCellClicked"
-                spm="181.12312312.12312.d01"
-                :has-top-border="false"></mds-cell>
-
-      <mds-cell label="标题"
-                title="Weex Ui"
-                :has-arrow="true"
-                @mdsCellClicked="mdsCellClicked"
-                :has-top-border="false"></mds-cell>
-
+  <div>
+    <div style="width: 750px;height: 100px;align-items: center;justify-content: center;background-color: #ff5a37;">
+      <text style="font-size: 28px">refresh-loader sample</text>
     </div>
-    <div class="demo">
-      <text class="demo-title">不配置label</text>
-      <mds-cell title="标题"
-                :has-arrow="true"
-                @mdsCellClicked="mdsCellClicked"
-                :has-top-border="true"></mds-cell>
-    </div>
-
-    <div class="demo">
-      <text class="demo-title">配置附加信息</text>
-      <mds-cell title="标题"
-                desc="这里是附加信息"
-                :has-arrow="true"
-                @mdsCellClicked="mdsCellClicked"
-                :has-top-border="true"></mds-cell>
-    </div>
-
-    <div class="demo">
-      <text class="demo-title">不显示箭头</text>
-      <mds-cell title="标题"
-                :has-arrow="false"
-                @mdsCellClicked="mdsCellClicked"
-                :has-top-border="true"></mds-cell>
-    </div>
-    <div class="demo">
-      <text class="demo-title">自定义子元素</text>
-      <mds-cell title="这里是标题"
-                :has-arrow="false"
-                :has-top-border="true">
-        <switch slot="value"></switch>
-      </mds-cell>
-    </div>
+    <refresh-loader :fetch-data="fetchData" :disable-paging="false" @receiveData="receiveData" :showPagingFooter="false" ref="listView">
+      <cell>
+        <div style="width: 750px;height: 100px;align-items: center;justify-content: center">
+          <text>i am header</text>
+        </div>
+      </cell>
+      <cell v-for="(item,index) in dataList">
+        <div class="item">
+          <text class="item-text">{{item}}</text>
+        </div>
+      </cell>
+    </refresh-loader>
   </div>
 </template>
 
 <script>
-  import { MdsCell } from 'mds-ui';
+
+  import RefreshLoader from '../components/refresh-loader';
+
   export default {
-    components: { MdsCell },
+    components: {RefreshLoader},
+    data: () => ({
+      dataList: []
+    }),
     methods: {
-      mdsCellClicked (e) {
-        console.log(e)
+      fetchData(pagePos, pageSize) {
+        return new Promise(((resolve, reject) => {
+          setTimeout(() => {
+            let data = [];
+            let temp = pagePos * 5;
+            let index = temp;
+            while (index < temp + 15) {
+              data.push(index);
+              index++;
+            }
+            if (pagePos < 2) {
+              resolve({code: 10000, message: 'success', data});
+            } else {
+              data.pop();
+              // resolve({code: 10000, message: 'success', data: []});
+              reject({});
+            }
+            // reject({})
+          }, 2000);
+        }))
+      },
+      receiveData(dataList) {
+        this.dataList = dataList;
       }
-    }
-  };
+    },
+    created() {
+    },
+    mounted() {
+      this.$refs.listView.startLoad();
+      setTimeout(() => {
+        console.log('manual refresh')
+        this.$refs.listView.manualRefresh();
+      }, 6000);
+    },
+    computed: {}
+  }
 </script>
+<style scoped>
+
+  .item {
+    width: 750px;
+    height: 100px;
+    background-color: #cccccc;
+    margin: 5px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .item-text {
+    font-size: 30px;
+  }
+
+</style>
+
 ```
 
 ### 可配置参数
 
-| Prop      | Type   |Required  | Default   | Description  |
-|-------------|------------|--------|--------|-----|
-| label | `String` | `N`|  `-` |前置标签 |
-| title | `String` | `N`|  `-` |标题 |
-| desc  | `String` | `N`| `-` | 展示说明信息 |
-| link  | `String` | `N`| `-`| 跳转链接，无链接不跳转 |
-| arrow-icon | `String` | `N`|`箭头` |  覆盖右向箭头 |
-| has-arrow | `Bool` |`N`| `false` |  是否显示箭头 |
-| has-top-border | `Bool` | `N`| `false` |  是否有上边框 |
-| has-bottom-border | `Bool` | `N`| `true` | 是否有下边框 |
-| has-vertical-indent | `Bool` | `N`| `true` |  是否有垂直间距 |
-| has-margin | `Bool` |`N`| `false` | cell之间是否有margin |
-| cell-style | `Object` |`N`| `{}` | 自定义cell的样式 |
+| Prop             | Type       | Required | Default                                                    | Description                          |     |
+|:---------------- | ---------- | -------- | ---------------------------------------------------------- | ------------------------------------ | --- |
+| fetchData        | `Function` | `Y`      | `-`                                                        | 请求数据方法，返回Promise对象                   |     |
+| disablePaging    | `Boolean`  | `N`      | `false`                                                    | 是否禁用分页                               |     |
+| showPagingFooter | `Boolean`  | `N`      | `true`                                                     | 分页加载的时候是否显示                          |     |
+| emptyStatusSet   | `Object`   | `N`      | `{button: '点击加载', content: '暂无数据', handleFun: null}`       | 当数据为空时，界面显示配置，`handleFun`为点击按钮时的钩子   |     |
+| errorStatusSet   | `Object`   | `N`      | `{button: '点击重试', content: '网络异常,请稍后重试', handleFun: null}` | 当数据加载异常时，界面显示配置，`handleFun`为点击按钮时的钩子 |     |
+
 
 
 ### Slot
-1. `<slot name="label"></slot>`：label卡槽，替换默认 label 占位
-2. `<slot name="title"></slot>`：title卡槽，替换默认 title 占位
-3. `<slot name="value"></slot>`：右边卡槽，有需要传入输入框、checkbox的场景
+
+1. `<slot></slot>`：列表项卡槽
+
 
 
 ### 事件回调
-```
-//点击事件回调  `@mdsCellClicked="mdsCellClicked"`
-```
+
+1. `@receiveData="receiveData"`数据加载成功回调
+
+
+
+### 方法
+
+1. `this.$refs.listView.startLoad()`: 开始页面初次加载数据
+
+2. `this.$refs.listView.manualRefresh();`主动刷新列表
+
+

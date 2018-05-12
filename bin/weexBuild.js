@@ -1,18 +1,17 @@
 var path = require('path');
 var webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
-var entryMap = require('./scanResource');
+var scanResource = require('./scanResource');
 var listeneReCompilePlugin = require('./listeneReCompilePlugin');
 
 function resolve(dir) {
   return path.join(__dirname, '../' + dir);
 }
 
-var include = [resolve('src'),resolve('node_modules')];
-// var exclude = resolve('node_modules');
+var include = [resolve('src'), resolve('node_modules')];
 
 module.exports = {
-  entry: entryMap,
+  entry: () => new Promise(((resolve) => resolve(scanResource()))),
   output: {
     path: resolve('dist'),
     publicPath: '',
@@ -36,7 +35,6 @@ module.exports = {
           },
         ],
         include,
-        // exclude,
       },
       {
         test: /\.js$/,
@@ -46,7 +44,6 @@ module.exports = {
           }
         ],
         include,
-        // exclude,
       },
       {
         test: /\.(png|jpg|gif|jpeg)$/,
@@ -77,6 +74,17 @@ module.exports = {
       raw: true
     }),
     new CleanWebpackPlugin('dist', {root: resolve('')}),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        collapse_vars: true,
+        reduce_vars: true,
+      },
+      beautify: false,
+      comments: /{ "framework": "Vue" }/,
+      sourceMap: false,
+    })
   ]
 }
 
@@ -85,12 +93,12 @@ if (process.env.NODE_ENV === 'dev') {
     listeneReCompilePlugin,
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
-    })
+    }),
   ])
 } else if (process.env.NODE_ENV === 'prod') {
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': require('../config/prod.env')
-    })
+    }),
   ])
 }

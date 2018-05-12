@@ -3,7 +3,7 @@
     <div style="width: 750px;height: 100px;align-items: center;justify-content: center;background-color: #ff5a37;">
       <text style="font-size: 28px">refresh-loader sample</text>
     </div>
-    <refresh-loader :fetch-data="fetchData" :disable-paging="false" @receiveData="receiveData" ref="listView">
+    <refresh-loader :fetch-data="fetchData" :disable-paging="false" @receiveData="receiveData" :showPagingFooter="false" ref="listView">
       <cell>
         <div style="width: 750px;height: 100px;align-items: center;justify-content: center">
           <text>i am header</text>
@@ -20,11 +20,10 @@
 
 <script>
 
-  import {WxcLoading, WxcResult} from 'weex-ui';
   import RefreshLoader from '../components/refresh-loader';
 
   export default {
-    components: {WxcLoading, WxcResult, RefreshLoader},
+    components: {RefreshLoader},
     data: () => ({
       dataList: []
     }),
@@ -33,9 +32,9 @@
         return new Promise(((resolve, reject) => {
           setTimeout(() => {
             let data = [];
-            let temp = pagePos * pageSize;
+            let temp = pagePos * 5;
             let index = temp;
-            while (index < temp + pageSize) {
+            while (index < temp + 15) {
               data.push(index);
               index++;
             }

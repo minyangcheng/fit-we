@@ -9,7 +9,7 @@
         <loading-indicator class="refresh-loading-indicator"></loading-indicator>
       </refresh>
       <slot></slot>
-      <cell v-if="loading">
+      <cell v-if="showPagingFooter&&loading">
         <div class="loading">
           <text class="loading-text">加载中...</text>
         </div>
@@ -51,9 +51,13 @@
         type: Boolean,
         required: false,
       },
+      showPagingFooter:{
+        type: Boolean,
+        default: true
+      },
       emptyStatusSet: {
         type: Object,
-        default: {button: '点击重试', content: '暂无数据', handleFun: null}
+        default: {button: '点击加载', content: '暂无数据', handleFun: null}
       },
       errorStatusSet: {
         type: Object,

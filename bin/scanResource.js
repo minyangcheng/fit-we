@@ -1,11 +1,7 @@
 var path = require('path');
 var util= require('./util');
-var entryMap = {};
 
-scanPage();
-scanImg();
-
-function scanPage() {
+function scanPage(entryMap) {
   var pageDir = path.resolve(__dirname, '../src/page');
   var pageFiles = [];
   util.findFile(pageDir, new RegExp("Page\\.vue$"), pageFiles);
@@ -17,7 +13,7 @@ function scanPage() {
   });
 }
 
-function scanImg() {
+function scanImg(entryMap) {
   var pageDir = path.resolve(__dirname, '../src/assets/img');
   var pageFiles = [];
   util.findFile(pageDir,new RegExp("\\.(png|jpg|gif|jpeg)$"), pageFiles);
@@ -37,4 +33,9 @@ function getImgShortPath(str) {
   return 'temp/'+str.slice(str.lastIndexOf('/')+1);
 }
 
-module.exports = entryMap;
+module.exports = ()=>{
+  let entryMap = {};
+  scanPage(entryMap);
+  scanImg(entryMap);
+  return entryMap;
+};
