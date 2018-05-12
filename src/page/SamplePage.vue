@@ -35,31 +35,31 @@
       onItemClick(item, index) {
         switch (item) {
           case 'navigator':
-            this.$page.open('fit://page/NavigatorPage');
+            this.$router.open('fit://page/NavigatorPage','11');
             break;
           case 'page':
-            this.$page.open('fit://page/ActivityPage');
+            this.$router.open('fit://page/ActivityPage');
             break;
           case 'tool':
-            this.$page.open('fit://page/ToolPage');
+            this.$router.open('fit://page/ToolPage');
             break;
           case 'ui':
-            this.$page.open('fit://page/UiPage');
+            this.$router.open('fit://page/UiPage');
             break;
           case 'zeus(调用外部扩展的功能)':
-            this.$page.open('fit://page/ZeusPage');
+            this.$router.open('fit://page/ZeusPage');
             break;
           case 'post(事件通知)':
             this.$event.post('testType', {name: 'minych'});
             break;
           case 'InfoPage(各个参数信息)':
-            this.$page.open('fit://page/InfoPage');
+            this.$router.open('fit://page/InfoPage');
             break;
           case 'WeexUiPage':
-            this.$page.open('fit://page/WeexUiPage');
+            this.$router.open('fit://page/WeexUiPage');
             break;
           case 'TestPage':
-            this.$page.open('fit://page/TestPage');
+            this.$router.open('fit://page/TestPage');
             break;
         }
       }

@@ -1,7 +1,7 @@
 var messageHandlers = {};
 
 var globalEvent = weex.requireModule('globalEvent');
-var pageModule = weex.requireModule('$page');
+var eventModule = weex.requireModule('$event');
 
 globalEvent.addEventListener("eventbus", function (message) {
   console.log(`eventbus receive message=${message}`);
@@ -30,7 +30,7 @@ var off = function (eventName) {
 var post = function (type, data) {
   var success = () => console.log(`post event success type=${type} ,data=${data}`);
   var error = () => console.log(`post event fail type=${type} ,data=${data}`);
-  pageModule.postEvent({type, data}, success, error);
+  eventModule.postEvent({type, data}, success, error);
 }
 
 var plugin = {};

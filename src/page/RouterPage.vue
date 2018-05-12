@@ -19,22 +19,22 @@
       onItemClick(item, index) {
         switch (item) {
           case 'open':
-            this.$page.open({
+            this.$router.open({
               pagePath: 'fit://page/InfoPage',
               data: {name: 'minyangcheng'},
             });
             break;
           case 'openLocal':
-            this.$page.openLocal({
+            this.$router.openLocal({
               className: 'com.fit.we.sample.LocalActivity',
               data: {name: 'minych', age: 12},
             });
             break;
           case 'close':
-            this.$page.close();
+            this.$router.close();
             break;
           case 'reload':
-            this.$page.reload();
+            this.$router.reload();
             break;
         }
       }

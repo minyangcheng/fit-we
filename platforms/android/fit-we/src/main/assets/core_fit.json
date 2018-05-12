@@ -1,6 +1,7 @@
 {
     "$navigator": "com.fit.we.library.extend.module.NavigatorModule",
-    "$page": "com.fit.we.library.extend.module.PageModule",
+    "$router": "com.fit.we.library.extend.module.RouterModule",
+    "$event": "com.fit.we.library.extend.module.EventModule",
     "$tool": "com.fit.we.library.extend.module.ToolModule",
     "$ui": "com.fit.we.library.extend.module.UiModule"
 }

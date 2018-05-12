@@ -6,4 +6,3 @@ plugin.install = function (Vue, options) {
 }
 
 export default plugin;
-

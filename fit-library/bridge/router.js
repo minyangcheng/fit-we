@@ -2,7 +2,7 @@ import callInner from '../util/callInner';
 import {compatibleStringParamsToObject} from '../util/utils';
 
 export default {
-  moduleName: '$page',
+  moduleName: '$router',
   apis: [
     {
       namespace: 'open',
@@ -15,7 +15,7 @@ export default {
         data: {},
       },
       runCode(...rest) {
-        const args = compatibleStringParamsToObject.call(this, rest, 'pagePath');
+        const args = compatibleStringParamsToObject.call(this, rest, 'pagePath', 'title');
         callInner.apply(this, args);
       },
     },
@@ -33,12 +33,16 @@ export default {
       namespace: 'reload',
     },
     {
-      namespace: 'postEvent',
-      defaultParams: {
-        type: "",
-        data: {},
+      namespace: 'getRouteParams',
+      runCode(...rest) {
+        return weex.config.routeInfo.data;
+      }
+    },
+    {
+      namespace: 'getRouteInfo',
+      runCode(...rest) {
+        return weex.config.routeInfo;
       }
     }
-
   ]
 }

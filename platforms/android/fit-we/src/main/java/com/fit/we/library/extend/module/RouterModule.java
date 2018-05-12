@@ -16,7 +16,7 @@ import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
 
-public class PageModule extends WXModule {
+public class RouterModule extends WXModule {
 
     /**
      * 打开新的H5页面
