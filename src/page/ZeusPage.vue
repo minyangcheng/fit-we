@@ -18,8 +18,8 @@
         switch (item) {
           case 'callApi':
             this.$zeus.callApi({
-              module: '$pay',
-              name: 'payMoney',
+              moduleName: '$pay',
+              namespace: 'payMoney',
               money: '100',
             }).then((value) => {
               this.$ui.toast(JSON.stringify(value))

@@ -8,8 +8,6 @@ function resolve(dir) {
   return path.join(__dirname, '../' + dir);
 }
 
-var include = [resolve('src'), resolve('node_modules')];
-
 module.exports = {
   entry: () => new Promise(((resolve) => resolve(scanResource()))),
   output: {
@@ -34,7 +32,6 @@ module.exports = {
             }
           },
         ],
-        include,
       },
       {
         test: /\.js$/,
@@ -43,7 +40,6 @@ module.exports = {
             loader: 'babel-loader'
           }
         ],
-        include,
       },
       {
         test: /\.(png|jpg|gif|jpeg)$/,

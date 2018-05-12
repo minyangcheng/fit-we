@@ -38,4 +38,4 @@ plugin.install = function (Vue, options) {
   Vue.prototype.$event = {on, off, post};
 }
 
-module.exports = plugin;
+export default plugin;

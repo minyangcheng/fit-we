@@ -1,6 +1,6 @@
-import bridgePlugin from './bridge/bridgePlugin';
-import eventBusPlugin from './eventBusPlugin';
-import zeusPlugin from './zeusPlugin';
+import bridgePlugin from './plugin/bridgePlugin';
+import eventBusPlugin from './plugin/eventBusPlugin';
+import zeusPlugin from './plugin/zeusPlugin';
 
 Vue.use(bridgePlugin);
 Vue.use(eventBusPlugin);

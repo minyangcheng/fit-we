@@ -41,9 +41,9 @@
             if (pagePos < 2) {
               resolve({code: 10000, message: 'success', data});
             } else {
-              data.pop();
-              // resolve({code: 10000, message: 'success', data: []});
-              reject({});
+              // data.pop();
+              resolve({code: 10000, message: 'success', data: []});
+              // reject({});
             }
             // reject({})
           }, 2000);

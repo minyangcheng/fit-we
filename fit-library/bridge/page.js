@@ -1,8 +1,8 @@
-var callInner = require('../callInner');
-var {compatibleStringParamsToObject} = require('../moduleUtil');
+import callInner from '../util/callInner';
+import {compatibleStringParamsToObject} from '../util/utils';
 
-module.exports = {
-  name: '$page',
+export default {
+  moduleName: '$page',
   apis: [
     {
       namespace: 'open',

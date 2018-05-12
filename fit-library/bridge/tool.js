@@ -1,8 +1,8 @@
-var callInner = require('../callInner');
-var {compatibleStringParamsToObject} = require('../moduleUtil');
+import callInner from '../util/callInner';
+import {compatibleStringParamsToObject} from '../util/utils';
 
-module.exports = {
-  name: '$tool',
+export default {
+  moduleName: '$tool',
   apis: [
     {
       namespace: 'printLog',
