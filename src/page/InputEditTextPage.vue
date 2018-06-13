@@ -1,14 +1,24 @@
 <template>
-  <div>
+  <scroller style="flex: 1">
+    <text>111111</text>
     <text class="btn" @click="clear">clear</text>
     <text class="btn" @click="show">show</text>
     <text class="btn" @click="setInputText">setInputText</text>
     <text class="btn" @click="getInputText">getInputText</text>
     <text class="btn" @click="setKeyType">setKeyType</text>
-    <!--<input class="input" ref="aa" :value="value" @input="onInputEvent" />-->
     <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
                    return-key-type="search" @input="onInputEvent" :disabled="false"/>
-  </div>
+    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
+    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
+    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
+    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
+    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
+  </scroller>
 </template>
 
 <script>
@@ -18,7 +28,7 @@
         num: 2,
         value: '',
         keyType: 'decimal',
-        temp:true
+        temp: true
       }
     },
     created() {
@@ -27,23 +37,23 @@
       clear() {
         this.$refs.inputRef.clear();
       },
-      show(){
+      show() {
         this.$refs.inputRef.show(false);
       },
-      setInputText(){
+      setInputText() {
         this.num++;
         this.$refs.inputRef.setInputText(this.num);
       },
-      getInputText(){
-        console.log('getInputText: '+this.value)
-        this.$ui.toast('-->'+this.value)
+      getInputText() {
+        console.log('getInputText: ' + this.value)
+        this.$ui.toast('-->' + this.value)
       },
-      setKeyType(){
-        this.keyType='decimal';
+      setKeyType() {
+        this.keyType = 'decimal';
       },
       onInputEvent(e) {
-        this.value=e.value;
-        this.$ui.toast('-->'+this.value)
+        this.value = e.value;
+        this.$ui.toast('-->' + this.value)
         console.log('onInputEvent: ' + e.value)
       }
     }

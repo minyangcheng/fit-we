@@ -12,8 +12,8 @@
   export default {
     data() {
       return {
-        items: ['navigator', 'page', 'ui', 'tool', 'zeus(调用外部扩展的功能)','post(事件通知)','InfoPage(各个参数信息)','WeexUiPage',
-                  'TestPage'],
+        items: ['navigator模块', 'page模块', 'ui模块', 'tool模块', 'zeus调用外部扩展的功能','post事件通知','InfoPage页面公共参数信息','weex-ui库的使用',
+                  'InputEditText控件','测试调试页面'],
       }
     },
     created() {
@@ -34,31 +34,34 @@
     methods: {
       onItemClick(item, index) {
         switch (item) {
-          case 'navigator':
+          case 'navigator模块':
             this.$router.open('fit://page/NavigatorPage','11');
             break;
-          case 'page':
+          case 'page模块':
             this.$router.open('fit://page/RouterPage');
             break;
-          case 'tool':
+          case 'tool模块':
             this.$router.open('fit://page/ToolPage');
             break;
-          case 'ui':
+          case 'ui模块':
             this.$router.open('fit://page/UiPage');
             break;
-          case 'zeus(调用外部扩展的功能)':
+          case 'zeus调用外部扩展的功能':
             this.$router.open('fit://page/ZeusPage');
             break;
-          case 'post(事件通知)':
+          case 'post事件通知':
             this.$event.post('testType', {name: 'minych'});
             break;
-          case 'InfoPage(各个参数信息)':
+          case 'InfoPage页面公共参数信息':
             this.$router.open('fit://page/InfoPage');
             break;
-          case 'WeexUiPage':
+          case 'weex-ui库的使用':
             this.$router.open('fit://page/WeexUiPage');
             break;
-          case 'TestPage':
+          case 'InputEditText控件':
+            this.$router.open('fit://page/InputEditTextPage');
+            break;
+          case '测试调试页面':
             this.$router.open('fit://page/TestPage');
             break;
         }
