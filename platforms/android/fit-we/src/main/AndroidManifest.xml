@@ -44,8 +44,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <service android:name=".service.HotRefreshService"/>
-        <activity android:name=".container.FitWeDebugActivity"/>
+        <service android:name=".service.HotRefreshService" />
+        <activity android:name=".container.FitWeDebugActivity" />
     </application>
 
 </manifest>

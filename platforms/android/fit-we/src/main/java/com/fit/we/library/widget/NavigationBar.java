@@ -128,15 +128,11 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
     }
 
     public void hide() {
-        if (nbRoot != null) {
-            nbRoot.setVisibility(View.GONE);
-        }
+        this.setVisibility(View.GONE);
     }
 
     public void show() {
-        if (nbRoot != null) {
-            nbRoot.setVisibility(View.VISIBLE);
-        }
+        this.setVisibility(View.VISIBLE);
     }
 
     public void hideLine() {
