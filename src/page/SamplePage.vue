@@ -62,7 +62,14 @@
             this.$router.open('fit://page/InputEditTextPage');
             break;
           case '测试调试页面':
-            this.$router.open('fit://page/TestPage');
+            // this.$router.open('fit://page/TestPage');
+            var navigator = weex.requireModule('navigator')
+            navigator.push({
+              url: 'http://10.10.12.203:8888/page/InputEditTextPage.js',
+              animated: 'false'
+            }, event => {
+                weex.requireModule('modal').toast({ message: 'callback: ' + event })
+            })
             break;
         }
       }

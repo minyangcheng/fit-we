@@ -1,5 +1,5 @@
 <template>
-  <scroller style="flex: 1">
+  <scroller>
     <text>111111</text>
     <text class="btn" @click="clear">clear</text>
     <text class="btn" @click="show">show</text>
@@ -16,7 +16,11 @@
                    return-key-type="search" @input="onInputEvent" :disabled="false"/>
     <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
                    return-key-type="search" @input="onInputEvent" :disabled="false"/>
+    <input class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+           return-key-type="search" @input="onInputEvent" :disabled="false"/>
     <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
+                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
+    <input class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
                    return-key-type="search" @input="onInputEvent" :disabled="false"/>
   </scroller>
 </template>
