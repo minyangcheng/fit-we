@@ -1,5 +1,6 @@
 package com.fit.we.library.extend.module;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -27,19 +28,17 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void toast(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            String message = params.getString("message");
-            String duration = params.getString("duration");
-            if (!TextUtils.isEmpty(message)) {
-                if ("long".equalsIgnoreCase(duration)) {
-                    Toast.makeText(container.getActivity(), message, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(container.getActivity(), message, Toast.LENGTH_SHORT).show();
-                }
+        Context context = mWXSDKInstance.getContext();
+        String message = params.getString("message");
+        String duration = params.getString("duration");
+        if (!TextUtils.isEmpty(message)) {
+            if ("long".equalsIgnoreCase(duration)) {
+                Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
             }
-            successCallback.invoke(null);
         }
+        successCallback.invoke(null);
     }
 
     /**
@@ -53,40 +52,38 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void alert(JSONObject params, final JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            String title = params.getString("title");
-            String message = params.getString("message");
-            JSONArray jsonArray = params.getJSONArray("buttonLabels");
-            String btnName_1 = null;
-            String btnName_2 = null;
-            if (jsonArray != null && jsonArray.size() > 0) {
-                if (jsonArray.size() == 1) {
-                    btnName_1 = jsonArray.getString(0);
-                } else {
-                    btnName_1 = jsonArray.getString(0);
-                    btnName_2 = jsonArray.getString(1);
-                }
+        Context context = mWXSDKInstance.getContext();
+        String title = params.getString("title");
+        String message = params.getString("message");
+        JSONArray jsonArray = params.getJSONArray("buttonLabels");
+        String btnName_1 = null;
+        String btnName_2 = null;
+        if (jsonArray != null && jsonArray.size() > 0) {
+            if (jsonArray.size() == 1) {
+                btnName_1 = jsonArray.getString(0);
             } else {
-                btnName_1 = "确定";
+                btnName_1 = jsonArray.getString(0);
+                btnName_2 = jsonArray.getString(1);
             }
-            boolean cancelable = !"0".equals(params.getString("cancelable"));
-            DialogUtil.showAlertDialog(container.getActivity(), title, message, btnName_1, btnName_2, cancelable, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    JSONObject data = new JSONObject();
-                    data.put("which", 0);
-                    successCallback.invoke(data);
-                }
-            }, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    JSONObject data = new JSONObject();
-                    data.put("which", 1);
-                    successCallback.invoke(data);
-                }
-            });
+        } else {
+            btnName_1 = "确定";
         }
+        boolean cancelable = !"0".equals(params.getString("cancelable"));
+        DialogUtil.showAlertDialog(context, title, message, btnName_1, btnName_2, cancelable, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                JSONObject data = new JSONObject();
+                data.put("which", 0);
+                successCallback.invoke(data);
+            }
+        }, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                JSONObject data = new JSONObject();
+                data.put("which", 1);
+                successCallback.invoke(data);
+            }
+        });
     }
 
     /**
@@ -98,20 +95,18 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void pickDate(JSONObject params, final JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            String title = params.getString("title");
-            String dateFormatStr = params.getString("dateFormat");
-            String date = params.getString("datetime");
-            DialogUtil.showDateDialog(container.getActivity(), title, dateFormatStr, date, true, new DialogUtil.OnDateDialogListener() {
-                @Override
-                public void onDataSelect(String dateStr) {
-                    JSONObject result = new JSONObject();
-                    result.put("date", dateStr);
-                    successCallback.invoke(result);
-                }
-            });
-        }
+        Context context = mWXSDKInstance.getContext();
+        String title = params.getString("title");
+        String dateFormatStr = params.getString("dateFormat");
+        String date = params.getString("datetime");
+        DialogUtil.showDateDialog(context, title, dateFormatStr, date, true, new DialogUtil.OnDateDialogListener() {
+            @Override
+            public void onDataSelect(String dateStr) {
+                JSONObject result = new JSONObject();
+                result.put("date", dateStr);
+                successCallback.invoke(result);
+            }
+        });
     }
 
     /**
@@ -123,20 +118,18 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void pickMonth(JSONObject params, final JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            String title = params.getString("title");
-            String dateFormatStr = params.getString("dateFormat");
-            String date = params.getString("datetime");
-            DialogUtil.showDateDialog(container.getActivity(), title, dateFormatStr, date, false, new DialogUtil.OnDateDialogListener() {
-                @Override
-                public void onDataSelect(String dateStr) {
-                    JSONObject result = new JSONObject();
-                    result.put("date", dateStr);
-                    successCallback.invoke(result);
-                }
-            });
-        }
+        Context context = mWXSDKInstance.getContext();
+        String title = params.getString("title");
+        String dateFormatStr = params.getString("dateFormat");
+        String date = params.getString("datetime");
+        DialogUtil.showDateDialog(context, title, dateFormatStr, date, false, new DialogUtil.OnDateDialogListener() {
+            @Override
+            public void onDataSelect(String dateStr) {
+                JSONObject result = new JSONObject();
+                result.put("date", dateStr);
+                successCallback.invoke(result);
+            }
+        });
     }
 
     /**
@@ -149,20 +142,18 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void pickTime(JSONObject params, final JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            String title = params.getString("title");
-            String timeFormat = params.getString("timeFormat");
-            final String time = params.getString("time");
-            DialogUtil.showTimeDialog(container.getActivity(), title, timeFormat, time, new DialogUtil.OnTimeDialogListener() {
-                @Override
-                public void onTimeSelect(String timeStr) {
-                    JSONObject result = new JSONObject();
-                    result.put("time", timeStr);
-                    successCallback.invoke(result);
-                }
-            });
-        }
+        Context context = mWXSDKInstance.getContext();
+        String title = params.getString("title");
+        String timeFormat = params.getString("timeFormat");
+        final String time = params.getString("time");
+        DialogUtil.showTimeDialog(context, title, timeFormat, time, new DialogUtil.OnTimeDialogListener() {
+            @Override
+            public void onTimeSelect(String timeStr) {
+                JSONObject result = new JSONObject();
+                result.put("time", timeStr);
+                successCallback.invoke(result);
+            }
+        });
     }
 
     /**

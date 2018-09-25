@@ -65,7 +65,7 @@
             // this.$router.open('fit://page/TestPage');
             var navigator = weex.requireModule('navigator')
             navigator.push({
-              url: 'http://10.10.12.203:8888/page/InputEditTextPage.js',
+              url: 'http://10.10.12.170:8888/page/InputEditTextPage.js',
               animated: 'false'
             }, event => {
                 weex.requireModule('modal').toast({ message: 'callback: ' + event })

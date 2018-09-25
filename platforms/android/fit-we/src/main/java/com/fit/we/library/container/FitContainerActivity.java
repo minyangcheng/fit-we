@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.fit.we.library.FitConstants;
-import com.fit.we.library.bean.RouteInfo;
+import com.fit.we.library.bean.Route;
 import com.fit.we.library.util.StatusBarUtil;
 
 /**
@@ -15,26 +15,27 @@ import com.fit.we.library.util.StatusBarUtil;
  */
 public class FitContainerActivity extends AppCompatActivity {
 
-    FitContainerFragment mFitContainerFragment;
+    private FitContainerFragment mFitContainerFragment;
 
-    public static void startActivity(Context context, RouteInfo routeInfo) {
+    public static void startActivity(Context context, Route routeInfo) {
         Intent intent = new Intent(context, FitContainerActivity.class);
         intent.putExtra(FitConstants.KEY_ROUTE_INFO, routeInfo);
         context.startActivity(intent);
     }
 
-    public static void startActivity(Context context, String url) {
-        RouteInfo routeInfo = new RouteInfo(url);
-        startActivity(context, routeInfo);
+    public static void startActivity(Context context, String pageUri) {
+        startActivity(context, Route.createRoute()
+            .setPageUri(pageUri)
+        );
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         initStatusBar();
         super.onCreate(savedInstanceState);
-        RouteInfo routeInfo = null;
+        Route routeInfo = null;
         if (getIntent().hasExtra(FitConstants.KEY_ROUTE_INFO)) {
-            routeInfo = (RouteInfo) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE_INFO);
+            routeInfo = (Route) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE_INFO);
         }
         mFitContainerFragment = FitContainerFragment.newInstance(routeInfo);
         getSupportFragmentManager().beginTransaction()

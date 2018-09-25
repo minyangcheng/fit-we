@@ -2,25 +2,20 @@
   <scroller>
     <text>111111</text>
     <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
+    <text class="btn" @click="clear">clear</text>
     <text class="btn" @click="show">show</text>
     <text class="btn" @click="setInputText">setInputText</text>
     <text class="btn" @click="getInputText">getInputText</text>
     <text class="btn" @click="setKeyType">setKeyType</text>
     <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <input class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-           return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <InputEditText class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
-                   return-key-type="search" @input="onInputEvent" :disabled="false"/>
-    <input class="input" ref="inputRef" :value="value" :decimal-len="2" placeholder="this is placeholder"
                    return-key-type="search" @input="onInputEvent" :disabled="false"/>
   </scroller>
 </template>

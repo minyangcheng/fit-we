@@ -3,10 +3,10 @@ package com.fit.we.library.extend.module;
 import android.view.View;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fit.we.library.R;;
+import com.fit.we.library.R;
 import com.fit.we.library.container.FitContainerFragment;
-import com.fit.we.library.util.NavigationBarEventHandler;
 import com.fit.we.library.util.DeviceUtil;
+import com.fit.we.library.util.NavigationBarEventHandler;
 import com.fit.we.library.util.UiUtil;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;

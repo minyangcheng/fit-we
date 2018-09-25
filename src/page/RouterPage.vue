@@ -20,7 +20,7 @@
         switch (item) {
           case 'open':
             this.$router.open({
-              pagePath: 'fit://page/InfoPage',
+              pageUri: 'fit://page/InfoPage',
               data: {name: 'minyangcheng'},
             });
             break;

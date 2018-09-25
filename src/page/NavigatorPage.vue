@@ -89,7 +89,6 @@
               text: '设置',
               isShow: 1,
               success(result) {
-                Vue.prototype.$ui.toast(JSON.stringify(result));
               },
               error(error) {
 

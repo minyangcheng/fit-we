@@ -7,15 +7,15 @@ export default {
     {
       namespace: 'open',
       defaultParams: {
-        pageStyle: 1,
-        orientation: 1,
-        pagePath: '',
+        showNavigationBar: true,
+        screenOrientation: 1,
+        pageUri: '',
         title: '',
         showBackBtn: true,
         data: {},
       },
       runCode(...rest) {
-        const args = compatibleStringParamsToObject.call(this, rest, 'pagePath', 'title');
+        const args = compatibleStringParamsToObject.call(this, rest, 'pageUri', 'title');
         callInner.apply(this, args);
       },
     },

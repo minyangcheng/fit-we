@@ -15,7 +15,7 @@ import com.fit.we.library.FitConstants;
 import com.fit.we.library.FitWe;
 import com.fit.we.library.R;
 import com.fit.we.library.bean.FitEvent;
-import com.fit.we.library.bean.RouteInfo;
+import com.fit.we.library.bean.Route;
 import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.NavigationBarEventHandler;
@@ -43,7 +43,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     public FrameLayout mWeexContainer;
 
     private WXSDKInstance mWXSDKInstance;
-    private RouteInfo mRouteInfo;
+    private Route mRoute;
 
     private NavigationBarEventHandler mNbEventHandler;
 
@@ -52,7 +52,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     private HudDialog mHudDialog;
 
-    public static FitContainerFragment newInstance(RouteInfo routeInfo) {
+    public static FitContainerFragment newInstance(Route routeInfo) {
         FitContainerFragment fragment = new FitContainerFragment();
         Bundle args = new Bundle();
         args.putSerializable(FitConstants.KEY_ROUTE_INFO, routeInfo);
@@ -125,16 +125,16 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
                 mNbEventHandler.onClickNbTitle(0);
             }
         });
-        if (!mRouteInfo.showBackBtn) {
+        if (!mRoute.isShowBackBtn()) {
             mNavigationBar.hideNbBack();
         }
-        if (mRouteInfo.orientation >= ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED && mRouteInfo.orientation <= ActivityInfo.SCREEN_ORIENTATION_LOCKED) {
-            getActivity().setRequestedOrientation(mRouteInfo.orientation);
+        if (mRoute.getScreenOrientation() >= ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED && mRoute.getScreenOrientation() <= ActivityInfo.SCREEN_ORIENTATION_LOCKED) {
+            getActivity().setRequestedOrientation(mRoute.getScreenOrientation());
         }
-        if (!TextUtils.isEmpty(mRouteInfo.title)) {
-            mNavigationBar.setNbTitle(mRouteInfo.title);
+        if (!TextUtils.isEmpty(mRoute.getTitle())) {
+            mNavigationBar.setNbTitle(mRoute.getTitle());
         }
-        if (mRouteInfo.pageStyle == -1) {
+        if (!mRoute.isShowNavigationBar()) {
             mNavigationBar.hide();
         }
     }
@@ -176,18 +176,18 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     private void render() {
         mWXSDKInstance = new WXSDKInstance(getActivity());
         mWXSDKInstance.registerRenderListener(this);
-        String uri = UriHandler.handlePageUri(getActivity(), mRouteInfo.pagePath);
-        mRouteInfo.uri = uri;
+        String uri = UriHandler.handlePageUri(getActivity(), mRoute.getPageUri());
+        mRoute.setPageUri(uri);
         HashMap<String, Object> options = new HashMap<>();
         options.put(WXSDKInstance.BUNDLE_URL, uri);
-        options.put(FitConstants.KEY_ROUTE_INFO, mRouteInfo);
+        options.put(FitConstants.KEY_ROUTE_INFO, mRoute);
         options.put(FitConstants.KEY_NATIVE_PARAMS, FitWe.getInstance().getConfiguration().getNativeParams());
         if (uri.startsWith("http")) {
             mWXSDKInstance.renderByUrl(uri, uri, options, null, WXRenderStrategy.APPEND_ASYNC);
         } else {
             mWXSDKInstance.render(uri, WXFileUtils.loadFileOrAsset(uri, getActivity()), options, null, WXRenderStrategy.APPEND_ASYNC);
         }
-        FitLog.d(FitConstants.LOG_TAG, "load page route=%s", JSON.toJSONString(mRouteInfo));
+        FitLog.d(FitConstants.LOG_TAG, "load page route=%s", JSON.toJSONString(mRoute));
     }
 
     public void refresh() {
@@ -200,9 +200,9 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     private void getDataFromArguments() {
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(FitConstants.KEY_ROUTE_INFO)) {
-            mRouteInfo = (RouteInfo) bundle.getSerializable(FitConstants.KEY_ROUTE_INFO);
+            mRoute = (Route) bundle.getSerializable(FitConstants.KEY_ROUTE_INFO);
         }
-        if (mRouteInfo == null || TextUtils.isEmpty(mRouteInfo.pagePath) || !mRouteInfo.pagePath.startsWith("fit://")) {
+        if (mRoute == null || TextUtils.isEmpty(mRoute.getPageUri()) || !mRoute.getPageUri().startsWith("fit://")) {
             getActivity().finish();
         }
     }
@@ -278,12 +278,12 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     @Override
     public void onRefreshSuccess(WXSDKInstance instance, int width, int height) {
-        FitLog.d(TAG, "routeInfo=%s onRefreshSuccess", JSON.toJSONString(mRouteInfo));
+        FitLog.d(TAG, "routeInfo=%s onRefreshSuccess", JSON.toJSONString(mRoute));
     }
 
     @Override
     public void onException(WXSDKInstance instance, String errCode, String msg) {
-        FitLog.e(TAG, "routeInfo=%s onException msg=%s", JSON.toJSONString(mRouteInfo), msg);
+        FitLog.e(TAG, "routeInfo=%s onException msg=%s", JSON.toJSONString(mRoute), msg);
     }
 
     public void showHudDialog(String message, boolean cancelable) {
