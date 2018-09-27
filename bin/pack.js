@@ -33,9 +33,9 @@ var nowTime = moment().format('YYYY-MM-DD-HHmmss');
 var zipPath = packagesPath + '/bundle-' + npmConfig.version + '-' + nowTime + '.zip';
 
 var buildConfigData = {
-  version: npmConfig.version,
+  version: npmConfig.version + '.' +(new Date()).getTime(),
   signature: signature(distPath),
-  weexReversion: getGitReversionNumber()
+  gitRevision: getGitRevisionNumber()
 };
 
 deleteAll(tempPath);
@@ -143,7 +143,7 @@ function findNeedSignatureFiles(dir, resultFiles) {
 
 }
 
-function getGitReversionNumber() {
+function getGitRevisionNumber() {
   var reversion = shell.exec('git rev-parse --short HEAD');
   return reversion.toString().trim();
 }

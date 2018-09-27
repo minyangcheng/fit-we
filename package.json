@@ -1,13 +1,13 @@
 {
   "name": "fit-we",
-  "version": "1.0.3",
+  "version": "1.0.0",
   "description": "fit weex project",
   "author": "minych",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=dev node bin/weexDev.js",
-    "build_": "cross-env NODE_ENV=prod webpack --progress --config bin/weexBuild.js",
-    "build": "cross-env NODE_ENV=prod webpack --progress --config bin/weexBuild.js",
+    "build_": "cross-env NODE_ENV=build webpack --progress --config bin/weexBuild.js",
+    "build": "cross-env NODE_ENV=build webpack --progress --config bin/weexBuild.js",
     "postbuild": "node bin/pack.js"
   },
   "keywords": [
@@ -60,7 +60,6 @@
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-dev-server": "^2.9.7",
-    "webpack-merge": "^4.1.0",
     "webpack-uglify-parallel": "^0.1.4",
     "weex-loader": "^0.7.2",
     "weex-vue-precompiler": "^0.1.17",

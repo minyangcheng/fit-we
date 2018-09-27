@@ -1,9 +1,4 @@
-'use strict'
-
-let version=process.env.npm_package_version
-version='"'+version+'"';
-
 module.exports = {
-  NODE_ENV: '"prod"',
-  VERSION:version
+  NODE_ENV: 'prod',
+  VERSION: '1.0.0'
 }

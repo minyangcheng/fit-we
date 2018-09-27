@@ -86,15 +86,6 @@ module.exports = {
 
 if (process.env.NODE_ENV === 'dev') {
   module.exports.plugins = (module.exports.plugins || []).concat([
-    listeneReCompilePlugin,
-    new webpack.DefinePlugin({
-      'process.env': require('../config/dev.env')
-    }),
-  ])
-} else if (process.env.NODE_ENV === 'prod') {
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new webpack.DefinePlugin({
-      'process.env': require('../config/prod.env')
-    }),
+    listeneReCompilePlugin
   ])
 }

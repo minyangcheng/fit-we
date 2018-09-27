@@ -17,10 +17,8 @@
       }
     },
     created() {
-      let version = process.env.VERSION;
       this.$navigator.setTitle({
-        title: 'main',
-        subTitle: 'v' + version + '  '
+        title: 'FitWe3',
       });
     },
     mounted() {
