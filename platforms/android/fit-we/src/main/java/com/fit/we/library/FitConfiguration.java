@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.fit.we.library.resource.CheckApiHandler;
+import com.fit.we.library.util.SharePreferenceUtil;
 import com.taobao.weex.adapter.IWXImgLoaderAdapter;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class FitConfiguration {
 
     private Application application;
-    private String hostServer;
+    private String fitWeServer;
     private CheckApiHandler checkApiHandler;
     private IWXImgLoaderAdapter imageAdapter;
     private Map<String, String> nativeParams = new HashMap<>();
@@ -38,12 +39,18 @@ public class FitConfiguration {
         return application;
     }
 
-    public String getHostServer() {
-        return hostServer;
+    public String getFitWeServer() {
+        if (FitWe.getInstance().getConfiguration().isDebug()) {
+            String str = SharePreferenceUtil.getFitWeServer(application.getApplicationContext());
+            if (!TextUtils.isEmpty(str)) {
+                fitWeServer = str;
+            }
+        }
+        return fitWeServer;
     }
 
-    public FitConfiguration setHostServer(String hostServer) {
-        this.hostServer = hostServer;
+    public FitConfiguration setFitWeServer(String fitWeServer) {
+        this.fitWeServer = fitWeServer;
         return this;
     }
 

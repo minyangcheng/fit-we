@@ -1,6 +1,5 @@
 package com.fit.we.library.service;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,9 +9,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.fit.we.library.FitWe;
-import com.fit.we.library.container.FitContainerActivity;
-import com.fit.we.library.container.FitContainerFragment;
-import com.fit.we.library.util.ActivityHandler;
+import com.fit.we.library.bean.RefreshWeexPage;
+import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.FitUtil;
 
@@ -61,7 +59,7 @@ public class HotRefreshService extends Service {
 
     private void createWbSocketConn() {
         try {
-            String url = FitWe.getInstance().getConfiguration().getHostServer();
+            String url = FitWe.getInstance().getConfiguration().getFitWeServer();
             if (TextUtils.isEmpty(url)) {
                 return;
             }
@@ -101,12 +99,13 @@ public class HotRefreshService extends Service {
     }
 
     private void refresh() {
-        Activity activity = ActivityHandler.getTop();
-        if (activity instanceof FitContainerActivity) {
-            FitContainerActivity containerActivity = (FitContainerActivity) activity;
-            FitContainerFragment fragment = containerActivity.getContainerFragment();
-            fragment.refresh();
-        }
+//        Activity activity = ActivityHandler.getTop();
+//        if (activity instanceof FitContainerActivity) {
+//            FitContainerActivity containerActivity = (FitContainerActivity) activity;
+//            FitContainerFragment fragment = containerActivity.getContainerFragment();
+//            fragment.refresh();
+//        }
+        EventUtil.post(new RefreshWeexPage());
     }
 
     @Override

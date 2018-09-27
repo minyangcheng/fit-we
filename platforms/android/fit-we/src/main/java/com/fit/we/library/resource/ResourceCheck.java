@@ -3,14 +3,18 @@ package com.fit.we.library.resource;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fit.we.library.FitConstants;
-import com.fit.we.library.util.FitLog;
+import com.fit.we.library.bean.ReceiveNewVersionEvent;
 import com.fit.we.library.net.DownloadManager;
 import com.fit.we.library.net.FileCallBack;
+import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FileUtil;
+import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.FitUtil;
 import com.fit.we.library.util.Md5Util;
 import com.fit.we.library.util.SharePreferenceUtil;
+import com.fit.we.library.util.SignatureUtil;
 
 import java.io.File;
 
@@ -29,11 +33,9 @@ public class ResourceCheck {
         if (mCurrentStatus == FitConstants.Version.UPDATING || TextUtils.isEmpty(SharePreferenceUtil.getVersion(mContext))) {
             return;
         }
-        if (SharePreferenceUtil.getInterceptorActive(mContext)) {
-            if (mCheckApiHandler != null) {
-                startRequestCheckApi();
-                mCheckApiHandler.checkRequest(this);
-            }
+        if (mCheckApiHandler != null) {
+            startRequestCheckApi();
+            mCheckApiHandler.checkRequest(this);
         }
     }
 
@@ -49,7 +51,6 @@ public class ResourceCheck {
     public void setCheckApiSuccessResp(String remoteVersion, String md5, String dist) {
         try {
             String localVersion = SharePreferenceUtil.getVersion(mContext);
-            FitLog.d(FitConstants.LOG_TAG, "localVersion=%s,remoteVersion=%s,md5=%s,dist=%s", localVersion, remoteVersion, md5, dist);
             if (FitUtil.compareVersion(remoteVersion, localVersion) > 0) {
                 download(remoteVersion, md5, dist);
             } else {
@@ -64,7 +65,8 @@ public class ResourceCheck {
     private void download(final String remoteVersion, final String md5, String dist) {
         try {
             if (hasDownloadVersion(remoteVersion)) {
-                FitLog.d(FitConstants.LOG_TAG, "this version=%s has been download", remoteVersion);
+                FitLog.d(FitConstants.LOG_TAG, "this version=%s zip has been download", remoteVersion);
+                EventUtil.post(new ReceiveNewVersionEvent());
                 mCurrentStatus = FitConstants.Version.SLEEP;
                 return;
             }
@@ -73,7 +75,7 @@ public class ResourceCheck {
                 .downloadFile(dist, new FileCallBack(destination) {
                     @Override
                     public void onStart(String url) {
-                        FitLog.d(FitConstants.LOG_TAG, "startDownload url=%s", url);
+                        FitLog.d(FitConstants.LOG_TAG, "startDownload zip url=%s", url);
                     }
 
                     @Override
@@ -82,11 +84,12 @@ public class ResourceCheck {
 
                     @Override
                     public void onSuccess(String url, File file) {
-                        FitLog.d(FitConstants.LOG_TAG, "complete download url=%s", url);
-                        if (validateZip(file, md5)) {
+                        FitLog.d(FitConstants.LOG_TAG, "completeDownload zip url=%s", url);
+                        if (validateZipMd5(file, md5) && validateUnzipVersionAndSignature(remoteVersion)) {
                             RenameDeleteFile();
                             SharePreferenceUtil.setDownLoadVersion(mContext, remoteVersion);
-                            FitLog.d(FitConstants.LOG_TAG, "set download version=%s", remoteVersion);
+                            EventUtil.post(new ReceiveNewVersionEvent());
+                            FitLog.d(FitConstants.LOG_TAG, "this zip is valid , set downloadVersion=%s", remoteVersion);
                         } else {
                             FileUtil.deleteFile(new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME));
                         }
@@ -105,8 +108,9 @@ public class ResourceCheck {
         }
     }
 
-    private boolean validateZip(File file, String md5) {
+    private boolean validateZipMd5(File file, String md5) {
         try {
+            FitLog.d(FitConstants.LOG_TAG,"start validate zip md5");
             if (file.exists() && Md5Util.getFileMD5(file).equals(md5)) {
                 return true;
             }
@@ -116,6 +120,24 @@ public class ResourceCheck {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private boolean validateUnzipVersionAndSignature(String remoteVersion) {
+        FitLog.d(FitConstants.LOG_TAG,"start validate zip version and signature");
+        File zip = new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME);
+        File checkSignatureDir = FileUtil.getCheckSignatureDir(mContext);
+        FileUtil.deleteFile(checkSignatureDir);
+        FileUtil.unZip(zip, checkSignatureDir);
+
+        JSONObject buildConfigJsonObject = SignatureUtil.getBuildConfigJsonObject(checkSignatureDir);
+        String buildVersion = buildConfigJsonObject.getString("version");
+        String buildSignature = buildConfigJsonObject.getString("signature");
+        String evaluateSignature = SignatureUtil.evaluateSignature(checkSignatureDir);
+
+        boolean result = remoteVersion.equals(buildVersion) && evaluateSignature.equals(buildSignature);
+
+        FileUtil.deleteFile(checkSignatureDir);
+        return result;
     }
 
     private boolean hasDownloadVersion(String version) {

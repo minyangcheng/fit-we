@@ -14,21 +14,21 @@ import java.io.File;
 
 public class UriHandler {
 
-    public static String handlePageUri(Context context, String pagePath) {
-        if (TextUtils.isEmpty(pagePath)) {
+    public static String handlePageUri(Context context, String pageUri) {
+        if (TextUtils.isEmpty(pageUri)) {
             return null;
         }
-        if (!pagePath.startsWith("fit://")) {
-            return pagePath;
+        if (!pageUri.startsWith("fit://")) {
+            return pageUri;
         }
-        pagePath = pagePath.replace("fit://", "");
-        if (!pagePath.endsWith(".js")) {
-            pagePath += ".js";
+        pageUri = pageUri.replace("fit://", "");
+        if (!pageUri.endsWith(".js")) {
+            pageUri += ".js";
         }
-        String uri = FitWe.getInstance().getConfiguration().getHostServer() + "/" + pagePath;
-        if (SharePreferenceUtil.getInterceptorActive(context)) {
+        String uri = FitWe.getInstance().getConfiguration().getFitWeServer() + "/" + pageUri;
+        if (SharePreferenceUtil.getLocalFileActive(context)) {
             File bundleDir = FileUtil.getBundleDir(context);
-            File pageFile = new File(bundleDir.getAbsolutePath() + "/" + pagePath);
+            File pageFile = new File(bundleDir.getAbsolutePath() + "/" + pageUri);
             if (pageFile.exists()) {
                 uri = pageFile.getAbsolutePath();
             }
@@ -44,8 +44,8 @@ public class UriHandler {
             return imagePath;
         }
         imagePath = imagePath.replace("fit://", "");
-        String uri = FitWe.getInstance().getConfiguration().getHostServer() + "/" + imagePath;
-        if (SharePreferenceUtil.getInterceptorActive(context)) {
+        String uri = FitWe.getInstance().getConfiguration().getFitWeServer() + "/" + imagePath;
+        if (SharePreferenceUtil.getLocalFileActive(context)) {
             File bundleDir = FileUtil.getBundleDir(context);
             File pageFile = new File(bundleDir.getAbsolutePath() + "/" + imagePath);
             if (pageFile.exists()) {

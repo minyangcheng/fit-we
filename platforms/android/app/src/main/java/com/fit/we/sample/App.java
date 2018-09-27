@@ -31,7 +31,7 @@ public class App extends Application {
     private void initFitWe() {
         FitConfiguration configuration = new FitConfiguration(this)
             .setDebug(BuildConfig.DEBUG)
-            .setHostServer(BuildConfig.fitWeHostServer)
+            .setFitWeServer(BuildConfig.fitWeServer)
             .setCheckApiHandler(new CheckApiHandler() {
                 @Override
                 public void checkRequest(ResourceCheck resourceCheck) {
@@ -43,7 +43,7 @@ public class App extends Application {
 
     private void checkApiRequest(final ResourceCheck resourceCheck) {
         Request request = new Request.Builder()
-            .url("http://10.10.12.151:8889/checkWeexUpdate?version=" + FitWe.getInstance().getVersion())
+            .url("http://10.10.12.170:8080/update.json")
             .get()
             .build();
         Call call = HttpManager.getHttpClient().newCall(request);
@@ -58,7 +58,7 @@ public class App extends Application {
                 try {
                     JSONObject jsonObject = JSON.parseObject(response.body().string());
                     int code = jsonObject.getIntValue("code");
-                    if (code == 1000) {
+                    if (code == 10000) {
                         resourceCheck.setCheckApiSuccessResp(jsonObject.getString("version"),
                             jsonObject.getString("md5"),
                             jsonObject.getString("dist"));

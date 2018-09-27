@@ -1,7 +1,5 @@
 package com.fit.we.library.util;
 
-import android.content.Context;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fit.we.library.FitConstants;
@@ -52,12 +50,11 @@ public class SignatureUtil {
         return resultList;
     }
 
-    public static String getSignatureFromBuildConfig(Context context) {
+    public static JSONObject getBuildConfigJsonObject(File dirFile) {
         try {
-            File file = new File(FileUtil.getBundleDir(context), "buildConfig.json");
+            File file = new File(dirFile, "buildConfig.json");
             String content = FileUtil.readFile(file.getAbsolutePath());
-            JSONObject jsonObject = JSON.parseObject(content);
-            return jsonObject.getString("signature");
+            return JSON.parseObject(content);
         } catch (Exception e) {
             e.printStackTrace();
         }

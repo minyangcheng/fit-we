@@ -1,9 +1,11 @@
 package com.fit.we.library.container;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.fit.we.library.FitConstants;
 import com.fit.we.library.FitWe;
 import com.fit.we.library.R;
 import com.fit.we.library.bean.FitEvent;
+import com.fit.we.library.bean.ReceiveNewVersionEvent;
+import com.fit.we.library.bean.RefreshWeexPage;
 import com.fit.we.library.bean.Route;
 import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FitLog;
@@ -31,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by minyangcheng on 2018/4/1.
@@ -55,7 +60,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
     public static FitContainerFragment newInstance(Route routeInfo) {
         FitContainerFragment fragment = new FitContainerFragment();
         Bundle args = new Bundle();
-        args.putSerializable(FitConstants.KEY_ROUTE_INFO, routeInfo);
+        args.putSerializable(FitConstants.KEY_ROUTE, routeInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,10 +94,6 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     public NavigationBar getNavigationBar() {
         return mNavigationBar;
-    }
-
-    public FrameLayout getWeexContainer() {
-        return mWeexContainer;
     }
 
     public NavigationBarEventHandler getNavigationBarEventHandler() {
@@ -163,8 +164,8 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
                     mStartTime = System.currentTimeMillis();
                 }
                 mCounter++;
-                if (mCounter % 4 == 0) {
-                    if (System.currentTimeMillis() - mStartTime < 4000) {
+                if (mCounter % 3 == 0) {
+                    if (System.currentTimeMillis() - mStartTime < 3000) {
                         FitWeDebugActivity.startActivity(getActivity());
                     }
                     mCounter = 0;
@@ -180,7 +181,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         mRoute.setPageUri(uri);
         HashMap<String, Object> options = new HashMap<>();
         options.put(WXSDKInstance.BUNDLE_URL, uri);
-        options.put(FitConstants.KEY_ROUTE_INFO, mRoute);
+        options.put(FitConstants.KEY_ROUTE, mRoute);
         options.put(FitConstants.KEY_NATIVE_PARAMS, FitWe.getInstance().getConfiguration().getNativeParams());
         if (uri.startsWith("http")) {
             mWXSDKInstance.renderByUrl(uri, uri, options, null, WXRenderStrategy.APPEND_ASYNC);
@@ -199,8 +200,8 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     private void getDataFromArguments() {
         Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(FitConstants.KEY_ROUTE_INFO)) {
-            mRoute = (Route) bundle.getSerializable(FitConstants.KEY_ROUTE_INFO);
+        if (bundle != null && bundle.containsKey(FitConstants.KEY_ROUTE)) {
+            mRoute = (Route) bundle.getSerializable(FitConstants.KEY_ROUTE);
         }
         if (mRoute == null || TextUtils.isEmpty(mRoute.getPageUri()) || !mRoute.getPageUri().startsWith("fit://")) {
             getActivity().finish();
@@ -248,13 +249,41 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         EventUtil.unregister(this);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(FitEvent event) {
         if (mWXSDKInstance != null) {
             Map<String, Object> map = new HashMap<>();
             map.put("type", event.type);
             map.put("data", event.data);
             mWXSDKInstance.fireGlobalEventCallback("eventbus", map);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEvent(RefreshWeexPage event) {
+        if (mWXSDKInstance != null) {
+            refresh();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void onEvent(ReceiveNewVersionEvent event) {
+        if (mWXSDKInstance != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                .setTitle("提示")
+                .setMessage("发现新版本，是否重启更新？")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+            builder.show();
         }
     }
 

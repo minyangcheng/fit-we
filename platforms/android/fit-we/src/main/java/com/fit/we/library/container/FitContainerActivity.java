@@ -19,7 +19,7 @@ public class FitContainerActivity extends AppCompatActivity {
 
     public static void startActivity(Context context, Route routeInfo) {
         Intent intent = new Intent(context, FitContainerActivity.class);
-        intent.putExtra(FitConstants.KEY_ROUTE_INFO, routeInfo);
+        intent.putExtra(FitConstants.KEY_ROUTE, routeInfo);
         context.startActivity(intent);
     }
 
@@ -34,8 +34,8 @@ public class FitContainerActivity extends AppCompatActivity {
         initStatusBar();
         super.onCreate(savedInstanceState);
         Route routeInfo = null;
-        if (getIntent().hasExtra(FitConstants.KEY_ROUTE_INFO)) {
-            routeInfo = (Route) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE_INFO);
+        if (getIntent().hasExtra(FitConstants.KEY_ROUTE)) {
+            routeInfo = (Route) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE);
         }
         mFitContainerFragment = FitContainerFragment.newInstance(routeInfo);
         getSupportFragmentManager().beginTransaction()

@@ -3,7 +3,6 @@ package com.fit.we.library.util;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.text.TextUtils;
 
 import com.fit.we.library.FitConstants;
@@ -46,18 +45,8 @@ public class FileUtil {
         {".xml", "text/plain"}, {".z", "application/x-compress"}, {".zip", "application/x-zip-compressed"},
         {"", "*/*"}};
 
-    public static boolean isSDCardAvailable() {
-        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-    }
-
     public static File getBasePath(Context context) {
-        File appDir = null;
-        if (isSDCardAvailable()) {
-            appDir = new File(context.getExternalFilesDir(null), FitConstants.Resource.BASE_DIR);
-        }
-        if (appDir == null) {
-            appDir = new File(context.getFilesDir(), FitConstants.Resource.BASE_DIR);
-        }
+        File appDir = new File(context.getFilesDir(), FitConstants.Resource.BASE_DIR);
         if (!appDir.exists()) {
             appDir.mkdirs();
         }
@@ -78,6 +67,10 @@ public class FileUtil {
 
     public static File getTempBundleDir(Context context) {
         return getAppPath(FitConstants.Resource.JS_BUNDLE_ZIP, context);
+    }
+
+    public static File getCheckSignatureDir(Context context) {
+        return getAppPath(FitConstants.Resource.JS_CHECK_SIGNATURE, context);
     }
 
     public static File getPathBundleDir(Context context, String path) {

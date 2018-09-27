@@ -34,10 +34,10 @@ android {
     }
     productFlavors {
         dev {
-            buildConfigField 'String', 'fitWeHostServer', "\"${getIpAddress()}\""
+            buildConfigField 'String', 'fitWeServer', "\"${getIpAddress()}\""
         }
         beta {
-            buildConfigField 'String', 'fitWeHostServer', '"http://dist.cheguo-cdn.com"'
+            buildConfigField 'String', 'fitWeServer', '"http://dist.cheguo-cdn.com"'
         }
         preview {}
         product {}
@@ -55,8 +55,8 @@ dependencies {
 }
 
 def getIpAddress() {
-    InetAddress inetAddress = getLocalHostLANAddress();
-    return 'http://10.10.12.170:8888';
+    InetAddress inetAddress=getLocalHostLANAddress();
+    return 'http://'+inetAddress.getHostAddress()+":8888";
 }
 
 def getLocalHostLANAddress() {

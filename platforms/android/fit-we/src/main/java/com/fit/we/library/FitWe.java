@@ -45,13 +45,13 @@ public class FitWe {
     public void init(FitConfiguration configuration) {
         if (configuration.getContext() != null && FitUtil.shouldInit(configuration.getContext())) {
             this.configuration = configuration;
-            check();
-            init();
+            checkParams();
+            initConfig();
         }
     }
 
-    private void check() {
-        if (configuration.getHostServer() == null) {
+    private void checkParams() {
+        if (configuration.getFitWeServer() == null) {
             throw new RuntimeException("config hostServer can not be null");
         }
         if (configuration.getCheckApiHandler() == null) {
@@ -59,7 +59,7 @@ public class FitWe {
         }
     }
 
-    private void init() {
+    private void initConfig() {
         LifecycleHandler lifecycleHandler = new LifecycleHandler(new LifecycleHandler.OnTaskSwitchListener() {
             @Override
             public void onActivityCreated(Activity activity) {

@@ -3,8 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fefefe"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <com.fit.we.library.widget.NavigationBar
@@ -14,82 +12,121 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="拦截地址：" />
+            android:text="FitWeServer" />
 
-        <TextView
-            android:id="@+id/tv_url"
+        <EditText
+            android:id="@+id/et_server"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:gravity="right"/>
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#d1d1d1" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="拦截页面请求：" />
+            android:text="启用本地文件" />
 
-        <CheckBox
-            android:id="@+id/cb_interceptor"
+        <Switch
+            android:id="@+id/sw_use_local_file"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#d1d1d1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="buildConfig：" />
+            android:text="本地buildConfig" />
 
         <TextView
-            android:id="@+id/tv_build_config"
+            android:id="@+id/tv_look_config"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="点击查看"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#d1d1d1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="nativeParams：" />
+            android:text="原生nativeParams" />
 
         <TextView
-            android:id="@+id/tv_native_params"
+            android:id="@+id/tv_look_params"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="点击查看"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#d1d1d1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/tv_restart"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#ff5a37"
+        android:textColor="#ffffff"
+        android:gravity="center"
+        android:text="重启加载最新配置" />
 
 </LinearLayout>
