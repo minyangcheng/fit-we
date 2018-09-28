@@ -43,87 +43,71 @@ public class ResourceCheck {
         mCurrentStatus = FitConstants.Version.UPDATING;
     }
 
-    public void setCheckApiFailResp(Exception e) {
-        FitLog.e(FitConstants.LOG_TAG, e);
+    public void setCheckApiFailResp() {
         mCurrentStatus = FitConstants.Version.SLEEP;
     }
 
     public void setCheckApiSuccessResp(String remoteVersion, String md5, String dist) {
-        try {
-            String localVersion = SharePreferenceUtil.getVersion(mContext);
-            if (FitUtil.compareVersion(remoteVersion, localVersion) > 0) {
-                download(remoteVersion, md5, dist);
-            } else {
-                mCurrentStatus = FitConstants.Version.SLEEP;
-            }
-        } catch (Exception e) {
+        String localVersion = SharePreferenceUtil.getVersion(mContext);
+        if (FitUtil.compareVersion(remoteVersion, localVersion) > 0) {
+            download(remoteVersion, md5, dist);
+        } else {
             mCurrentStatus = FitConstants.Version.SLEEP;
-            e.printStackTrace();
         }
     }
 
     private void download(final String remoteVersion, final String md5, String dist) {
-        try {
-            if (hasDownloadVersion(remoteVersion)) {
-                FitLog.d(FitConstants.LOG_TAG, "this version=%s zip has been download", remoteVersion);
-                EventUtil.post(new ReceiveNewVersionEvent());
-                mCurrentStatus = FitConstants.Version.SLEEP;
-                return;
-            }
-            File destination = new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME);
-            DownloadManager.getInstance()
-                .downloadFile(dist, new FileCallBack(destination) {
-                    @Override
-                    public void onStart(String url) {
-                        FitLog.d(FitConstants.LOG_TAG, "startDownload zip url=%s", url);
-                    }
-
-                    @Override
-                    public void onProgress(String url, long progress, long total) {
-                    }
-
-                    @Override
-                    public void onSuccess(String url, File file) {
-                        FitLog.d(FitConstants.LOG_TAG, "completeDownload zip url=%s", url);
-                        if (validateZipMd5(file, md5) && validateUnzipVersionAndSignature(remoteVersion)) {
-                            RenameDeleteFile();
-                            SharePreferenceUtil.setDownLoadVersion(mContext, remoteVersion);
-                            EventUtil.post(new ReceiveNewVersionEvent());
-                            FitLog.d(FitConstants.LOG_TAG, "this zip is valid , set downloadVersion=%s", remoteVersion);
-                        } else {
-                            FileUtil.deleteFile(new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME));
-                        }
-                        mCurrentStatus = FitConstants.Version.SLEEP;
-                    }
-
-                    @Override
-                    public void onFail(String url, Throwable t) {
-                        FitLog.e(FitConstants.LOG_TAG, t);
-                        mCurrentStatus = FitConstants.Version.SLEEP;
-                    }
-                });
-        } catch (Exception e) {
+        if (hasDownloadVersion(remoteVersion)) {
+            FitLog.d(FitConstants.LOG_TAG, "this version=%s zip has been download", remoteVersion);
+            EventUtil.post(new ReceiveNewVersionEvent());
             mCurrentStatus = FitConstants.Version.SLEEP;
-            e.printStackTrace();
+            return;
         }
+        File destination = new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME);
+        DownloadManager.getInstance()
+            .downloadFile(dist, new FileCallBack(destination) {
+                @Override
+                public void onStart(String url) {
+                    FitLog.d(FitConstants.LOG_TAG, "startDownload zip url=%s", url);
+                }
+
+                @Override
+                public void onProgress(String url, long progress, long total) {
+                }
+
+                @Override
+                public void onSuccess(String url, File file) {
+                    FitLog.d(FitConstants.LOG_TAG, "completeDownload zip url=%s", url);
+                    if (validateZipMd5(file, md5) && validateUnzipVersionAndSignature(remoteVersion)) {
+                        RenameDeleteFile();
+                        SharePreferenceUtil.setDownLoadVersion(mContext, remoteVersion);
+                        EventUtil.post(new ReceiveNewVersionEvent());
+                        FitLog.d(FitConstants.LOG_TAG, "this zip is valid , set downloadVersion=%s", remoteVersion);
+                    } else {
+                        FileUtil.deleteFile(new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME));
+                    }
+                    mCurrentStatus = FitConstants.Version.SLEEP;
+                }
+
+                @Override
+                public void onFail(String url, Throwable t) {
+                    FitLog.e(FitConstants.LOG_TAG, t);
+                    mCurrentStatus = FitConstants.Version.SLEEP;
+                }
+            });
     }
 
     private boolean validateZipMd5(File file, String md5) {
-        try {
-            FitLog.d(FitConstants.LOG_TAG,"start validate zip md5");
-            if (file.exists() && Md5Util.getFileMD5(file).equals(md5)) {
-                return true;
-            }
-            //todo
+        FitLog.d(FitConstants.LOG_TAG, "start validate zip md5");
+        if (file.exists() && Md5Util.getFileMD5(file).equals(md5)) {
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return false;
+        //todo
+        return true;
     }
 
     private boolean validateUnzipVersionAndSignature(String remoteVersion) {
-        FitLog.d(FitConstants.LOG_TAG,"start validate zip version and signature");
+        FitLog.d(FitConstants.LOG_TAG, "start validate zip version and signature");
         File zip = new File(FileUtil.getTempBundleDir(mContext), FitConstants.Resource.TEMP_BUNDLE_NAME);
         File checkSignatureDir = FileUtil.getCheckSignatureDir(mContext);
         FileUtil.deleteFile(checkSignatureDir);

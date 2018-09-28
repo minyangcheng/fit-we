@@ -50,7 +50,7 @@ public class App extends Application {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                resourceCheck.setCheckApiFailResp(e);
+                resourceCheck.setCheckApiFailResp();
             }
 
             @Override
@@ -67,7 +67,7 @@ public class App extends Application {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                resourceCheck.setCheckApiFailResp(new Exception("weex bundle check fail"));
+                resourceCheck.setCheckApiFailResp();
             }
         });
     }

@@ -42,8 +42,6 @@ import de.greenrobot.event.ThreadMode;
  */
 public class FitContainerFragment extends Fragment implements IWXRenderListener {
 
-    private static final String TAG = FitContainerFragment.class.getSimpleName();
-
     public NavigationBar mNavigationBar;
     public FrameLayout mWeexContainer;
 
@@ -302,17 +300,18 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     @Override
     public void onRenderSuccess(WXSDKInstance instance, int width, int height) {
-        FitLog.d(TAG, "onRenderSuccess instanceId=%s , bundleUrl=%s", mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
+        FitLog.d(FitConstants.LOG_TAG, "render page success : instanceId=%s , bundleUrl=%s", mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
     }
 
     @Override
     public void onRefreshSuccess(WXSDKInstance instance, int width, int height) {
-        FitLog.d(TAG, "routeInfo=%s onRefreshSuccess", JSON.toJSONString(mRoute));
+        FitLog.d(FitConstants.LOG_TAG, "refresh page success : instanceId=%s , bundleUrl=%s", mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
     }
 
     @Override
     public void onException(WXSDKInstance instance, String errCode, String msg) {
-        FitLog.e(TAG, "routeInfo=%s onException msg=%s", JSON.toJSONString(mRoute), msg);
+        FitLog.d(FitConstants.LOG_TAG, "render page occur error : instanceId=%s , bundleUrl=%s", mWXSDKInstance.getInstanceId(), mWXSDKInstance.getBundleUrl());
+        FitLog.d(FitConstants.LOG_TAG, "---------------------------------------->\n%s\n<----------------------------------------", msg);
     }
 
     public void showHudDialog(String message, boolean cancelable) {

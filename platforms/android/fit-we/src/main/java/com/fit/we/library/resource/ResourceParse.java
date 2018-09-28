@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.fit.we.library.FitConstants;
+import com.fit.we.library.service.HotRefreshService;
 import com.fit.we.library.util.AssetsUtil;
 import com.fit.we.library.util.FileUtil;
 import com.fit.we.library.util.FitLog;
@@ -17,6 +18,8 @@ public class ResourceParse {
 
     public long prepareJsBundle(Context context) {
         long startTime = new Date().getTime();
+        HotRefreshService.startService(context);
+
         if (SharePreferenceUtil.getLocalFileActive(context)) {
             String downloadVersion = SharePreferenceUtil.getDownLoadVersion(context);
             String assetsVersion = AssetsUtil.getAssetsVersionInfo(context);

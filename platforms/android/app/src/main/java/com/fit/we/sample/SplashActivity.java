@@ -31,7 +31,6 @@ public class SplashActivity extends AppCompatActivity {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        HotRefreshService.startService(SplashActivity.this);
                         toHome();
                     }
                 }, 2500 - prepareTime);

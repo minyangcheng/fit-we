@@ -1,8 +1,5 @@
 package com.fit.we.library.net;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,8 +10,6 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public abstract class FileCallBack implements Callback {
-
-    private static Handler mHandler = new Handler(Looper.getMainLooper());
 
     private File mDestFile;
 

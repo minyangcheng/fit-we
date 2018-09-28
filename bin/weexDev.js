@@ -14,7 +14,11 @@ var io = require('socket.io')(server);
 var count = 0;
 
 io.on('connection', function (socket) {
-  logger.info('ip ' + socket.handshake.address + ' has been connect debug server');
+  var ipAddress = socket.handshake.address;
+  logger.info('ip ' + ipAddress + ' has been connect debug server');
+  socket.on('disconnect', function(){
+    logger.info('ip ' + ipAddress + ' has been disconnect debug server');
+  });
 });
 
 listenReCompilePlugin.setHotRefresh(function () {
