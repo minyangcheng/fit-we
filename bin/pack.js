@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var path = require('path');
-var archiver = require('archiver');
-var moment = require('moment');
-var crypto = require('crypto');
-var shell = require('shelljs');
+const fs = require('fs');
+const path = require('path');
+const archiver = require('archiver');
+const moment = require('moment');
+const crypto = require('crypto');
+const shell = require('shelljs');
+const logger = require('./logger');
 
 var distPath = path.resolve(__dirname, '../dist');
 var tempPath = path.resolve(__dirname, '../dist/temp');
@@ -14,18 +15,16 @@ var packagesPath = path.resolve(__dirname, '../output');
 var npmConfigPath = path.resolve(__dirname, '../package.json');
 
 process.on('uncaughtException', function (err) {
-  console.error('捕获到异常-->');
-  console.error(err)
+  logger.error('打包出现异常\n'+err.stack);
 });
 process.on('exit', function (code) {
   if (fs.existsSync(distPath)) {
     deleteAll(distPath);
-    console.log('delete %s finished', distPath);
   }
 });
 
 if (!fs.existsSync(distPath) || fs.readdirSync(distPath).length < 2) {
-  throw new Error('请先生成vue dist包');
+  throw new Error('请先生成dist目录');
 }
 
 var npmConfig = JSON.parse(fs.readFileSync(npmConfigPath, 'utf-8'));
@@ -48,10 +47,10 @@ function writeVersionInfo(filePath, data) {
   writerStream.write(data, 'UTF8');
   writerStream.end();
   writerStream.on('finish', function (fileName) {
-    console.log(filePath + " create finish");
+    logger.info('生成buildConfig成功： '+data);
   });
   writerStream.on('error', function (err) {
-    console.log(err.stack);
+    throw new Error('生成buildConfig失败');
   });
 }
 
@@ -65,11 +64,9 @@ function zipDir(intputPath, outputZipPath) {
     zlib: {level: 9}
   });
   output.on('close', function () {
-    console.log(archive.pointer() + ' total bytes');
-    console.log('archiver has been finalized and the output file descriptor has closed.');
+    logger.info('打包完成:'+outputZipPath);
   });
   output.on('end', function () {
-    console.log('Data has been drained');
   });
   archive.on('error', function (err) {
     throw err;
@@ -116,7 +113,6 @@ function mdFile(path) {
   var data = fs.readFileSync(path);
   var hash = crypto.createHash('md5');
   var md5 = hash.update(data).digest('hex');
-  // console.log('path=%s,md5=%s', path, md5);
   return md5;
 }
 

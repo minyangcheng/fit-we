@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.fit.we.library.FitConstants;
 import com.fit.we.library.FitWe;
 import com.fit.we.library.bean.RefreshWeexPage;
 import com.fit.we.library.util.EventUtil;
@@ -24,7 +24,6 @@ import io.socket.emitter.Emitter;
 
 public class HotRefreshService extends Service {
 
-    private static final String TAG = HotRefreshService.class.getSimpleName();
     private static final String EVENT_CHAT = "chat";
 
     private Socket mSocket;
@@ -45,12 +44,10 @@ public class HotRefreshService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        FitLog.d(TAG, "onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
         if (mSocket == null || !mSocket.connected()) {
             createWbSocketConn();
         }
@@ -67,26 +64,21 @@ public class HotRefreshService extends Service {
             mSocket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    FitLog.d(TAG, "EVENT_CONNECT");
+                    FitLog.d(FitConstants.LOG_TAG, "client has been connect debug server");
                 }
             }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    FitLog.d(TAG, "EVENT_DISCONNECT");
+                    FitLog.d(FitConstants.LOG_TAG, "EVENT_DISCONNECT");
                 }
             }).on(EVENT_CHAT, new Emitter.Listener() {
 
                 @Override
                 public void call(Object... args) {
                     if (args != null && args[0] != null) {
-                        FitLog.d(TAG, args[0].toString());
+                        FitLog.d(FitConstants.LOG_TAG, args[0].toString());
                         if (TextUtils.equals(args[0].toString(), "refresh")) {
-                            FitUtil.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    refresh();
-                                }
-                            });
+                            refresh();
                         }
                     }
                 }
@@ -99,19 +91,12 @@ public class HotRefreshService extends Service {
     }
 
     private void refresh() {
-//        Activity activity = ActivityHandler.getTop();
-//        if (activity instanceof FitContainerActivity) {
-//            FitContainerActivity containerActivity = (FitContainerActivity) activity;
-//            FitContainerFragment fragment = containerActivity.getContainerFragment();
-//            fragment.refresh();
-//        }
         EventUtil.post(new RefreshWeexPage());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
         if (mSocket != null && mSocket.connected()) {
             mSocket.disconnect();
         }

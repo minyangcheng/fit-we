@@ -268,7 +268,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(ReceiveNewVersionEvent event) {
-        if (mWXSDKInstance != null) {
+        if (mWXSDKInstance != null && FitWe.getInstance().getConfiguration().isDebug()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                 .setTitle("提示")
                 .setMessage("发现新版本，是否重启更新？")

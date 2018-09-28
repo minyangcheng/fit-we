@@ -18,7 +18,7 @@
     },
     created() {
       this.$navigator.setTitle({
-        title: 'FitWe3',
+        title: 'FitWe',
       });
     },
     mounted() {

@@ -1,8 +1,8 @@
-var path = require('path');
-var webpack = require('webpack');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
-var scanResource = require('./scanResource');
-var listeneReCompilePlugin = require('./listeneReCompilePlugin');
+const path = require('path');
+const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const scanResource = require('./scanResource');
+const listenReCompilePlugin = require('./listenReCompilePlugin');
 
 function resolve(dir) {
   return path.join(__dirname, '../' + dir);
@@ -69,7 +69,7 @@ module.exports = {
       banner: '// { "framework": "Vue" }\n',
       raw: true
     }),
-    new CleanWebpackPlugin('dist', {root: resolve('')}),
+    new CleanWebpackPlugin('dist', {root: resolve(''), verbose: false,}),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -86,6 +86,6 @@ module.exports = {
 
 if (process.env.NODE_ENV === 'dev') {
   module.exports.plugins = (module.exports.plugins || []).concat([
-    listeneReCompilePlugin
+    listenReCompilePlugin
   ])
 }
