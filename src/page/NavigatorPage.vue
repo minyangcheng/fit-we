@@ -14,7 +14,8 @@
         items: ['hide', 'show', 'showStatusBar', 'hideStatusBar', 'hideBackBtn','hookSysBack', 'hookBackBtn', 'setTitle', 'setRightBtn', 'setRightMenu', 'setLeftBtn'],
       }
     },
-    created(){
+    created() {
+      this.$tool.printLog('created');
     },
     methods: {
       onItemClick(item, index) {

@@ -12,28 +12,33 @@
   export default {
     data() {
       return {
-        items: ['navigator模块', 'page模块', 'ui模块', 'tool模块', 'zeus调用外部扩展的功能','post事件通知','InfoPage页面公共参数信息','weex-ui库的使用',
-                  'InputEditText控件','测试调试页面'],
+        items: ['navigator模块', 'page模块', 'ui模块', 'tool模块', 'zeus调用外部扩展的功能', 'post事件通知', 'InfoPage页面公共参数信息', 'weex-ui库的使用',
+          'InputEditText控件', '测试调试页面'],
       }
     },
     created() {
+      this.$tool.printLog('created');
       this.$navigator.setTitle({
         title: 'FitWe',
       });
-    },
-    mounted() {
       this.$event.on('testType', (data) => {
         Vue.prototype.$ui.toast(JSON.stringify(data));
       });
-    },
-    beforeDestroy() {
-      this.$event.off('testType');
+
+      var globalEvent = weex.requireModule('globalEvent');
+      globalEvent.addEventListener('onResume', (obj) => {
+        this.$tool.printLog('onResume');
+      });
+      globalEvent.addEventListener('onDestroy', (obj) => {
+        this.$tool.printLog('onDestroy');
+        this.$event.off('testType');
+      });
     },
     methods: {
       onItemClick(item, index) {
         switch (item) {
           case 'navigator模块':
-            this.$router.open('fit://page/NavigatorPage','11');
+            this.$router.open('fit://page/NavigatorPage', '11');
             break;
           case 'page模块':
             this.$router.open('fit://page/RouterPage');
@@ -66,7 +71,7 @@
               url: 'http://10.10.12.170:8888/page/InputEditTextPage.js',
               animated: 'false'
             }, event => {
-                weex.requireModule('modal').toast({ message: 'callback: ' + event })
+              weex.requireModule('modal').toast({message: 'callback: ' + event})
             })
             break;
         }

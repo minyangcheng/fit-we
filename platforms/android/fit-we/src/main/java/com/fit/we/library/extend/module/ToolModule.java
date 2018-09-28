@@ -12,7 +12,12 @@ public class ToolModule extends WXModule {
 
     @JSMethod(uiThread = true)
     public void printLog(JSONObject jsonObject, JSCallback successCallback, JSCallback errorCallback) {
-        FitLog.d(FitConstants.LOG_TAG, JSON.toJSONString(jsonObject, true));
+        if(jsonObject.containsKey("_")){
+            FitLog.d(FitConstants.LOG_TAG, jsonObject.getString("_"));
+        }else{
+            FitLog.d(FitConstants.LOG_TAG, JSON.toJSONString(jsonObject, true));
+        }
+
     }
 
 }

@@ -23,6 +23,7 @@ import com.fit.we.library.bean.Route;
 import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.NavigationBarEventHandler;
+import com.fit.we.library.util.SharePreferenceUtil;
 import com.fit.we.library.util.UriHandler;
 import com.fit.we.library.widget.HudDialog;
 import com.fit.we.library.widget.NavigationBar;
@@ -150,6 +151,9 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
                 mNbEventHandler.onSysClickBack();
             }
         } else {
+            if (mWXSDKInstance != null) {
+                fireLifeCycleEvent("onDestroy");
+            }
             getActivity().finish();
         }
     }
@@ -211,6 +215,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         super.onStart();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityStart();
+            fireLifeCycleEvent("onStart");
         }
     }
 
@@ -219,6 +224,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         super.onResume();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityResume();
+            fireLifeCycleEvent("onResume");
         }
     }
 
@@ -227,6 +233,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         super.onPause();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityPause();
+            fireLifeCycleEvent("onPause");
         }
     }
 
@@ -235,6 +242,7 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         super.onStop();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityStop();
+            fireLifeCycleEvent("onStop");
         }
     }
 
@@ -329,6 +337,12 @@ public class FitContainerFragment extends Fragment implements IWXRenderListener 
         if (mHudDialog != null && mHudDialog.isShowing()) {
             mHudDialog.dismiss();
         }
+    }
+
+    private void fireLifeCycleEvent(String type) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageUri", mRoute.getPageUri());
+        mWXSDKInstance.fireGlobalEventCallback(type, map);
     }
 
 }

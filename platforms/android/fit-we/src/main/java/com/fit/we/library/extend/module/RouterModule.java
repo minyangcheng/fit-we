@@ -62,7 +62,7 @@ public class RouterModule extends WXModule {
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
             if (!activity.isFinishing()) {
-                activity.finish();
+                activity.onBackPressed();
             }
         }
     }
