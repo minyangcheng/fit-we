@@ -8,7 +8,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fit.we.library.bean.Route;
 import com.fit.we.library.extend.weex.IWeexHandler;
-import com.fit.we.library.ui.RefactorFitContainerActivity;
+import com.fit.we.library.ui.FitContainerActivity;
 import com.fit.we.library.extend.weex.WeexHandlerManager;
 import com.fit.we.library.util.FitUtil;
 import com.taobao.weex.annotation.JSMethod;
@@ -23,7 +23,7 @@ public class RouterModule extends WXModule {
     @JSMethod(uiThread = true)
     public void open(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
         Route routeInfo = JSON.parseObject(params.toJSONString(), Route.class);
-        RefactorFitContainerActivity.startActivity(mWXSDKInstance.getContext(), routeInfo);
+        FitContainerActivity.startActivity(mWXSDKInstance.getContext(), routeInfo);
         successCallback.invoke(null);
     }
 

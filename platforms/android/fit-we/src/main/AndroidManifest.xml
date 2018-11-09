@@ -12,15 +12,16 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application>
-        <activity android:name=".ui.FitContainerActivity"
+        <activity
+            android:name=".ui.FitContainerActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.fit.we" />
             </intent-filter>
         </activity>
-        <service android:name=".service.HotRefreshService" />
         <activity android:name=".ui.FitWeDebugActivity" />
-        <activity android:name=".ui.RefactorFitContainerActivity" />
+
+        <service android:name=".service.HotRefreshService" />
     </application>
 
 </manifest>

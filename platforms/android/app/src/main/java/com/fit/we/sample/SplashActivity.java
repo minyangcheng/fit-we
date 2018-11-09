@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.fit.we.library.FitWe;
 import com.fit.we.library.bean.Route;
 import com.fit.we.library.ui.FitContainerActivity;
-import com.fit.we.library.ui.RefactorFitContainerActivity;
 
 /**
  * Created by minyangcheng on 2018/4/1.
