@@ -1,12 +1,9 @@
 package com.fit.we.library.container;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +23,6 @@ import com.fit.we.library.util.FitLog;
 import com.fit.we.library.util.NavigationBarEventHandler;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.fit.we.library.util.UriHandler;
-import com.fit.we.library.widget.HudDialog;
-import com.fit.we.library.widget.NavigationBar;
 import com.taobao.weex.IWXRenderListener;
 import com.taobao.weex.WXSDKInstance;
 import com.taobao.weex.common.WXRenderStrategy;
@@ -40,109 +35,45 @@ import de.greenrobot.event.Subscribe;
 import de.greenrobot.event.ThreadMode;
 
 /**
- * Created by minyangcheng on 2018/4/1.
+ * Created by minych on 18-11-9.
  */
-public class FitContainerFragment extends Fragment {
 
-    public NavigationBar mNavigationBar;
+public class WeexProxy {
+
+    private Activity mActivity;
+    private Route mRoute;
+    private IWeexHandler mWeexHandler;
+
     public FrameLayout mWeexContainer;
     private ProgressBar mPb;
 
     private NavigationBarEventHandler mNbEventHandler = new NavigationBarEventHandler();
-    private Route mRoute;
 
     private WXSDKInstance mWXSDKInstance;
 
     private long mCounter;
     private long mStartTime;
 
-    private HudDialog mHudDialog;
-
-    public static FitContainerFragment newInstance(Route routeInfo) {
-        FitContainerFragment fragment = new FitContainerFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(FitConstants.KEY_ROUTE, routeInfo);
-        fragment.setArguments(args);
-        return fragment;
+    public WeexProxy(Activity activity, Route route, IWeexHandler weexHandler) {
+        this.mActivity = activity;
+        this.mRoute = route;
+        this.mWeexHandler = weexHandler;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getDataFromArguments();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_container, container, false);
+    public void onCreate(ViewGroup parent) {
+        View view = LayoutInflater.from(mActivity).inflate(R.layout.layout_weex, parent);
         findView(view);
-        initView();
         createWeexInstance();
         render();
-        setDebugMode();
         EventUtil.register(this);
-        return view;
     }
 
     private void findView(View view) {
-        mNavigationBar = view.findViewById(R.id.view_nb);
-        mWeexContainer = view.findViewById(R.id.weex_container);
+        mWeexContainer = view.findViewById(R.id.view_weex);
         mPb = view.findViewById(R.id.pb);
     }
 
-    public NavigationBar getNavigationBar() {
-        return mNavigationBar;
-    }
-
-    public NavigationBarEventHandler getNavigationBarEventHandler() {
-        return mNbEventHandler;
-    }
-
-    private void initView() {
-        mNavigationBar.setOnNavigationBarListener(new NavigationBar.INbOnClick() {
-            @Override
-            public void onNbBack() {
-                backPress(NavigationBarEventHandler.OnClickNbBack);
-            }
-
-            @Override
-            public void onNbLeft(View view) {
-                if (view.getTag() != null && "close".equals(view.getTag().toString())) {
-                    onNbBack();
-                } else {
-                    mNbEventHandler.onClickNbLeft();
-                }
-            }
-
-            @Override
-            public void onNbRight(View view, int which) {
-                mNbEventHandler.onClickNbRight(which);
-            }
-
-            @Override
-            public void onNbTitle(View view) {
-                mNbEventHandler.onClickNbTitle(0);
-            }
-        });
-        if (!mRoute.isShowBackBtn()) {
-            mNavigationBar.hideNbBack();
-        }
-        if (mRoute.getScreenOrientation() >= ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED && mRoute.getScreenOrientation() <= ActivityInfo.SCREEN_ORIENTATION_LOCKED) {
-            getActivity().setRequestedOrientation(mRoute.getScreenOrientation());
-        }
-        if (!TextUtils.isEmpty(mRoute.getTitle())) {
-            mNavigationBar.setNbTitle(mRoute.getTitle());
-        }
-        if (!mRoute.isShowNavigationBar()) {
-            mNavigationBar.hide();
-        }
-    }
-
-    public void onBackPressed() {
-        backPress(NavigationBarEventHandler.OnClickSysBack);
-    }
-
-    public void backPress(String eventType) {
+    public void onBackPressed(String eventType) {
         if (mNbEventHandler.hasJSCallback(eventType)) {
             if (eventType == mNbEventHandler.OnClickNbBack) {
                 mNbEventHandler.onClickNbBack();
@@ -150,12 +81,12 @@ public class FitContainerFragment extends Fragment {
                 mNbEventHandler.onSysClickBack();
             }
         } else {
-            getActivity().finish();
+            mActivity.finish();
         }
     }
 
-    private void setDebugMode() {
-        mNavigationBar.setOnClickListener(new View.OnClickListener() {
+    public void setDebugMode(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mCounter == 0) {
@@ -164,7 +95,7 @@ public class FitContainerFragment extends Fragment {
                 mCounter++;
                 if (mCounter % 3 == 0) {
                     if (System.currentTimeMillis() - mStartTime < 3000) {
-                        FitWeDebugActivity.startActivity(getActivity());
+                        FitWeDebugActivity.startActivity(mActivity);
                     }
                     mCounter = 0;
                 }
@@ -173,7 +104,7 @@ public class FitContainerFragment extends Fragment {
     }
 
     private void createWeexInstance() {
-        mWXSDKInstance = new WXSDKInstance(getActivity());
+        mWXSDKInstance = new WXSDKInstance(mActivity);
         mWXSDKInstance.registerRenderListener(new IWXRenderListener() {
             @Override
             public void onViewCreated(WXSDKInstance instance, View view) {
@@ -202,11 +133,19 @@ public class FitContainerFragment extends Fragment {
             }
         });
         mWXSDKInstance.onActivityCreate();
+        WeexHandlerManager.add(mWXSDKInstance, mWeexHandler);
         mPb.setVisibility(View.VISIBLE);
     }
 
+    private void destroyWeexInstance() {
+        WeexHandlerManager.remove(mWXSDKInstance);
+        if (mWXSDKInstance != null) {
+            mWXSDKInstance.destroy();
+        }
+    }
+
     private void render() {
-        String uri = UriHandler.handlePageUri(getActivity(), mRoute.getPageUri());
+        String uri = UriHandler.handlePageUri(mActivity, mRoute.getPageUri());
         mRoute.setPageUri(uri);
         HashMap<String, Object> options = new HashMap<>();
         options.put(WXSDKInstance.BUNDLE_URL, uri);
@@ -215,77 +154,51 @@ public class FitContainerFragment extends Fragment {
         if (uri.startsWith("http")) {
             mWXSDKInstance.renderByUrl(uri, uri, options, null, WXRenderStrategy.APPEND_ASYNC);
         } else {
-            mWXSDKInstance.render(uri, WXFileUtils.loadFileOrAsset(uri, getActivity()), options, null, WXRenderStrategy.APPEND_ASYNC);
+            mWXSDKInstance.render(uri, WXFileUtils.loadFileOrAsset(uri, mActivity), options, null, WXRenderStrategy.APPEND_ASYNC);
         }
         FitLog.d(FitConstants.LOG_TAG, "load page route=%s", JSON.toJSONString(mRoute));
     }
 
     public void refresh() {
-        if (mWXSDKInstance != null && !mWXSDKInstance.isDestroy()) {
-            mWXSDKInstance.destroy();
-        }
+        destroyWeexInstance();
         createWeexInstance();
         render();
     }
 
-    private void getDataFromArguments() {
-        Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(FitConstants.KEY_ROUTE)) {
-            mRoute = (Route) bundle.getSerializable(FitConstants.KEY_ROUTE);
-        }
-        if (mRoute == null || TextUtils.isEmpty(mRoute.getPageUri()) || !mRoute.getPageUri().startsWith("fit://")) {
-            getActivity().finish();
-        }
-    }
-
-    @Override
     public void onStart() {
-        super.onStart();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityStart();
             fireLifeCycleEvent("onStart");
         }
     }
 
-    @Override
     public void onResume() {
-        super.onResume();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityResume();
             fireLifeCycleEvent("onResume");
         }
     }
 
-    @Override
     public void onPause() {
-        super.onPause();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityPause();
             fireLifeCycleEvent("onPause");
         }
     }
 
-    @Override
     public void onStop() {
-        super.onStop();
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityStop();
             fireLifeCycleEvent("onStop");
         }
     }
 
-    @Override
     public void onDestroy() {
-        super.onDestroy();
-        if (mWXSDKInstance != null) {
-            mWXSDKInstance.onActivityDestroy();
-        }
+        destroyWeexInstance();
         EventUtil.unregister(this);
     }
 
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityResult(requestCode, resultCode, data);
         }
@@ -310,8 +223,8 @@ public class FitContainerFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MainThread)
     public void onEvent(ReceiveNewVersionEvent event) {
-        if (mWXSDKInstance != null && FitWe.getInstance().getConfiguration().isDebug() && SharePreferenceUtil.getLocalFileActive(getContext())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+        if (mWXSDKInstance != null && FitWe.getInstance().getConfiguration().isDebug() && SharePreferenceUtil.getLocalFileActive(mActivity)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
                 .setTitle("提示")
                 .setMessage("发现新版本，是否重启更新？")
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -335,21 +248,8 @@ public class FitContainerFragment extends Fragment {
         mWXSDKInstance.fireGlobalEventCallback(type, map);
     }
 
-    public void showHudDialog(String message, boolean cancelable) {
-        if (mHudDialog == null) {
-            mHudDialog = HudDialog.createProgressHud(getContext());
-        }
-        mHudDialog.setCancelable(cancelable);
-        mHudDialog.setMessage(message);
-        if (!mHudDialog.isShowing()) {
-            mHudDialog.show();
-        }
-    }
-
-    public void hideHudDialog() {
-        if (mHudDialog != null && mHudDialog.isShowing()) {
-            mHudDialog.dismiss();
-        }
+    public NavigationBarEventHandler getNavigationBarEventHandler() {
+        return mNbEventHandler;
     }
 
 }

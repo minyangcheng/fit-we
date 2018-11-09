@@ -30,6 +30,7 @@ public class InputEditText extends AbstractEditComponent {
         super(instance, dom, parent, isLazy);
     }
 
+
     @JSMethod
     public void clear() {
         WXEditText host = getHostView();

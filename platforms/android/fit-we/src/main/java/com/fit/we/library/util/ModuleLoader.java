@@ -60,7 +60,7 @@ public class ModuleLoader {
             Class clazz = Class.forName(className);
             if (WXComponent.class.isAssignableFrom(clazz)) {
                 FitLog.d(FitConstants.LOG_TAG, "registerComponent-->%s", className);
-                WXSDKEngine.registerComponent(moduleName, clazz, false);
+                WXSDKEngine.registerComponent(moduleName, clazz);
             } else if (WXModule.class.isAssignableFrom(clazz)) {
                 checkModule(clazz);
                 FitLog.d(FitConstants.LOG_TAG, "registerModule-->%s", className);

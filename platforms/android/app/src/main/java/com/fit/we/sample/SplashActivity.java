@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.fit.we.library.FitWe;
 import com.fit.we.library.bean.Route;
 import com.fit.we.library.container.FitContainerActivity;
+import com.fit.we.library.container.RefactorFitContainerActivity;
 import com.fit.we.library.service.HotRefreshService;
 
 /**
@@ -39,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void toHome() {
-        FitContainerActivity.startActivity(this, Route.createRoute()
+        RefactorFitContainerActivity.startActivity(this, Route.createRoute()
             .setPageUri("fit://page/SamplePage")
             .setShowBackBtn(false)
         );

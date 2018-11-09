@@ -14,6 +14,7 @@ import com.fit.we.library.util.LifecycleHandler;
 import com.fit.we.library.util.ModuleLoader;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.taobao.weex.InitConfig;
+import com.taobao.weex.WXEnvironment;
 import com.taobao.weex.WXSDKEngine;
 
 /**
@@ -98,6 +99,7 @@ public class FitWe {
         }
         WXSDKEngine.initialize(configuration.getApplication(), builder.build());
         ModuleLoader.loadModuleFromAsset(getContext());
+        WXEnvironment.setOpenDebugLog(configuration.isDebug());
     }
 
     public ResourceParse getResourceParse() {
