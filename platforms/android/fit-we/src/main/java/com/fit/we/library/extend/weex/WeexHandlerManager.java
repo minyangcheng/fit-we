@@ -1,4 +1,4 @@
-package com.fit.we.library.container;
+package com.fit.we.library.extend.weex;
 
 import com.taobao.weex.WXSDKInstance;
 

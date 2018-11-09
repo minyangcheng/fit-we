@@ -90,6 +90,7 @@
               text: '设置',
               isShow: 1,
               success(result) {
+                Vue.prototype.$ui.toast('setLeftBtn');
               },
               error(error) {
 

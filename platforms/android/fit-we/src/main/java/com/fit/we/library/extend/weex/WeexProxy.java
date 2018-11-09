@@ -1,4 +1,4 @@
-package com.fit.we.library.container;
+package com.fit.we.library.extend.weex;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -18,9 +18,9 @@ import com.fit.we.library.bean.FitEvent;
 import com.fit.we.library.bean.ReceiveNewVersionEvent;
 import com.fit.we.library.bean.RefreshWeexPage;
 import com.fit.we.library.bean.Route;
+import com.fit.we.library.ui.FitWeDebugActivity;
 import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FitLog;
-import com.fit.we.library.util.NavigationBarEventHandler;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.fit.we.library.util.UriHandler;
 import com.taobao.weex.IWXRenderListener;
@@ -47,7 +47,7 @@ public class WeexProxy {
     public FrameLayout mWeexContainer;
     private ProgressBar mPb;
 
-    private NavigationBarEventHandler mNbEventHandler = new NavigationBarEventHandler();
+    private LongCallbackHandler mLongCallbackHandler = new LongCallbackHandler();
 
     private WXSDKInstance mWXSDKInstance;
 
@@ -74,11 +74,11 @@ public class WeexProxy {
     }
 
     public void onBackPressed(String eventType) {
-        if (mNbEventHandler.hasJSCallback(eventType)) {
-            if (eventType == mNbEventHandler.OnClickNbBack) {
-                mNbEventHandler.onClickNbBack();
+        if (mLongCallbackHandler.hasJSCallback(eventType)) {
+            if (eventType == mLongCallbackHandler.OnClickNbBack) {
+                mLongCallbackHandler.onClickNbBack();
             } else {
-                mNbEventHandler.onSysClickBack();
+                mLongCallbackHandler.onSysClickBack();
             }
         } else {
             mActivity.finish();
@@ -248,8 +248,8 @@ public class WeexProxy {
         mWXSDKInstance.fireGlobalEventCallback(type, map);
     }
 
-    public NavigationBarEventHandler getNavigationBarEventHandler() {
-        return mNbEventHandler;
+    public LongCallbackHandler getLongCallbackHandler() {
+        return mLongCallbackHandler;
     }
 
 }

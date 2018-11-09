@@ -3,7 +3,7 @@ package com.fit.we.library;
 import android.app.Activity;
 import android.content.Context;
 
-import com.fit.we.library.extend.ImageAdapter;
+import com.fit.we.library.extend.adapter.ImageAdapter;
 import com.fit.we.library.resource.ResourceCheck;
 import com.fit.we.library.resource.ResourceParse;
 import com.fit.we.library.util.ActivityHandler;

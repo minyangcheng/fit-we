@@ -3,21 +3,24 @@ package com.fit.we.library.extend.module;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baoyz.actionsheet.ActionSheet;
-import com.fit.we.library.R;;
-import com.fit.we.library.container.FitContainerFragment;
+import com.fit.we.library.R;
+import com.fit.we.library.extend.weex.IWeexHandler;
+import com.fit.we.library.extend.weex.WeexHandlerManager;
 import com.fit.we.library.util.DialogUtil;
-import com.fit.we.library.util.UiUtil;
 import com.fit.we.library.widget.popmenu.FrmPopMenu;
 import com.fit.we.library.widget.popmenu.PopClickListener;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
+
+;
 
 public class UiModule extends WXModule {
 
@@ -165,37 +168,35 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void actionSheet(JSONObject params, final JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            boolean cancelable = !"0".equals(params.getString("cancelable"));
-            String cancelBtnName = params.getString("cancelBtnName");
-            JSONArray jsonArr = params.getJSONArray("items");
-            if (jsonArr == null && jsonArr.size() == 0) {
-                errorCallback.invoke(container.getActivity().getString(R.string.status_request_error));
-                return;
-            }
-            String[] items = new String[jsonArr.size()];
-            items = jsonArr.toArray(items);
-            ActionSheet.createBuilder(container.getActivity(), container.getFragmentManager())
-                .setCancelButtonTitle(cancelBtnName)
-                .setOtherButtonTitles(items)
-                .setCancelableOnTouchOutside(cancelable)
-                .setListener(new ActionSheet.ActionSheetListener() {
-                    @Override
-                    public void onDismiss(ActionSheet actionSheet, boolean isCancel) {
-                        JSONObject result = new JSONObject();
-                        result.put("which", -1);
-                        successCallback.invoke(result);
-                    }
-
-                    @Override
-                    public void onOtherButtonClick(ActionSheet actionSheet, int index) {
-                        JSONObject result = new JSONObject();
-                        result.put("which", index);
-                        successCallback.invoke(result);
-                    }
-                });
+        AppCompatActivity activity = (AppCompatActivity) mWXSDKInstance.getContext();
+        boolean cancelable = !"0".equals(params.getString("cancelable"));
+        String cancelBtnName = params.getString("cancelBtnName");
+        JSONArray jsonArr = params.getJSONArray("items");
+        if (jsonArr == null && jsonArr.size() == 0) {
+            errorCallback.invoke(mWXSDKInstance.getContext().getString(R.string.status_request_error));
+            return;
         }
+        String[] items = new String[jsonArr.size()];
+        items = jsonArr.toArray(items);
+        ActionSheet.createBuilder(activity, activity.getSupportFragmentManager())
+            .setCancelButtonTitle(cancelBtnName)
+            .setOtherButtonTitles(items)
+            .setCancelableOnTouchOutside(cancelable)
+            .setListener(new ActionSheet.ActionSheetListener() {
+                @Override
+                public void onDismiss(ActionSheet actionSheet, boolean isCancel) {
+                    JSONObject result = new JSONObject();
+                    result.put("which", -1);
+                    successCallback.invoke(result);
+                }
+
+                @Override
+                public void onOtherButtonClick(ActionSheet actionSheet, int index) {
+                    JSONObject result = new JSONObject();
+                    result.put("which", index);
+                    successCallback.invoke(result);
+                }
+            });
     }
 
     /**
@@ -207,13 +208,13 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void popWindow(JSONObject params, final JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
+        IWeexHandler weexHandler = WeexHandlerManager.getWeexHandler(mWXSDKInstance);
+        if (weexHandler != null) {
             String iconFilterColor = params.getString("iconFilterColor");
             JSONArray titleJsonObject = params.getJSONArray("titleItems");
             JSONArray iconJsonObject = params.getJSONArray("iconItems");
             if (titleJsonObject == null) {
-                errorCallback.invoke(container.getActivity().getString(R.string.status_request_error));
+                errorCallback.invoke(mWXSDKInstance.getContext().getString(R.string.status_request_error));
                 return;
             }
             String[] titleItems = new String[titleJsonObject.size()];
@@ -221,7 +222,7 @@ public class UiModule extends WXModule {
             titleItems = titleJsonObject.toArray(titleItems);
             iconItems = iconJsonObject.toArray(iconItems);
             if (iconItems != null && titleItems.length != iconItems.length) {
-                errorCallback.invoke(container.getActivity().getString(R.string.status_request_error));
+                errorCallback.invoke(mWXSDKInstance.getContext().getString(R.string.status_request_error));
                 return;
             }
 
@@ -229,7 +230,7 @@ public class UiModule extends WXModule {
             if (!TextUtils.isEmpty(iconFilterColor)) {
                 iconColor = Color.parseColor("#" + iconFilterColor);
             }
-            FrmPopMenu popupWindow = new FrmPopMenu(container.getActivity(), container.getNavigationBar().getNavigationView(), titleItems, iconItems, new PopClickListener() {
+            FrmPopMenu popupWindow = new FrmPopMenu(mWXSDKInstance.getContext(), weexHandler.getNBRoot(), titleItems, iconItems, new PopClickListener() {
                 @Override
                 public void onClick(int index) {
                     JSONObject data = new JSONObject();
@@ -247,14 +248,14 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void showLoadingDialog(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
+        IWeexHandler weexHandler = WeexHandlerManager.getWeexHandler(mWXSDKInstance);
+        if (weexHandler != null) {
             String message = params.getString("message");
             boolean cancelable = true;
             if (params.containsKey("cancelable")) {
                 cancelable = !"0".equals(params.getString("cancelable"));
             }
-            container.showHudDialog(message, cancelable);
+            weexHandler.showHudDialog(message, cancelable);
             successCallback.invoke(null);
         }
     }
@@ -264,9 +265,9 @@ public class UiModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void closeLoadingDialog(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            container.hideHudDialog();
+        IWeexHandler weexHandler = WeexHandlerManager.getWeexHandler(mWXSDKInstance);
+        if (weexHandler != null) {
+            weexHandler.hideHudDialog();
             successCallback.invoke(null);
         }
     }

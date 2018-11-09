@@ -1,6 +1,6 @@
 package com.fit.we.library.widget.popmenu;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -15,9 +15,11 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.fit.we.library.R;;
+import com.fit.we.library.R;
 import com.fit.we.library.util.DensityUtil;
 import com.fit.we.library.util.ImageLoaderWrap;
+
+;
 
 /**
  * Created by dailichun on 2017/12/6.
@@ -35,7 +37,7 @@ public class FrmPopMenu implements AdapterView.OnItemClickListener {
     /**
      * 上下文
      */
-    Activity context;
+    Context context;
 
     //标题
     String[] titles;
@@ -69,7 +71,7 @@ public class FrmPopMenu implements AdapterView.OnItemClickListener {
      * @param imgs     图标
      * @param listener 点击事件
      */
-    public FrmPopMenu(Activity context, View anchor, String[] titles, Object[] imgs, PopClickListener listener) {
+    public FrmPopMenu(Context context, View anchor, String[] titles, Object[] imgs, PopClickListener listener) {
         this(context, anchor, titles, imgs, -1, listener);
     }
 
@@ -82,7 +84,7 @@ public class FrmPopMenu implements AdapterView.OnItemClickListener {
      * @param imgs     图标
      * @param listener 点击事件
      */
-    public FrmPopMenu(Activity context, View anchor, String[] titles, Object[] imgs, int selected, PopClickListener listener) {
+    public FrmPopMenu(Context context, View anchor, String[] titles, Object[] imgs, int selected, PopClickListener listener) {
         this.context = context;
         this.anchor = anchor;
         this.titles = titles;

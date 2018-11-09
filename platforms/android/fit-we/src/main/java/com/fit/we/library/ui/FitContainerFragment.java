@@ -1,4 +1,4 @@
-package com.fit.we.library.container;
+package com.fit.we.library.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,9 +21,9 @@ import com.fit.we.library.bean.FitEvent;
 import com.fit.we.library.bean.ReceiveNewVersionEvent;
 import com.fit.we.library.bean.RefreshWeexPage;
 import com.fit.we.library.bean.Route;
+import com.fit.we.library.extend.weex.LongCallbackHandler;
 import com.fit.we.library.util.EventUtil;
 import com.fit.we.library.util.FitLog;
-import com.fit.we.library.util.NavigationBarEventHandler;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.fit.we.library.util.UriHandler;
 import com.fit.we.library.widget.HudDialog;
@@ -48,7 +48,7 @@ public class FitContainerFragment extends Fragment {
     public FrameLayout mWeexContainer;
     private ProgressBar mPb;
 
-    private NavigationBarEventHandler mNbEventHandler = new NavigationBarEventHandler();
+    private LongCallbackHandler mNbEventHandler = new LongCallbackHandler();
     private Route mRoute;
 
     private WXSDKInstance mWXSDKInstance;
@@ -94,7 +94,7 @@ public class FitContainerFragment extends Fragment {
         return mNavigationBar;
     }
 
-    public NavigationBarEventHandler getNavigationBarEventHandler() {
+    public LongCallbackHandler getNavigationBarEventHandler() {
         return mNbEventHandler;
     }
 
@@ -102,7 +102,7 @@ public class FitContainerFragment extends Fragment {
         mNavigationBar.setOnNavigationBarListener(new NavigationBar.INbOnClick() {
             @Override
             public void onNbBack() {
-                backPress(NavigationBarEventHandler.OnClickNbBack);
+                backPress(LongCallbackHandler.OnClickNbBack);
             }
 
             @Override
@@ -139,7 +139,7 @@ public class FitContainerFragment extends Fragment {
     }
 
     public void onBackPressed() {
-        backPress(NavigationBarEventHandler.OnClickSysBack);
+        backPress(LongCallbackHandler.OnClickSysBack);
     }
 
     public void backPress(String eventType) {

@@ -1,4 +1,4 @@
-package com.fit.we.library.extend;
+package com.fit.we.library.extend.adapter;
 
 import android.widget.ImageView;
 

@@ -1,4 +1,4 @@
-package com.fit.we.library.container;
+package com.fit.we.library.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import com.fit.we.library.util.StatusBarUtil;
  */
 public class FitContainerActivity extends AppCompatActivity {
 
-    private FitContainerFragment mFitContainerFragment;
+    private RefactorFitContainerFragment mFitContainerFragment;
 
     public static void startActivity(Context context, Route routeInfo) {
         Intent intent = new Intent(context, FitContainerActivity.class);
@@ -37,7 +37,7 @@ public class FitContainerActivity extends AppCompatActivity {
         if (getIntent().hasExtra(FitConstants.KEY_ROUTE)) {
             routeInfo = (Route) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE);
         }
-        mFitContainerFragment = FitContainerFragment.newInstance(routeInfo);
+        mFitContainerFragment = RefactorFitContainerFragment.newInstance(routeInfo);
         getSupportFragmentManager().beginTransaction()
             .replace(android.R.id.content, mFitContainerFragment)
             .commit();
@@ -63,10 +63,6 @@ public class FitContainerActivity extends AppCompatActivity {
         if (mFitContainerFragment != null) {
             mFitContainerFragment.onBackPressed();
         }
-    }
-
-    public FitContainerFragment getContainerFragment() {
-        return mFitContainerFragment;
     }
 
 }

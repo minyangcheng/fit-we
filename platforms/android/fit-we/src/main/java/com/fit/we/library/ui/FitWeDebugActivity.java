@@ -1,4 +1,4 @@
-package com.fit.we.library.container;
+package com.fit.we.library.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,23 +15,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.fit.we.library.FitWe;
 import com.fit.we.library.R;
-import com.fit.we.library.net.HttpManager;
 import com.fit.we.library.util.FileUtil;
 import com.fit.we.library.util.SharePreferenceUtil;
 import com.fit.we.library.util.SignatureUtil;
-import com.fit.we.library.util.UiUtil;
 import com.fit.we.library.widget.NavigationBar;
-
-import java.io.File;
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class FitWeDebugActivity extends AppCompatActivity {
 

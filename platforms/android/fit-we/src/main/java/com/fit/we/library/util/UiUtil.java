@@ -4,10 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.fit.we.library.container.FitContainerActivity;
-import com.fit.we.library.container.FitContainerFragment;
-import com.taobao.weex.WXSDKInstance;
-
 /**
  * Created by minych on 18-4-7.
  */
@@ -26,24 +22,6 @@ public class UiUtil {
             return;
         }
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-    }
-
-    public static FitContainerFragment getContainerFragment(WXSDKInstance wxsdkInstance) {
-        if (wxsdkInstance != null) {
-            if(wxsdkInstance.getContext()!=null){
-                FitContainerActivity activity = (FitContainerActivity) wxsdkInstance.getContext();
-                return activity.getContainerFragment();
-            }
-        }
-        return null;
-    }
-
-    public static FitContainerActivity getContainerActivity(WXSDKInstance wxsdkInstance) {
-        if (wxsdkInstance != null) {
-            FitContainerActivity activity = (FitContainerActivity) wxsdkInstance.getContext();
-            return activity;
-        }
-        return null;
     }
 
 }

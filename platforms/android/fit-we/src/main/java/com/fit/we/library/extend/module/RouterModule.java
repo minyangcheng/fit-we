@@ -1,17 +1,16 @@
 package com.fit.we.library.extend.module;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.fit.we.library.bean.Route;
-import com.fit.we.library.container.FitContainerActivity;
-import com.fit.we.library.container.FitContainerFragment;
+import com.fit.we.library.extend.weex.IWeexHandler;
+import com.fit.we.library.ui.RefactorFitContainerActivity;
+import com.fit.we.library.extend.weex.WeexHandlerManager;
 import com.fit.we.library.util.FitUtil;
-import com.fit.we.library.util.UiUtil;
 import com.taobao.weex.annotation.JSMethod;
 import com.taobao.weex.bridge.JSCallback;
 import com.taobao.weex.common.WXModule;
@@ -24,7 +23,7 @@ public class RouterModule extends WXModule {
     @JSMethod(uiThread = true)
     public void open(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
         Route routeInfo = JSON.parseObject(params.toJSONString(), Route.class);
-        FitContainerActivity.startActivity(mWXSDKInstance.getContext(), routeInfo);
+        RefactorFitContainerActivity.startActivity(mWXSDKInstance.getContext(), routeInfo);
         successCallback.invoke(null);
     }
 
@@ -47,6 +46,7 @@ public class RouterModule extends WXModule {
                 }
             }
             mWXSDKInstance.getContext().startActivity(intent);
+            successCallback.invoke(null);
         } catch (Exception e) {
             e.printStackTrace();
             errorCallback.invoke(e.getMessage());
@@ -58,12 +58,9 @@ public class RouterModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void close(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
-        Context context = mWXSDKInstance.getContext();
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-            if (!activity.isFinishing()) {
-                activity.onBackPressed();
-            }
+        Activity activity = (Activity) mWXSDKInstance.getContext();
+        if (!activity.isFinishing()) {
+            activity.finish();
         }
     }
 
@@ -72,9 +69,9 @@ public class RouterModule extends WXModule {
      */
     @JSMethod(uiThread = true)
     public void reload(JSONObject params, JSCallback successCallback, JSCallback errorCallback) {
-        FitContainerFragment container = UiUtil.getContainerFragment(mWXSDKInstance);
-        if (container != null) {
-            container.refresh();
+        IWeexHandler weexHandler = WeexHandlerManager.getWeexHandler(mWXSDKInstance);
+        if (weexHandler != null) {
+            weexHandler.refresh();
             successCallback.invoke(null);
         }
     }

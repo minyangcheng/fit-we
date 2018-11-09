@@ -1,11 +1,11 @@
-package com.fit.we.library.util;
+package com.fit.we.library.extend.weex;
 
 import com.alibaba.fastjson.JSONObject;
 import com.taobao.weex.bridge.JSCallback;
 
 import java.util.HashMap;
 
-public class NavigationBarEventHandler {
+public class LongCallbackHandler {
 
     public static String OnClickNbBack = "OnClickNbBack";//导航栏返回按钮
     public static String OnClickNbLeft = "OnClickNbLeft";//导航栏左侧按钮(非返回按钮)
@@ -15,7 +15,7 @@ public class NavigationBarEventHandler {
 
     private HashMap<String, JSCallback> callBackMap = new HashMap<>();
 
-    public NavigationBarEventHandler() {
+    public LongCallbackHandler() {
     }
 
     public void onClickNbBack() {
