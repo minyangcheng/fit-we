@@ -56,7 +56,7 @@ public class FitWe {
             throw new RuntimeException("config hostServer can not be null");
         }
         if (configuration.getCheckApiHandler() == null) {
-            throw new RuntimeException("config checkApiHandler can not be null");
+            FitLog.d(FitConstants.LOG_TAG,"请注意:未设置更新检测处理,将会导致不会从远程更新最新的包");
         }
     }
 

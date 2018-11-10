@@ -81,6 +81,7 @@ public class WeexProxy {
                 mLongCallbackHandler.onSysClickBack();
             }
         } else {
+            fireLifeCycleEvent("onDestroy");
             mActivity.finish();
         }
     }
@@ -201,6 +202,12 @@ public class WeexProxy {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (mWXSDKInstance != null) {
             mWXSDKInstance.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (mWXSDKInstance != null) {
+            mWXSDKInstance.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

@@ -14,7 +14,8 @@
     <application>
         <activity
             android:name=".ui.FitContainerActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/FitAppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.fit.we" />
             </intent-filter>

@@ -30,13 +30,14 @@ public class ResourceCheck {
     }
 
     public void checkVersion() {
+        if (mCheckApiHandler == null) {
+            return;
+        }
         if (mCurrentStatus == FitConstants.Version.UPDATING || TextUtils.isEmpty(SharePreferenceUtil.getVersion(mContext))) {
             return;
         }
-        if (mCheckApiHandler != null) {
-            startRequestCheckApi();
-            mCheckApiHandler.checkRequest(this);
-        }
+        startRequestCheckApi();
+        mCheckApiHandler.checkRequest(this);
     }
 
     private void startRequestCheckApi() {

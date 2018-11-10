@@ -41,7 +41,7 @@ public class FitContainerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        initStatusBar();
+//        initStatusBar();
         super.onCreate(savedInstanceState);
         getDataFromIntent();
         setContentView(R.layout.layout_container);
@@ -49,8 +49,8 @@ public class FitContainerActivity extends AppCompatActivity {
         mNavigationBar = findViewById(R.id.view_nb);
         initView();
         mWeexProxy = new WeexProxy(this, mRoute, mWeexHandler);
-        mWeexProxy.onCreate(mContainerView);
         mWeexProxy.setDebugMode(mNavigationBar);
+        mWeexProxy.onCreate(mContainerView);
     }
 
     private void initView() {
@@ -142,6 +142,12 @@ public class FitContainerActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mWeexProxy.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mWeexProxy.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

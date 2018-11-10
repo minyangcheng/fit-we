@@ -17,7 +17,7 @@
       }
     },
     created() {
-      this.$tool.printLog('created');
+      this.$tool.printLog('SamplePage created');
       this.$navigator.setTitle({
         title: 'FitWe',
       });
@@ -29,10 +29,12 @@
       globalEvent.addEventListener('onResume', (obj) => {
         this.$tool.printLog('onResume');
       });
-      globalEvent.addEventListener('onDestroy', (obj) => {
-        this.$tool.printLog('onDestroy');
-        this.$event.off('testType');
+      globalEvent.addEventListener('onStop', (obj) => {
+        this.$tool.printLog('onStop');
       });
+    },
+    destroyed(){
+      this.$tool.printLog('SamplePage destroyed');
     },
     methods: {
       onItemClick(item, index) {
