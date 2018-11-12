@@ -3,7 +3,6 @@ package com.fit.we.library.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -16,7 +15,6 @@ import com.fit.we.library.bean.Route;
 import com.fit.we.library.extend.weex.IWeexHandler;
 import com.fit.we.library.extend.weex.LongCallbackHandler;
 import com.fit.we.library.extend.weex.WeexProxy;
-import com.fit.we.library.util.StatusBarUtil;
 import com.fit.we.library.widget.HudDialog;
 import com.fit.we.library.widget.NavigationBar;
 
@@ -41,10 +39,9 @@ public class FitContainerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        initStatusBar();
         super.onCreate(savedInstanceState);
-        getDataFromIntent();
         setContentView(R.layout.layout_container);
+        getDataFromIntent();
         mContainerView = findViewById(R.id.view_container);
         mNavigationBar = findViewById(R.id.view_nb);
         initView();
@@ -98,13 +95,6 @@ public class FitContainerActivity extends AppCompatActivity {
             mRoute = (Route) getIntent().getSerializableExtra(FitConstants.KEY_ROUTE);
         } else {
             finish();
-        }
-    }
-
-    private void initStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            StatusBarUtil.transparencyBar(this);
-            StatusBarUtil.statusBarLightMode(this);
         }
     }
 

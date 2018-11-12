@@ -111,6 +111,7 @@ public class FitWeDebugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
             }
         });
     }
